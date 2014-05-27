@@ -3,6 +3,10 @@
 *.lo
 *.o
 *.obj
+*.exp
+*.ilk
+*.pdb
+*.idb
 
 # Compiled Dynamic libraries
 *.so
@@ -19,3 +23,15 @@
 *.exe
 *.out
 *.app
+
+#Visual Studio Project
+*.sdf
+*.opensdf
+*.aps
+*.suo
+*.user
+
+duilib/DuiLib/Debug
+FLIRDriver/Debug
+IRCameraProbe/Debug
+FLIRDriverTest/Debug
