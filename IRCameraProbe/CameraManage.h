@@ -3,20 +3,20 @@
 #include "IRCameraDriver.h"
 #include <vector>
 #include "ThreadMessageDispatcher.h"
-struct IRCameraInfo;
+#include <memory>
 
+class  CameraManageEventHandler;
 class  CameraConnectTask;
 class  CameraDisconnectTask;
 class  CameraCreateTask;
 class  CameraDestroyTask;
+class  CameraUpdateImageTask;
 
+//the task run in the main thread
+class  CameraEventHandlerTask;
 class  CameraCreateReplyTask;
 class  CameraDestroyReplyTask;
 class  CameraConnectReplyTask;
-
-class  CameraEventHandlerTask;
-
-class  CameraUpdateImageTask;
 class  CameraUpdateImageReplyTask;
 
 class CameraManage
@@ -57,7 +57,7 @@ public:
   void  AddConnectStatusObserver(ConnectStatusObserver* observer);
   void  RemoveConnectStatusObserver(ConnectStatusObserver* observer);
 
-  void GetErrorString(IRCameraStatusCode code, LPTSTR buffer, int len);
+  TString GetErrorString(IRCameraStatusCode code);
 
   int   GetStatus();
 
@@ -65,7 +65,6 @@ public:
   //note: img_filling must be multithread security
   void  UpdateKelvinImage(IRCameraImageFilling* img_filling);
 private:
-  IRCameraStatusCode GetKelvinImage(IRCameraImageFilling* img_filling);
 
   void  InitCompleteTrigger();
   void  ConnectedTrigger();
@@ -89,26 +88,26 @@ private:
   ThreadMessageDispatcher*  camera_dispatcher_;
   ThreadMessageDispatcher*  main_dispatcher_;
 
-  IRCameraInfo* camera_info;
+  IRCameraDevice* camera_info;
   typedef std::vector<ConnectStatusObserver*>::iterator  ObserverIterator;
   std::vector<ConnectStatusObserver*>   observers_;
 
+  std::unique_ptr<IRCameraDevice::IRCameraEventHandler> event_handler_;
+  // the camera event handler that register into the camera interface, run in camera thread
+  friend class  CameraManageEventHandler;
   friend class  CameraConnectTask;
   friend class  CameraDisconnectTask;
   friend class  CameraCreateTask;
   friend class  CameraDestroyTask;
+  friend class  CameraUpdateImageTask;
 
+  //the task run in the main thread
+  friend class  CameraEventHandlerTask;
   friend class  CameraCreateReplyTask;
   friend class  CameraDestroyReplyTask;
   friend class  CameraConnectReplyTask;
-
-  friend class  CameraEventHandlerTask;
-
-  friend class  CameraUpdateImageTask;
   friend class  CameraUpdateImageReplyTask;
 
   ConnectResultObserver*  connect_result_observer_;
-
-  static void StaticEventHandle(int event_type, void* args);
 };
 

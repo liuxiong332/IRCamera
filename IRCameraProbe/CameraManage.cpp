@@ -24,6 +24,21 @@ private:
   CameraManage* manager_;
 };
 
+class  CameraManageEventHandler : public IRCameraDevice::IRCameraEventHandler {
+public:
+  CameraManageEventHandler(CameraManage* manager) : manager_(manager) {}
+  virtual void OnEvent(IRCameraEvent event_type) {
+    if (event_type == IRCAMERA_CONNECTED_EVENT) {
+      manager_->image_width_ = manager_->camera_info->GetImageWidth();
+      manager_->image_height_ = manager_->camera_info->GetImageHeight();
+    }
+    CameraEventHandlerTask* handler_task = static_cast<CameraEventHandlerTask*>(manager_->event_handler_task_);
+    handler_task->SetEventType(event_type);
+    manager_->main_dispatcher_->PushTask(manager_->event_handler_task_);
+  }
+private:
+  CameraManage* manager_;
+};
 
 ////////////////////////CameraCreateTask/////////////////
 //init the IRCameraInfo object
@@ -31,9 +46,8 @@ class CameraCreateTask : public ThreadMessageDispatcher::Task {
 public:
   CameraCreateTask(CameraManage* manage) :manager_(manage)  {}
   virtual void DoEvent() {
-    manager_->camera_info = IRCameraCreate();
-    IRCameraRegisterEventHandler(manager_->camera_info, 
-      CameraManage::StaticEventHandle, manager_);
+    manager_->camera_info = new IRCameraDevice;
+    manager_->camera_info->RegisterEventHandler(manager_->event_handler_.get());
     //notify the main thread that the camera initialize complete
     manager_->main_dispatcher_->PushTask(manager_->create_reply_task);
   }
@@ -77,7 +91,7 @@ class CameraConnectTask : public ThreadMessageDispatcher::Task {
 public:
   CameraConnectTask(CameraManage* manager) : manager_(manager) {}
   virtual void DoEvent() {
-    IRCameraStatusCode code = IRCameraConnect(manager_->camera_info);
+    IRCameraStatusCode code = manager_->camera_info->Connect();
     CameraConnectReplyTask* reply_task =
       static_cast<CameraConnectReplyTask*>(manager_->connect_reply_task);
     reply_task->SetStatus(code);
@@ -93,7 +107,7 @@ class CameraDisconnectTask : public ThreadMessageDispatcher::Task {
 public:
   CameraDisconnectTask(CameraManage* manager) :manager_(manager)  {}
   virtual void DoEvent() {
-    IRCameraDisconnect(manager_->camera_info);
+    manager_->camera_info->Disconnect();
   }
 private:
   CameraManage* manager_;
@@ -105,7 +119,7 @@ public:
   CameraUpdateImageTask(CameraManage* manager) :manager_(manager)  {}
   void SetImageFilling(IRCameraImageFilling* filling) { image_filling_ = filling; }
   virtual void DoEvent() {
-    IRCameraStatusCode code = IRCameraGetKelvinImage(manager_->camera_info, image_filling_);
+    IRCameraStatusCode code = manager_->camera_info->GetKelvinImage(image_filling_);
     if (code == IRCAMERA_OK) {
       manager_->main_dispatcher_->PushTask(manager_->update_image_reply_task_);
     }
@@ -129,6 +143,8 @@ public:
 private:
   CameraManage* manager_;
 };
+
+
 void CameraManage::Init()
 {
   ThreadMessageDispatcherManage* manager = ThreadMessageDispatcherManage::GetInstance();
@@ -188,8 +204,8 @@ void CameraManage::RemoveConnectStatusObserver(ConnectStatusObserver* observer) 
   observers_.erase(iter);
 }
 
-void CameraManage::GetErrorString(IRCameraStatusCode code, LPTSTR buffer, int len) {
-  return IRCameraGetError(camera_info, code, buffer, len);
+TString CameraManage::GetErrorString(IRCameraStatusCode code) {
+  return camera_info->GetErrorString(code);
 }
 
 int CameraManage::GetImageWidth() const {
@@ -198,11 +214,7 @@ int CameraManage::GetImageWidth() const {
 int CameraManage::GetImageHeight() const {
   return image_height_;
 }
-
-IRCameraStatusCode CameraManage::GetKelvinImage(IRCameraImageFilling* img_filling) {
-  return IRCameraGetKelvinImage(camera_info, img_filling);
-}
-
+ 
 int CameraManage::GetStatus() {
   return camera_status_;
 }
@@ -237,14 +249,4 @@ void CameraManage::UpdateImageTrigger() {
     (*iter)->OnImageUpdate();;
   }
 }
-
-void CameraManage::StaticEventHandle(int event_type, void* args) {
-  CameraManage* manager = reinterpret_cast<CameraManage*>(args);
-  if (event_type == IRCAMERA_CONNECTED_EVENT) {
-    manager->image_width_ = IRCameraGetImageWidth(manager->camera_info);
-    manager->image_height_ = IRCameraGetImageHeight(manager->camera_info);
-  }
-  CameraEventHandlerTask* handler_task = static_cast<CameraEventHandlerTask*>(manager->event_handler_task_); 
-  handler_task->SetEventType(event_type);
-  manager->main_dispatcher_->PushTask(manager->event_handler_task_);
-}
+ 
