@@ -9,8 +9,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FLIRDriver", "FLIRDriver\FL
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DuiLib", "duilib\DuiLib\DuiLib.vcxproj", "{E106ACD7-4E53-4AEE-942B-D0DD426DB34E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IRCameraMeasure", "IRCameraMeasure\IRCameraMeasure.vcxproj", "{F01A20B8-6379-48D6-AD7C-1B2EA0367601}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IRCameraProbe", "IRCameraProbe\IRCameraProbe.vcxproj", "{AD864481-F212-4814-9B25-7FA13554B5A9}"
 EndProject
 Global
@@ -52,16 +50,6 @@ Global
 		{E106ACD7-4E53-4AEE-942B-D0DD426DB34E}.UnicodeDebug|Win32.Build.0 = UnicodeDebug|Win32
 		{E106ACD7-4E53-4AEE-942B-D0DD426DB34E}.UnicodeRelease|Win32.ActiveCfg = UnicodeRelease|Win32
 		{E106ACD7-4E53-4AEE-942B-D0DD426DB34E}.UnicodeRelease|Win32.Build.0 = UnicodeRelease|Win32
-		{F01A20B8-6379-48D6-AD7C-1B2EA0367601}.Debug|Win32.ActiveCfg = Debug|Win32
-		{F01A20B8-6379-48D6-AD7C-1B2EA0367601}.Debug|Win32.Build.0 = Debug|Win32
-		{F01A20B8-6379-48D6-AD7C-1B2EA0367601}.Release_Developer|Win32.ActiveCfg = Release|Win32
-		{F01A20B8-6379-48D6-AD7C-1B2EA0367601}.Release_Developer|Win32.Build.0 = Release|Win32
-		{F01A20B8-6379-48D6-AD7C-1B2EA0367601}.Release|Win32.ActiveCfg = Release|Win32
-		{F01A20B8-6379-48D6-AD7C-1B2EA0367601}.Release|Win32.Build.0 = Release|Win32
-		{F01A20B8-6379-48D6-AD7C-1B2EA0367601}.UnicodeDebug|Win32.ActiveCfg = Debug|Win32
-		{F01A20B8-6379-48D6-AD7C-1B2EA0367601}.UnicodeDebug|Win32.Build.0 = Debug|Win32
-		{F01A20B8-6379-48D6-AD7C-1B2EA0367601}.UnicodeRelease|Win32.ActiveCfg = Release|Win32
-		{F01A20B8-6379-48D6-AD7C-1B2EA0367601}.UnicodeRelease|Win32.Build.0 = Release|Win32
 		{AD864481-F212-4814-9B25-7FA13554B5A9}.Debug|Win32.ActiveCfg = Debug|Win32
 		{AD864481-F212-4814-9B25-7FA13554B5A9}.Debug|Win32.Build.0 = Debug|Win32
 		{AD864481-F212-4814-9B25-7FA13554B5A9}.Release_Developer|Win32.ActiveCfg = Release_Developer|Win32

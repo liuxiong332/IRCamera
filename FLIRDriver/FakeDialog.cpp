@@ -46,6 +46,6 @@ void  FakeDialog::OnCameraEvent(long Id) {
   }
 }
 
-void  FakeDialog::SetEventHandler(EventObserver* observer) {
+void  FakeDialog::SetEventHandler(FakeDialogEventObserver* observer) {
   event_observer = observer;
 }
