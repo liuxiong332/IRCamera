@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Window mininfo="480,400" size="510,600">
+	<Font name="幼圆" size="16" default="true" />
+	<Font name="微软雅黑" size="18" />
+	<Default name="Button" value="normalimage=&quot;file='skin/button_nor.bmp' corner='4,2,4,2' fade='200' hsl='true'&quot; hotimage=&quot;file='skin/button_over.bmp' corner='4,2,4,2' fade='200' hsl='true'&quot; pushedimage=&quot;file='skin/button_down.bmp' corner='4,2,4,2' fade='200' hsl='true' &quot; disabledimage=&quot;file='skin/Button_Non.png' corner='4,2,4,2' fade='200' hsl='true'&quot;" />
+	<HorizontalLayout bkcolor="#FFFFFFFF">
+		<VerticalLayout width="350">
+			<CameraImage name="camera_image" width="320" height="240" bkcolor="#FFD7EBEB" padding="10,10,10,10"/>
+		</VerticalLayout>
+
+		<VerticalLayout>
+			<Button name="connect_btn" height="40" font="1" minwidth="60" maxwidth="120" padding="5,5,5,10" text="Connect"/>
+			<Button name="disconnect_btn" height="40" font="1" minwidth="60" maxwidth="120" padding="5,5,5,10" text="Disconnect" enabled="false"/>
+		</VerticalLayout>
+	</HorizontalLayout>
+</Window>

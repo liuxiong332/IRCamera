@@ -4,6 +4,10 @@
 #include "stdafx.h"
 #include "FLIRDriverTest.h"
 #include "IRCameraTest.h"
+#include <process.h>
+#include "IRCameraDriver.h"
+#include <objbase.h>
+#include <assert.h>
 
 #define MAX_LOADSTRING 100
 
@@ -18,22 +22,27 @@ BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 HWND  hWnd = NULL;
-IRCameraTest*  camera_test = NULL;
 
-void  CALLBACK CameraTimerProc(HWND, UINT, UINT_PTR, DWORD) {
-  camera_test->Paint(hWnd);
+void EventHandler(int event_type, void* args) {
+  event_type = event_type;
 }
-void  OnCameraEvent(int event_id) {
-  if (!camera_test || !hWnd)
-    return;
-  switch (event_id) {
-  case IRCAMERA_CONNECTED_EVENT:
-    SetTimer(NULL, 1, 1000, CameraTimerProc);
-    break;
+unsigned __stdcall ThreadMain(void* args) {
+//  ::CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+  ::CoInitialize(NULL);
+  MSG msg;
+  PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+  IRCameraInfo* info = IRCameraCreate();
+  IRCameraRegisterEventHandler(info, EventHandler, NULL);
+  IRCameraStatusCode code = IRCameraConnect(info);
+  assert(code == IRCAMERA_OK);
+
+  while (GetMessage(&msg, NULL, 0, 0)) {
+    TranslateMessage(&msg);
+    DispatchMessage(&msg);
   }
+  ::CoUninitialize();
+  return 0;
 }
-
-
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPTSTR    lpCmdLine,
@@ -59,8 +68,9 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 	hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_FLIRDRIVERTEST));
 
-  camera_test = new IRCameraTest(OnCameraEvent);
-	// 主消息循环: 
+  _beginthreadex(NULL, 0, ThreadMain, NULL, 0, NULL);
+//  ThreadMain(NULL);
+  // 主消息循环: 
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
 		if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))

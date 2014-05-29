@@ -15,7 +15,12 @@ public:
 // 对话框数据
 	enum { IDD = IDD_FORMVIEW };
 
-  void  SetEventHandler(IRCameraEventHandler handler);
+  class EventObserver {
+  public:
+    virtual void OnEvent(int event_type) = 0;
+    virtual ~EventObserver()  {}
+  };
+  void  SetEventHandler(EventObserver* observer);
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
@@ -24,6 +29,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
   DECLARE_EVENTSINK_MAP()
 public:
-  IRCameraEventHandler  event_handler;
+  EventObserver*  event_observer;
   CLvcamctrl camera_control;
 };

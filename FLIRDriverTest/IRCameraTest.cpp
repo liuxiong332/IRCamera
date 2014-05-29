@@ -7,7 +7,7 @@ IRCameraTest::IRCameraTest(IRCameraEventHandler handler)
   camera_info_ = IRCameraCreate();
   IRCameraRegisterEventHandler(camera_info_, handler);
   IRCameraStatusCode code = IRCameraConnect(camera_info_);
-  assert(code == IRCamera_OK);
+  assert(code == IRCAMERA_OK);
 }
 
 
@@ -25,7 +25,7 @@ void IRCameraTest::Paint(HWND hWnd)
   float* temp_buffer = (float*)malloc(img_width*img_height*(sizeof(float)));
   
   IRCameraStatusCode code = IRCameraGetKelvinImage(camera_info_, temp_buffer);
-  if (code != IRCamera_OK) {
+  if (code != IRCAMERA_OK) {
     return;
   }
 

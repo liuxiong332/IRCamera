@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="源文件\win">
-      <UniqueIdentifier>{a05dd245-29d4-4b77-8469-f445bb45f419}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IRCameraProbe.cpp">
@@ -24,10 +21,19 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\views\win\SkOSWindow_win.cpp">
-      <Filter>源文件\win</Filter>
+    <ClCompile Include="CameraImageControl.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="SkGLWindow.cpp">
+    <ClCompile Include="CameraManage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageQueueThread.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadMessageDispatcher.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraThread.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,7 +50,22 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="SkGLWindow.h">
+    <ClInclude Include="CameraImageControl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraManage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageQueueThread.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadMessageDispatcher.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadLocalStorage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraThread.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -12,7 +12,8 @@
 #include <wtypes.h>
 typedef int IRCameraStatusCode;
 /**the status code 0 stand for OK*/
-#define IRCamera_OK 0
+#define IRCAMERA_OK 0
+#define IRCAMERA_NOTPRESENT_ERROR 1   //the device is not present
 
 struct IRCameraInfo;
 /** 
@@ -53,9 +54,14 @@ IRCAMERA_API  int  IRCameraGetImageHeight(IRCameraInfo*);
 
 /** 
  * get the image that contain the kelvin temperature
- * @temp_image: the array of width*height elements, to fill the temperature value for every pixel
- */
-IRCAMERA_API  IRCameraStatusCode IRCameraGetKelvinImage(IRCameraInfo*, float* temp_image);
+ * @img_filling: the array of width*height elements, to fill the temperature value for every pixel
+ */ 
+struct IRCameraImageFilling {
+  typedef void(*SetBuffer)(void* args, float* val, int val_count);
+  SetBuffer   set_buffer;   //the function that set the pixel of pos (x,y)
+  void*   args;
+};
+IRCAMERA_API  IRCameraStatusCode IRCameraGetKelvinImage(IRCameraInfo*, IRCameraImageFilling* img_filling);
 
 /** 
  * register the camera event handler
@@ -63,7 +69,15 @@ IRCAMERA_API  IRCameraStatusCode IRCameraGetKelvinImage(IRCameraInfo*, float* te
  */
 #define  IRCAMERA_CONNECTED_EVENT  2
 #define  IRCAMERA_DISCONNECTED_EVENT 3
+#define  IRCAMERA_CONNECTBROKEN_EVENT 4
+#define  IRCAMERA_RECONNECTED_EVENT 5
 
-typedef void(*IRCameraEventHandler)(int event_type);
-IRCAMERA_API  void  IRCameraRegisterEventHandler(IRCameraInfo*, IRCameraEventHandler);
+typedef void(*IRCameraEventHandler)(int event_type, void* args);
+IRCAMERA_API  void  IRCameraRegisterEventHandler(IRCameraInfo*, IRCameraEventHandler, void* args);
+
+#define IRCAMERA_CONNECTED 1
+#define IRCAMERA_DISCONNECTED 2
+#define IRCAMERA_BROKEN_CONNECTE 3
+#define IRCAMERA_RECONNECTED 4
+IRCAMERA_API int  IRCameraGetStatus(IRCameraInfo* );
 #endif

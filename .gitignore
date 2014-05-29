@@ -7,6 +7,7 @@
 *.ilk
 *.pdb
 *.idb
+*.ocx
 
 # Compiled Dynamic libraries
 *.so
@@ -35,3 +36,5 @@ duilib/DuiLib/Debug
 FLIRDriver/Debug
 IRCameraProbe/Debug
 FLIRDriverTest/Debug
+ipch
+Debug/obj
