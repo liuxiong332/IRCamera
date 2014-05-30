@@ -65,7 +65,7 @@ IRCameraStatusCode  IRCameraDevice::Connect() {
   const static short  CAM_A300 = 11;
   const static short  DEVICE_ETHERNET_16 = 6;	// 16-bit images over Ethernet
   const static short  CAM_INTF_TCPIP = 2;
-  TCHAR  ipaddr[] = _T("169.254.18.63");  //the IP address is the camera address, but the camera can use dynamic IP, so the address need change
+  TCHAR  ipaddr[] = _T("169.254.141.78");  //the IP address is the camera address, but the camera can use dynamic IP, so the address need change
   short code = camera_->Connect(CAM_A300, 0, DEVICE_ETHERNET_16, CAM_INTF_TCPIP, ipaddr);
   return static_cast<IRCameraStatusCode>(code);
 }
@@ -80,12 +80,6 @@ TString IRCameraDevice::GetErrorString(IRCameraStatusCode code) {
   return str_res.GetString();
 }
 
-void IRCameraDevice::SetImageWidth(int width) {
-//  info->camera->SetCameraProperty(PROP_IMAGE_WIDTH, )
-}
-void IRCameraDevice::SetImageHeight(int height) {
-
-}
 
 int  IRCameraDevice::GetImageWidth() {
   if (image_width_ == 0) {

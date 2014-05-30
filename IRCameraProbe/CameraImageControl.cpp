@@ -1,53 +1,96 @@
 #include "CameraImageControl.h"
 #include "IRCameraDriver.h"
-#include "CameraManage.h"
+
 #include <algorithm>
+#include <memory>
+#include <windows.h>
+#include <strsafe.h>
 
 namespace {
-class CameraImageControlUI : public DuiLib::CControlUI,
-  public CameraManage::ConnectStatusObserver,
-  public IRCameraImageFilling
-{
-public:
-  CameraImageControlUI(CameraManage* manager);
-  ~CameraImageControlUI();
-
-  LPCTSTR GetClass() const;
-
-  virtual void PaintStatusImage(HDC hDC);
-
-  virtual void OnInitCamera() {}
-  virtual void  OnConnect();
-  virtual void  OnDisconnect();
-  virtual void  OnImageUpdate();
-private:
-  bool ImageCtrlTimerProc(void* param);
-
-  virtual void SetBuffer(float*, int);
-  void InitBitmapHeader();
-
-  int align_width;
-  int img_width, img_height;
-
-  float min_temp, max_temp;
-  bool  is_need_update_;
-
-  CameraManage* camera_manage;
-  BITMAPINFOHEADER*  bitmap_header;
-  BYTE*          bitmap_buffer;
-};
-
-CameraImageControlUI::CameraImageControlUI(CameraManage* manager) :
-  camera_manage(manager),bitmap_buffer(NULL)  {
   const static float kKelvinTransform = 273.16f;
+}
+
+DIBitmap::DIBitmap() :bitmap_header_(NULL),bitmap_buffer_(NULL),bitmap_palette_(NULL) {}
+DIBitmap::~DIBitmap() {
+  if (bitmap_header_)
+    free(bitmap_header_);
+}
+void DIBitmap::Init(int width, int height) {
+  if (bitmap_header_)
+    return;
+  img_width_ = width;
+  img_height_ = height;
+
+  int palette_size = PALETTE_COUNT * sizeof(RGBQUAD);  //the size of palette
+  int align_width = (width + 3)&~3;   //4 byte align
+  int img_size = sizeof(BITMAPINFOHEADER);
+  img_size += palette_size;
+  img_size += align_width * height;
+
+  bitmap_header_ = (BITMAPINFOHEADER*)malloc(img_size);
+  bitmap_buffer_ = (BYTE*)bitmap_header_ + sizeof(BITMAPINFOHEADER)+palette_size;
+
+  bitmap_header_->biSize = sizeof(BITMAPINFOHEADER);
+  bitmap_header_->biWidth = width;
+  bitmap_palette_ = (RGBQUAD*)(((LPBITMAPINFO)bitmap_header_)->bmiColors);
+  // Specifies the height of the bitmap, in pixels.
+  // If biHeight is positive, the bitmap is a bottom-up DIB and
+  // its origin is the lower-left corner. If biHeight is negative,
+  // the bitmap is a top-down DIB and its origin is the upper-left corner.
+  bitmap_header_->biHeight = -height;
+  bitmap_header_->biPlanes = 1;
+  bitmap_header_->biBitCount = 8;
+  bitmap_header_->biCompression = BI_RGB;
+  bitmap_header_->biSizeImage = align_width * height;
+  bitmap_header_->biXPelsPerMeter = 0;
+  bitmap_header_->biYPelsPerMeter = 0;
+  bitmap_header_->biClrUsed = 256;
+  bitmap_header_->biClrImportant = 0;
+
+}
+BITMAPINFO* DIBitmap::GetInfo() {
+  return reinterpret_cast<BITMAPINFO*>(bitmap_header_);
+}
+
+void DIBitmap::SetPalette(int index, const RGBQUAD& color) {
+  bitmap_palette_[index] = color;
+}
+int DIBitmap::GetPaletteLen() const {
+  return PALETTE_COUNT;
+}
+RGBQUAD*  DIBitmap::GetPalettePtr() {
+  return bitmap_palette_;
+}
+
+BYTE* DIBitmap::GetBitBuffer(){
+  return bitmap_buffer_;
+}
+void  DIBitmap::Paint(HDC hdc, RECT rcItem) {
+  int old_mode = SetStretchBltMode(hdc, COLORONCOLOR);
+  ::StretchDIBits(hdc, rcItem.left, rcItem.top, rcItem.right - rcItem.left, 
+    rcItem.bottom - rcItem.top,
+    0, 0, img_width_, img_height_, GetBitBuffer(), GetInfo(),
+    DIB_RGB_COLORS, SRCCOPY);
+  SetStretchBltMode(hdc, old_mode);
+}
+
+class TemperatureColorTableUI;
+
+
+
+
+//////////////////////CameraImageControlUI/////////////////////////
+CameraImageControlUI::CameraImageControlUI(CameraManage* manager) :
+  camera_manage(manager)   {
   min_temp = kKelvinTransform + 20;
-  max_temp = kKelvinTransform + 40;
-  bitmap_header = NULL;
-  bitmap_buffer = NULL;
+  threshold_temp_ = max_temp = kKelvinTransform + 100;
+  min_label_ = max_label_ = NULL;
+  temp_color_ui_ = NULL;
   is_need_update_ = false;
    
   OnNotify += MakeDelegate(this, &CameraImageControlUI::ImageCtrlTimerProc);
-  camera_manage->AddConnectStatusObserver(this);
+  camera_manage->AddConnectStatusObserver(this );
+  stream.open("Camera.bin", std::ios::in | std::ios::out | std::ios::app );
 //  InitBitmapHeader();
 }
 
@@ -60,13 +103,40 @@ bool CameraImageControlUI::ImageCtrlTimerProc(void* param) {
   return false;
 }
 
+void CameraImageControlUI::SetThresholdTemp(float threshold_temp) {
+  threshold_temp_ = threshold_temp + kKelvinTransform;
+}
+void CameraImageControlUI::BindTempLabel(DuiLib::CLabelUI* min_label, 
+  DuiLib::CLabelUI* max_label) {
+  min_label_ = min_label;
+  max_label_ = max_label;
+}
+
 CameraImageControlUI::~CameraImageControlUI() {
   OnDisconnect();
   camera_manage->RemoveConnectStatusObserver(this);
+  stream.close();
+}
+
+void CameraImageControlUI::UpdateTempLabel(float min_temp, float max_temp) {
+  const int kBufferLen = 50;
+  TCHAR sz_temp[kBufferLen];
+  if (min_label_) {
+    StringCchPrintf(sz_temp, kBufferLen, _T("%.1f C"), min_temp-kKelvinTransform);
+    min_label_->SetText(sz_temp);
+  }
+  if (max_label_) {
+    StringCchPrintf(sz_temp, kBufferLen,  _T("%.1f C"), max_temp-kKelvinTransform);
+    max_label_->SetText(sz_temp);
+  }
 }
 
 void CameraImageControlUI::OnConnect() {
-  InitBitmapHeader();
+  img_width = camera_manage->GetImageWidth();
+  align_width = (img_width + 3)&~3;
+  img_height = camera_manage->GetImageHeight();
+  bitmap_.Init(img_width, img_height);
+  InitPalette();
 }
   
 void CameraImageControlUI::OnImageUpdate() {
@@ -74,84 +144,102 @@ void CameraImageControlUI::OnImageUpdate() {
   this->Invalidate();
 }
 void CameraImageControlUI::OnDisconnect() {
-  if (bitmap_header)
-    free(bitmap_header);
-  bitmap_header = NULL;
-  bitmap_buffer = NULL;
 }
 
-void CameraImageControlUI::InitBitmapHeader() {
-  if (bitmap_header)
-    return;
-  img_width = camera_manage->GetImageWidth();
-  img_height = camera_manage->GetImageHeight();
+int CameraImageControlUI::GetMidColor(int begin, int end, int i) {
+  const int count = bitmap_.GetPaletteLen() - 1;
+  return (end*i + begin*(count - i)) / count;
+}
 
-  const int PALETTE_COUNT = 256;  
-  int palette_size = PALETTE_COUNT * sizeof(RGBQUAD);  //the size of palette
-  align_width = (img_width + 3)&~3;   //4 byte align
-  int img_size = sizeof(BITMAPINFOHEADER);
-  img_size += palette_size;
-  img_size += align_width * img_height;
-
-  bitmap_header = (BITMAPINFOHEADER*)malloc(img_size);
-  bitmap_buffer = (BYTE*)bitmap_header + sizeof(BITMAPINFOHEADER)+ palette_size;
-
-  bitmap_header->biSize = sizeof(BITMAPINFOHEADER);
-  bitmap_header->biWidth = img_width;
-  // Specifies the height of the bitmap, in pixels.
-  // If biHeight is positive, the bitmap is a bottom-up DIB and
-  // its origin is the lower-left corner. If biHeight is negative,
-  // the bitmap is a top-down DIB and its origin is the upper-left corner.
-  bitmap_header->biHeight = -img_height;
-  bitmap_header->biPlanes = 1;
-  bitmap_header->biBitCount = 8;
-  bitmap_header->biCompression = BI_RGB;
-  bitmap_header->biSizeImage = align_width * img_height;
-  bitmap_header->biXPelsPerMeter = 0;
-  bitmap_header->biYPelsPerMeter = 0;
-  bitmap_header->biClrUsed = 256;
-  bitmap_header->biClrImportant = 0;
-
+void CameraImageControlUI::InitPalette() {
   //Init the palette
-  RGBQUAD * palette_buffer = (RGBQUAD*)( ((LPBITMAPINFO)bitmap_header)->bmiColors);
-  for (int i = 0; i < PALETTE_COUNT; ++i) {
-    palette_buffer[i] = { i, i, i ,0 };
+  int red_begin = 0x33, red_end = 0xf6;
+  int green_begin = 0x9c, green_end = 0xaa;
+  int blue_begin = 0x29, blue_end = 0x9f;
+ 
+  int palette_count = bitmap_.GetPaletteLen();
+  RGBQUAD * palette_buffer = bitmap_.GetPalettePtr();
+  RGBQUAD * ui_palette_buffer = NULL;
+  if (temp_color_ui_)
+    ui_palette_buffer = temp_color_ui_->bitmap_.GetPalettePtr();
+
+  for (int i = 0; i < palette_count-1; ++i) {
+    RGBQUAD color = { 
+      GetMidColor(red_begin,red_end,i), 
+      GetMidColor(green_begin, green_end, i),
+      GetMidColor(blue_begin,blue_end,i), 0 };
+    palette_buffer[i] = color;
+    if (ui_palette_buffer)
+      ui_palette_buffer[i] = color;
   }
+  RGBQUAD red_color = { 0xFF, 0, 0, 0 };
+  palette_buffer[palette_count - 1] = red_color;
+  if (temp_color_ui_)
+    temp_color_ui_->Invalidate();
 }
+
 LPCTSTR CameraImageControlUI::GetClass() const {
   return _T("CameraImageUI");
 }
 
 void CameraImageControlUI::SetBuffer(float* val, int val_count) {
-  BYTE* buffer = bitmap_buffer;
 
+  stream << val_count<<' ';
+  for (int i = 0; i < val_count; ++i) {
+    stream << val[i]<<' ';
+  }
+  stream << std::endl;
   float min_temp = (float)INT_MAX, max_temp = (float)INT_MIN;
   for (int i = 0; i < val_count; ++i) {
     min_temp = std::min(min_temp, val[i]);
     max_temp = std::max(max_temp, val[i]);
   }
+  UpdateTempLabel(min_temp, max_temp);
+
+  max_temp = std::min(max_temp, threshold_temp_);
   float span = max_temp - min_temp;
   int len = 0;
+  //protect the image buffer from the synchronous access
+//  WaitForSingleObject(buffer_mutex_, INFINITE);
+  BYTE* buffer = bitmap_.GetBitBuffer();
   for (int i = 0; i < img_height; ++i) {
     for (int j = 0; j < img_width; ++j) {
-      buffer[j] = static_cast<BYTE>((val[len] - min_temp) * 256 / span);
+      float temp = std::min(val[len], max_temp);
+      buffer[j] = static_cast<BYTE>((temp - min_temp) * 256 / span);
       ++len;
     }
     buffer += align_width;
   }
+//  ReleaseMutex(buffer_mutex_);
 }
 
 void CameraImageControlUI::PaintStatusImage(HDC hDC) {
   if (camera_manage->GetStatus() != CameraManage::CONNECTED || !is_need_update_)
     return;
-  int old_mode = SetStretchBltMode(hDC, COLORONCOLOR);
-  ::StretchDIBits(hDC,
-    m_rcItem.left, m_rcItem.top, m_rcItem.right-m_rcItem.left, m_rcItem.bottom-m_rcItem.top,
-    0, 0, img_width, img_height, bitmap_buffer, (LPBITMAPINFO)bitmap_header, DIB_RGB_COLORS, SRCCOPY);
-  SetStretchBltMode(hDC, old_mode);
-}
+  bitmap_.Paint(hDC, m_rcItem);
 }
 
+/////////////TemperatureColorTableUI////////////
+TemperatureColorTableUI::TemperatureColorTableUI() {
+  const int kWidth = bitmap_.GetPaletteLen();
+  const int kHeight = 2;
+  bitmap_.Init(kWidth, kHeight);
+  BYTE* buffer = bitmap_.GetBitBuffer();
+  for (int i = 0; i < kWidth; ++i) {
+    for (int j = 0; j < kHeight; ++j) {
+      buffer[j*kWidth + i] = static_cast<BYTE>(i);
+    }
+  }
+}
+LPCTSTR TemperatureColorTableUI::GetClass() const {
+  return _T("TemperatureColorControl");
+}
+
+void  TemperatureColorTableUI::PaintStatusImage(HDC hDC) {
+  bitmap_.Paint(hDC,m_rcItem);
+}
+
+ 
 /////////////////////////CameraImageControl////////////////////
 CameraImageControl::CameraImageControl()
 {
@@ -170,6 +258,9 @@ CameraImageControl::~CameraImageControl()
 DuiLib::CControlUI*  CameraImageControl::CreateControl(LPCTSTR class_name) {
   if (_tcscmp(class_name, _T("CameraImage")) == 0) {
     return new CameraImageControlUI(camera_info);
+  }
+  else if (_tcscmp(class_name, _T("TemperatureTable")) == 0) {
+    return new TemperatureColorTableUI;
   }
   return NULL;
 }

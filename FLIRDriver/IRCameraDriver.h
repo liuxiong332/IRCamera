@@ -73,14 +73,6 @@ public:
   TString  GetErrorString(IRCameraStatusCode);
 
   /**
-  * set the width of image
-  */
-  void  SetImageWidth(int width);
-  /**
-  * set the height of image
-  */
-  void   SetImageHeight(int height);
-  /**
   * get the width of image
   */
   int   GetImageWidth();

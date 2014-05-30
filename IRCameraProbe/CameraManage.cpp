@@ -152,14 +152,15 @@ void CameraManage::Init()
   main_dispatcher_ = manager->GetMainDispatcher();
   assert(camera_dispatcher_ != NULL);
   
+  event_handler_.reset(new CameraManageEventHandler(this));
   create_task = new CameraCreateTask(this);
-  create_reply_task = new CameraCreateReplyTask(this);
   connect_task = new CameraConnectTask(this);
   disconnect_task = new CameraDisconnectTask(this);
-  connect_reply_task = new CameraConnectReplyTask(this);
-
-  event_handler_task_ = new CameraEventHandlerTask(this);
   update_image_task_ = new CameraUpdateImageTask(this);
+
+  create_reply_task = new CameraCreateReplyTask(this);
+  connect_reply_task = new CameraConnectReplyTask(this);
+  event_handler_task_ = new CameraEventHandlerTask(this);
   update_image_reply_task_ = new CameraUpdateImageReplyTask(this);
 
   camera_dispatcher_->PushTask(create_task);
@@ -190,8 +191,7 @@ void CameraManage::Connect(ConnectResultObserver* observer) {
 }
 
 void CameraManage::Disconnect(){
-//  return IRCameraDisconnect(camera_info);
-  camera_dispatcher_->PushTask(disconnect_task);
+//  return IRCameraDisconnect(camera_info);  camera_dispatcher_->PushTask(disconnect_task);
 }
 
 void  CameraManage::AddConnectStatusObserver(ConnectStatusObserver* observer) {

@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Window mininfo="480,400" size="510,600">
+<Window mininfo="480,400" size="830,650">
 	<Font name="幼圆" size="16" default="true" />
 	<Font name="微软雅黑" size="18" />
 	<Default name="Button" value="normalimage=&quot;file='skin/button_nor.bmp' corner='4,2,4,2' fade='200' hsl='true'&quot; hotimage=&quot;file='skin/button_over.bmp' corner='4,2,4,2' fade='200' hsl='true'&quot; pushedimage=&quot;file='skin/button_down.bmp' corner='4,2,4,2' fade='200' hsl='true' &quot; disabledimage=&quot;file='skin/Button_Non.png' corner='4,2,4,2' fade='200' hsl='true'&quot;" />
 	<HorizontalLayout bkcolor="#FFFFFFFF">
-		<VerticalLayout width="350">
-			<CameraImage name="camera_image" width="320" height="240" bkcolor="#FFD7EBEB" padding="10,10,10,10"/>
+		<VerticalLayout width="660">
+			<CameraImage name="camera_image" width="640" height="480" bkcolor="#FFD7EBEB" padding="10,10,10,10"/>
+			<HorizontalLayout height="30" padding="10,10,0,10">
+				<Label name="min_temp_label" width="60" font="1"/>
+				<TemperatureTable name="color_table" width="530"/>
+				<Label name="max_temp_label" width="60" padding="2,0,0,0" font="1"/>
+			</HorizontalLayout>
+			<HorizontalLayout height="30" padding="10,10,0,10">
+				<Label font="1" text="设置阈值温度: " width="120"/>
+				<Edit name="threshold_edit" bordercolor="#FF00FFFF" padding="0,5,0,5" focusbordercolor="#FFFF0000" bordersize="2" text="100" width="60"/>
+				<Label text=" C"/>
+			</HorizontalLayout>
 		</VerticalLayout>
 
 		<VerticalLayout>
-			<Button name="connect_btn" height="40" font="1" minwidth="60" maxwidth="120" padding="5,5,5,10" text="Connect"/>
-			<Button name="disconnect_btn" height="40" font="1" minwidth="60" maxwidth="120" padding="5,5,5,10" text="Disconnect" enabled="false"/>
+			<Button name="connect_btn" height="30" font="1" minwidth="60" maxwidth="120" padding="5,5,5,10" text="Connect"/>
+			<Button name="disconnect_btn" height="30" font="1" minwidth="60" maxwidth="120" padding="5,5,5,10" text="Disconnect" enabled="false"/>
 		</VerticalLayout>
 	</HorizontalLayout>
 </Window>

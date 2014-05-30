@@ -7,7 +7,7 @@
 #include "CameraManage.h"
 #include "ThreadMessageDispatcher.h"
 #include "CameraThread.h"
-
+ 
 class CFrameWindowWnd : public DuiLib::CWindowWnd, //public DuiLib::INotifyUI
   public CameraManage::ConnectStatusObserver
 {
@@ -36,7 +36,16 @@ public:
     return false;
   }
 
-  
+  bool ThresholdEditTextChange(void* param) {
+    DuiLib::TNotifyUI* notify = reinterpret_cast<DuiLib::TNotifyUI*>(param);
+    if (notify->sType == _T("textchanged")) {
+      DuiLib::CStdString str = static_cast<DuiLib::CEditUI*>(notify->pSender)->GetText();
+      float temp = static_cast<float>(_tcstod(str, NULL));
+      image_control->SetThresholdTemp(temp);
+      return true;
+    }
+    return false;
+  }
 
   void Init() { 
     main_dispatcher.Init(GetHWND());
@@ -46,9 +55,21 @@ public:
 
     connect_btn = static_cast<DuiLib::CButtonUI*>(m_pm.FindControl(_T("connect_btn")));
     disconnect_btn = static_cast<DuiLib::CButtonUI*>(m_pm.FindControl(_T("disconnect_btn")));
-    image_control = m_pm.FindControl(_T("camera_image"));
+    image_control = static_cast<CameraImageControlUI*>
+      (m_pm.FindControl(_T("camera_image")));
+    min_temp_label_ = static_cast<DuiLib::CLabelUI*>(m_pm.FindControl(_T("min_temp_label")));
+    max_temp_label_ = static_cast<DuiLib::CLabelUI*>(m_pm.FindControl(_T("max_temp_label")));
+    color_table_ui_ = static_cast<TemperatureColorTableUI*>
+      (m_pm.FindControl(_T("color_table")));
+
+    image_control->BindUI(color_table_ui_);
+    image_control->BindTempLabel(min_temp_label_, max_temp_label_);
+
     ASSERT(connect_btn != NULL && disconnect_btn != NULL && image_control!=NULL);
     connect_btn->SetEnabled(false);
+
+    DuiLib::CControlUI* edit_ctrl = m_pm.FindControl(_T("threshold_edit"));
+    edit_ctrl->OnNotify += MakeDelegate(this, &CFrameWindowWnd::ThresholdEditTextChange);
 
     connect_btn->OnNotify += MakeDelegate(this, &CFrameWindowWnd::ConnectBtnClick);
     disconnect_btn->OnNotify += MakeDelegate(this, &CFrameWindowWnd::DisconnectBtnClick);
@@ -109,9 +130,12 @@ public:
   DuiLib::CPaintManagerUI m_pm;
   ThreadMessageDispatcher main_dispatcher;
 
-  DuiLib::CControlUI* image_control;
+  CameraImageControlUI * image_control;
   DuiLib::CButtonUI*  disconnect_btn;
   DuiLib::CButtonUI*  connect_btn;
+  DuiLib::CLabelUI*   min_temp_label_;
+  DuiLib::CLabelUI*   max_temp_label_;
+  TemperatureColorTableUI*  color_table_ui_;
 
   const static int kFlushImageTimerID = 1;
   const static int kFlushPeriodInMs = 200;
