@@ -1,7 +1,7 @@
 #pragma once
 #include "lvcamctrl.h"
 #include "resource.h"
-#include "IRCameraDriver.h"
+#include "IRCameraDevice.h"
 // FakeDialog ¶Ô»°¿ò
 
 class FakeDialogEventObserver {

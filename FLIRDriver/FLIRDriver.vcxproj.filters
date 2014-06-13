@@ -27,11 +27,29 @@
     <ClCompile Include="lvcamctrl.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="IRCameraDriver.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="FakeDialog.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IRCameraDeviceImpl.cpp">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IRCameraDeviceMock.cpp">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IRCameraDevice.cpp">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="NLMHelper.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="NLMEventHandler.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IRCameraDeviceListManager.cpp">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ByteAddr.cpp">
+      <Filter>头文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,10 +68,37 @@
     <ClInclude Include="lvcamctrl.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="IRCameraDriver.h">
+    <ClInclude Include="FakeDialog.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="FakeDialog.h">
+    <ClInclude Include="IRCameraDeviceImpl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IRCameraDevice.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IRCameraDeviceMock.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IRCameraDeviceListManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IRCameraBasic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IRCameraDeviceListManagerObserver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="NLMHelper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="NLMEventHandler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectivityChangeObserver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ByteAddr.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

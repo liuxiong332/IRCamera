@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "IRCameraDriver.h"
+#include "IRCameraDeviceImpl.h"
 #include "lvcamctrl.h"
 #include "FakeDialog.h"
 #include <assert.h>
@@ -9,17 +9,19 @@ namespace {
   const short PROP_IMAGE_HEIGHT = 67;		// Image height in lines (or rows)
 }
 
+
+
 //the event handler for the camera event, such as connect and disconnect
 class InternalEventHandler : public FakeDialogEventObserver {
 public:
-  InternalEventHandler(IRCameraDevice* info);
+  InternalEventHandler(IRCameraDeviceImpl* info);
   virtual void OnEvent(int event_type);
 private:
-  IRCameraDevice* camera_info;
+  IRCameraDeviceImpl* camera_info;
 };
 
 ///////////////the implement of InternalEventHandler//////////////////////
-InternalEventHandler::InternalEventHandler(IRCameraDevice* info) :camera_info(info) {}
+InternalEventHandler::InternalEventHandler(IRCameraDeviceImpl* info) :camera_info(info) {}
 
 void InternalEventHandler::OnEvent(int event_type) {
   switch (event_type) {
@@ -37,11 +39,11 @@ void InternalEventHandler::OnEvent(int event_type) {
     break;
   }
   if (camera_info && camera_info->event_handler_)
-    camera_info->event_handler_->OnEvent( static_cast<IRCameraEvent>(event_type));
+    camera_info->event_handler_->OnEvent(static_cast<IRCameraEvent>(event_type));
 }
 
 /////////////the implement of IRCameraDevice/////////
-IRCameraDevice::IRCameraDevice() {
+IRCameraDeviceImpl::IRCameraDeviceImpl() {
   image_width_ = image_height_ = 0;
   camera_status_ = IRCAMERA_DISCONNECTED;
   internal_event_handler_ = new InternalEventHandler(this);
@@ -50,38 +52,38 @@ IRCameraDevice::IRCameraDevice() {
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
   fake_dlg_ = new FakeDialog;
   BOOL res = fake_dlg_->Create(FakeDialog::IDD);
-  fake_dlg_->SetEventHandler( internal_event_handler_ );
+  fake_dlg_->SetEventHandler(internal_event_handler_);
   assert(res);
 
   camera_ = &fake_dlg_->camera_control;
 }
 
-IRCameraDevice::~IRCameraDevice() {
+IRCameraDeviceImpl::~IRCameraDeviceImpl() {
   delete internal_event_handler_;
   delete fake_dlg_;
 }
 
-IRCameraStatusCode  IRCameraDevice::Connect() {
+IRCameraStatusCode  IRCameraDeviceImpl::Connect() {
   const static short  CAM_A300 = 11;
   const static short  DEVICE_ETHERNET_16 = 6;	// 16-bit images over Ethernet
   const static short  CAM_INTF_TCPIP = 2;
-  TCHAR  ipaddr[] = _T("169.254.141.78");  //the IP address is the camera address, but the camera can use dynamic IP, so the address need change
-  short code = camera_->Connect(CAM_A300, 0, DEVICE_ETHERNET_16, CAM_INTF_TCPIP, ipaddr);
+//  TCHAR  ipaddr[] = _T("169.254.141.78");  //the IP address is the camera address, but the camera can use dynamic IP, so the address need change
+  short code = camera_->Connect(CAM_A300, 0, DEVICE_ETHERNET_16, CAM_INTF_TCPIP, GetIPAddr().ConvertToIPString().c_str());
   return static_cast<IRCameraStatusCode>(code);
 }
 
-IRCameraStatusCode  IRCameraDevice::Disconnect() {
+IRCameraStatusCode  IRCameraDeviceImpl::Disconnect() {
   short code = camera_->Disconnect();
   return static_cast<IRCameraStatusCode>(code);
 }
 
-TString IRCameraDevice::GetErrorString(IRCameraStatusCode code) {
+TString IRCameraDeviceImpl::GetErrorString(IRCameraStatusCode code) {
   CString str_res = camera_->GetError(code);
   return str_res.GetString();
 }
 
 
-int  IRCameraDevice::GetImageWidth() {
+int  IRCameraDeviceImpl::GetImageWidth() {
   if (image_width_ == 0) {
     VARIANT va = camera_->GetCameraProperty(PROP_IMAGE_WIDTH);
     image_width_ = va.iVal;
@@ -89,7 +91,7 @@ int  IRCameraDevice::GetImageWidth() {
   return image_width_;
 }
 
-int  IRCameraDevice::GetImageHeight() {
+int  IRCameraDeviceImpl::GetImageHeight() {
   if (image_height_ == 0) {
     VARIANT va = camera_->GetCameraProperty(PROP_IMAGE_HEIGHT);
     image_height_ = va.iVal;
@@ -97,8 +99,8 @@ int  IRCameraDevice::GetImageHeight() {
   return  image_height_;
 }
 
-IRCameraStatusCode IRCameraDevice::GetKelvinImage(IRCameraImageFilling* img_filling) {
-  if ( GetStatus() != IRCAMERA_CONNECTED)
+IRCameraStatusCode IRCameraDeviceImpl::GetKelvinImage(IRCameraImageFilling* img_filling) {
+  if (GetStatus() != IRCAMERA_CONNECTED)
     return IRCAMERA_NOTPRESENT_ERROR;
   const static short KelvinImageType = 3;
   VARIANT va = camera_->GetImage(20 + KelvinImageType);
@@ -110,7 +112,7 @@ IRCameraStatusCode IRCameraDevice::GetKelvinImage(IRCameraImageFilling* img_fill
     HGLOBAL h = (HGLOBAL)va.lVal;
     size_t  image_bytes = GetImageWidth()*GetImageHeight() * sizeof(float);
     float* src = (float*)GlobalLock(h);
-  //  memcpy_s(temp_image, image_bytes, src, image_bytes);
+    //  memcpy_s(temp_image, image_bytes, src, image_bytes);
     img_filling->SetBuffer((float*)src, image_width_*image_height_);
 
     GlobalUnlock(h);
@@ -121,10 +123,10 @@ IRCameraStatusCode IRCameraDevice::GetKelvinImage(IRCameraImageFilling* img_fill
   return static_cast<IRCameraStatusCode>(ret);
 }
 
-void IRCameraDevice::RegisterEventHandler(IRCameraEventHandler* handler) {
+void IRCameraDeviceImpl::RegisterEventHandler(IRCameraEventHandler* handler) {
   event_handler_ = handler;
 }
 
-IRCameraDeviceStatus IRCameraDevice::GetStatus() {
+IRCameraDeviceStatus IRCameraDeviceImpl::GetStatus() {
   return camera_status_;
 }

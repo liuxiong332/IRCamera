@@ -63,8 +63,6 @@ private:
   int align_width;
   int img_width, img_height;
 
-  std::fstream  stream;
-
   float threshold_temp_;
   float min_temp, max_temp;
   bool  is_need_update_;

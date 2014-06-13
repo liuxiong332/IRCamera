@@ -56,6 +56,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRDLL;FLIRDRIVER_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -103,20 +104,35 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ByteAddr.cpp" />
     <ClCompile Include="FakeDialog.cpp" />
     <ClCompile Include="FLIRDriver.cpp" />
-    <ClCompile Include="IRCameraDriver.cpp" />
+    <ClCompile Include="IRCameraDevice.cpp" />
+    <ClCompile Include="IRCameraDeviceImpl.cpp" />
+    <ClCompile Include="IRCameraDeviceListManager.cpp" />
+    <ClCompile Include="IRCameraDeviceMock.cpp" />
     <ClCompile Include="lvcamctrl.cpp" />
+    <ClCompile Include="NLMEventHandler.cpp" />
+    <ClCompile Include="NLMHelper.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConnectivityChangeObserver.h" />
     <ClInclude Include="FakeDialog.h" />
     <ClInclude Include="FLIRDriver.h" />
-    <ClInclude Include="IRCameraDriver.h" />
+    <ClInclude Include="IRCameraBasic.h" />
+    <ClInclude Include="IRCameraDeviceImpl.h" />
+    <ClInclude Include="IRCameraDevice.h" />
+    <ClInclude Include="IRCameraDeviceListManager.h" />
+    <ClInclude Include="IRCameraDeviceListManagerObserver.h" />
+    <ClInclude Include="IRCameraDeviceMock.h" />
     <ClInclude Include="lvcamctrl.h" />
+    <ClInclude Include="NLMEventHandler.h" />
+    <ClInclude Include="NLMHelper.h" />
+    <ClInclude Include="ByteAddr.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />

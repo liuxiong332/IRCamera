@@ -1,5 +1,5 @@
 #include "CameraManage.h"
-#include "IRCameraDriver.h"
+#include "IRCameraDevice.h"
 #include <algorithm>
 #include "ThreadMessageDispatcher.h"
 #include <assert.h>
@@ -46,7 +46,7 @@ class CameraCreateTask : public ThreadMessageDispatcher::Task {
 public:
   CameraCreateTask(CameraManage* manage) :manager_(manage)  {}
   virtual void DoEvent() {
-    manager_->camera_info = new IRCameraDevice;
+    manager_->camera_info = IRCameraDevice::CreateForTest();
     manager_->camera_info->RegisterEventHandler(manager_->event_handler_.get());
     //notify the main thread that the camera initialize complete
     manager_->main_dispatcher_->PushTask(manager_->create_reply_task);

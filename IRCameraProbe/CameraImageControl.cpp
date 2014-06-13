@@ -1,5 +1,5 @@
 #include "CameraImageControl.h"
-#include "IRCameraDriver.h"
+#include "IRCameraDevice.h"
 
 #include <algorithm>
 #include <memory>
@@ -7,7 +7,7 @@
 #include <strsafe.h>
 
 namespace {
-  const static float kKelvinTransform = 273.16f;
+  const static float kKelvinTransform = 273.15f;
 }
 
 DIBitmap::DIBitmap() :bitmap_header_(NULL),bitmap_buffer_(NULL),bitmap_palette_(NULL) {}
@@ -76,9 +76,6 @@ void  DIBitmap::Paint(HDC hdc, RECT rcItem) {
 
 class TemperatureColorTableUI;
 
-
-
-
 //////////////////////CameraImageControlUI/////////////////////////
 CameraImageControlUI::CameraImageControlUI(CameraManage* manager) :
   camera_manage(manager)   {
@@ -90,7 +87,6 @@ CameraImageControlUI::CameraImageControlUI(CameraManage* manager) :
    
   OnNotify += MakeDelegate(this, &CameraImageControlUI::ImageCtrlTimerProc);
   camera_manage->AddConnectStatusObserver(this );
-  stream.open("Camera.bin", std::ios::in | std::ios::out | std::ios::app );
 //  InitBitmapHeader();
 }
 
@@ -106,6 +102,7 @@ bool CameraImageControlUI::ImageCtrlTimerProc(void* param) {
 void CameraImageControlUI::SetThresholdTemp(float threshold_temp) {
   threshold_temp_ = threshold_temp + kKelvinTransform;
 }
+
 void CameraImageControlUI::BindTempLabel(DuiLib::CLabelUI* min_label, 
   DuiLib::CLabelUI* max_label) {
   min_label_ = min_label;
@@ -115,7 +112,6 @@ void CameraImageControlUI::BindTempLabel(DuiLib::CLabelUI* min_label,
 CameraImageControlUI::~CameraImageControlUI() {
   OnDisconnect();
   camera_manage->RemoveConnectStatusObserver(this);
-  stream.close();
 }
 
 void CameraImageControlUI::UpdateTempLabel(float min_temp, float max_temp) {
@@ -184,11 +180,6 @@ LPCTSTR CameraImageControlUI::GetClass() const {
 
 void CameraImageControlUI::SetBuffer(float* val, int val_count) {
 
-  stream << val_count<<' ';
-  for (int i = 0; i < val_count; ++i) {
-    stream << val[i]<<' ';
-  }
-  stream << std::endl;
   float min_temp = (float)INT_MAX, max_temp = (float)INT_MIN;
   for (int i = 0; i < val_count; ++i) {
     min_temp = std::min(min_temp, val[i]);
@@ -205,7 +196,7 @@ void CameraImageControlUI::SetBuffer(float* val, int val_count) {
   for (int i = 0; i < img_height; ++i) {
     for (int j = 0; j < img_width; ++j) {
       float temp = std::min(val[len], max_temp);
-      buffer[j] = static_cast<BYTE>((temp - min_temp) * 256 / span);
+      buffer[j] = static_cast<BYTE>((temp - min_temp) * 255 / span);
       ++len;
     }
     buffer += align_width;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IRCameraDriver.h"
+#include "IRCameraDevice.h"
 #include <vector>
 #include "ThreadMessageDispatcher.h"
 #include <memory>
