@@ -8,6 +8,7 @@
 *.pdb
 *.idb
 *.ocx
+*.bin
 
 # Compiled Dynamic libraries
 *.so

@@ -29,7 +29,7 @@ IRCAMERA_API void  IRCameraDestroy(IRCameraInfo*);
  * when the return status code is 0, then the invoke success, 
  * otherwise can invoke IRCamera_GetError(code) to get the error string
  */
-IRCAMERA_API  IRCameraStatusCode IRCameraConnect(IRCameraInfo* );
+IRCAMERA_API  IRCameraStatusCode IRCameraConnect(IRCameraInfo*, LPCTSTR ip_addr);
 
 /** 
  * disconnect with the camera, Return is the status code

@@ -73,12 +73,12 @@ void IRCameraDestroy(IRCameraInfo* info) {
   delete info->internal_handler;
   delete info;
 }
-IRCameraStatusCode  IRCameraConnect(IRCameraInfo* info) {
+IRCameraStatusCode  IRCameraConnect(IRCameraInfo* info, LPCTSTR ip_addr) {
   const short  CAM_A300 = 11;
   const short  DEVICE_ETHERNET_16 = 6;	// 16-bit images over Ethernet
   const short  CAM_INTF_TCPIP = 2;
-  TCHAR  ipaddr[] = _T("169.254.18.63");  //the IP address is the camera address, but the camera can use dynamic IP, so the address need change
-  return info->camera->Connect(CAM_A300, 0, DEVICE_ETHERNET_16, CAM_INTF_TCPIP, ipaddr);
+//  TCHAR  ipaddr[] = _T("169.254.18.63");  //the IP address is the camera address, but the camera can use dynamic IP, so the address need change
+  return info->camera->Connect(CAM_A300, 0, DEVICE_ETHERNET_16, CAM_INTF_TCPIP, ip_addr);
 }
 
 IRCameraStatusCode  IRCameraDisconnect(IRCameraInfo* info) {
