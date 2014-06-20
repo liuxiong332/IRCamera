@@ -12,7 +12,7 @@ public:
   * when the return status code is 0, then the invoke success,
   * otherwise can invoke IRCamera_GetError(code) to get the error string
   */
-  virtual IRCameraStatusCode Connect();
+  virtual IRCameraStatusCode Connect(const TString& ip_addr);
   /**
   * disconnect with the camera, Return is the status code
   */

@@ -28,7 +28,7 @@ IRCameraDeviceMock::IRCameraDeviceMock() {
 IRCameraDeviceMock::~IRCameraDeviceMock() {
 }
 
-IRCameraStatusCode  IRCameraDeviceMock::Connect() {
+IRCameraStatusCode  IRCameraDeviceMock::Connect(const TString&) {
   device_status_ = IRCAMERA_CONNECTED;
   if (event_handler_)
     event_handler_->OnEvent(IRCAMERA_CONNECTED_EVENT);

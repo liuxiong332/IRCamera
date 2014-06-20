@@ -3,6 +3,7 @@
 #include <algorithm>
 #include "ThreadMessageDispatcher.h"
 #include <assert.h>
+#include <tchar.h>
 
 class  CameraEventHandlerTask : public ThreadMessageDispatcher::Task {
 public:
@@ -91,7 +92,7 @@ class CameraConnectTask : public ThreadMessageDispatcher::Task {
 public:
   CameraConnectTask(CameraManage* manager) : manager_(manager) {}
   virtual void DoEvent() {
-    IRCameraStatusCode code = manager_->camera_info->Connect();
+    IRCameraStatusCode code = manager_->camera_info->Connect(_T(" "));
     CameraConnectReplyTask* reply_task =
       static_cast<CameraConnectReplyTask*>(manager_->connect_reply_task);
     reply_task->SetStatus(code);

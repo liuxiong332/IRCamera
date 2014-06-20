@@ -5,22 +5,46 @@
 	<Default name="Button" value="normalimage=&quot;file='skin/button_nor.bmp' corner='4,2,4,2' fade='200' hsl='true'&quot; hotimage=&quot;file='skin/button_over.bmp' corner='4,2,4,2' fade='200' hsl='true'&quot; pushedimage=&quot;file='skin/button_down.bmp' corner='4,2,4,2' fade='200' hsl='true' &quot; disabledimage=&quot;file='skin/Button_Non.png' corner='4,2,4,2' fade='200' hsl='true'&quot;" />
 	<HorizontalLayout bkcolor="#FFFFFFFF">
 		<VerticalLayout width="660">
-			<CameraImage name="camera_image" width="640" height="480" bkcolor="#FFD7EBEB" padding="10,10,10,10"/>
-			<HorizontalLayout height="30" padding="10,10,0,10">
-				<Label name="min_temp_label" width="60" font="1"/>
-				<TemperatureTable name="color_table" width="530"/>
-				<Label name="max_temp_label" width="60" padding="2,0,0,0" font="1"/>
-			</HorizontalLayout>
-			<HorizontalLayout height="30" padding="10,10,0,10">
-				<Label font="1" text="设置阈值温度: " width="120"/>
-				<Edit name="threshold_edit" bordercolor="#FF00FFFF" padding="0,5,0,5" focusbordercolor="#FFFF0000" bordersize="2" text="100" width="60"/>
-				<Label text=" C"/>
-			</HorizontalLayout>
+			<TabLayout selectedid="0">
+				<VerticalLayout>
+					<CameraImage name="camera_image" width="640" height="480" bkcolor="#FFD7EBEB" padding="10,10,10,10"/>
+					<HorizontalLayout height="30" padding="10,10,0,10">
+						<Label name="min_temp_label" width="60" font="1"/>
+						<TemperatureTable name="color_table" width="530"/>
+						<Label name="max_temp_label" width="60" padding="2,0,0,0" font="1"/>
+					</HorizontalLayout>
+					<HorizontalLayout height="30" padding="10,10,0,10">
+						<Label font="1" text="设置阈值温度: " width="120"/>
+						<Edit name="threshold_edit" bordercolor="#FF00FFFF" padding="0,5,0,5" focusbordercolor="#FFFF0000" bordersize="2" text="100" width="60"/>
+						<Label text=" C"/>
+					</HorizontalLayout>
+				</VerticalLayout>
+
+				<VerticalLayout padding="10,10,10,10">
+					<HorizontalLayout height="40">
+						<Label text="摄像头数目: " width="100"/>
+						<Edit name="camera_count" text="1" width="40"/>
+					</HorizontalLayout>
+					<HorizontalLayout height="40">
+						<Label text="IP: " width="100"/>
+						<Edit name="camera_ip_addr" text="192.168.1.2" width="100"/>
+					</HorizontalLayout>
+					<HorizontalLayout height="40">
+						<Label text="阈值温度: "width="100"/>
+						<Edit name="threshold_temp" width="40" text="60"/>
+						<Label text="C"/>
+					</HorizontalLayout>
+				</VerticalLayout>
+
+			</TabLayout>
+
 		</VerticalLayout>
 
 		<VerticalLayout>
 			<Button name="connect_btn" height="30" font="1" minwidth="60" maxwidth="120" padding="5,5,5,10" text="Connect"/>
 			<Button name="disconnect_btn" height="30" font="1" minwidth="60" maxwidth="120" padding="5,5,5,10" text="Disconnect" enabled="false"/>
+			<Control height="100"/>
+			<Button name="set_btn" height="30" font="1" minwidth="60" maxwidth="120" padding="5,5,5,10" text="设置"/>
 		</VerticalLayout>
 	</HorizontalLayout>
 </Window>

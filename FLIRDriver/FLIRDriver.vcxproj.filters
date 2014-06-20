@@ -39,18 +39,6 @@
     <ClCompile Include="IRCameraDevice.cpp">
       <Filter>头文件</Filter>
     </ClCompile>
-    <ClCompile Include="NLMHelper.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="NLMEventHandler.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="IRCameraDeviceListManager.cpp">
-      <Filter>头文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ByteAddr.cpp">
-      <Filter>头文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FLIRDriver.h">
@@ -80,25 +68,7 @@
     <ClInclude Include="IRCameraDeviceMock.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="IRCameraDeviceListManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="IRCameraBasic.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="IRCameraDeviceListManagerObserver.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="NLMHelper.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="NLMEventHandler.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ConnectivityChangeObserver.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ByteAddr.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -29,6 +29,7 @@
   <ItemGroup>
     <ClCompile Include="CameraImageControl.cpp" />
     <ClCompile Include="CameraManage.cpp" />
+    <ClCompile Include="CameraSettings.cpp" />
     <ClCompile Include="CameraThread.cpp" />
     <ClCompile Include="IRCameraProbe.cpp" />
     <ClCompile Include="MessageQueueThread.cpp" />
@@ -38,6 +39,7 @@
   <ItemGroup>
     <ClInclude Include="CameraImageControl.h" />
     <ClInclude Include="CameraManage.h" />
+    <ClInclude Include="CameraSettings.h" />
     <ClInclude Include="CameraThread.h" />
     <ClInclude Include="IRCameraProbe.h" />
     <ClInclude Include="MessageQueueThread.h" />

@@ -5,7 +5,6 @@
 #define IRCAMERADRIVER_H_
 
 #include "IRCameraBasic.h"
-#include "ByteAddr.h"
 
 enum IRCameraStatusCode {
   /**the status code 0 stand for OK*/
@@ -39,15 +38,12 @@ class IRCAMERA_API IRCameraDevice {
 public:
   virtual ~IRCameraDevice() {}
 
-  const TString&  GetName() const;
-  const ByteAddr&  GetIPAddr() const;
-  const ByteAddr& GetPhysicalAddr() const;
   /**
   * connect to the camera, Return is the status value
   * when the return status code is 0, then the invoke success,
   * otherwise can invoke IRCamera_GetError(code) to get the error string
   */
-  virtual IRCameraStatusCode Connect() = 0;
+  virtual IRCameraStatusCode Connect(const TString& ip_addr) = 0;
   /**
   * disconnect with the camera, Return is the status code
   */
@@ -91,16 +87,7 @@ public:
   static  IRCameraDevice* CreateForTest();
 private:
   friend class IRCameraDeviceListManager;
-  void SetName(const TString& name);
-  void SetIPAddr(DWORD addr);
-  void SetIPAddr(const ByteAddr&);
-
-  void SetPhysicalAddr(BYTE* addr, int len);
-  void SetPhysicalAddr(const ByteAddr&);
-
-  TString dev_name_;
-  ByteAddr dev_ip_addr_;
-  ByteAddr  physical_addr_;
+   
 };
 
 #endif
