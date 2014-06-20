@@ -77,7 +77,7 @@ class CameraConnectTask : public ThreadMessageDispatcher::Task {
 public:
   CameraConnectTask(CameraManage* manager) : manager_(manager) {}
   virtual void DoEvent() {
-    IRCameraStatusCode code = IRCameraConnect(manager_->camera_info);
+    IRCameraStatusCode code = IRCameraConnect(manager_->camera_info,NULL);
     CameraConnectReplyTask* reply_task =
       static_cast<CameraConnectReplyTask*>(manager_->connect_reply_task);
     reply_task->SetStatus(code);

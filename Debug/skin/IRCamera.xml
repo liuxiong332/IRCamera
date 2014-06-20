@@ -3,14 +3,31 @@
 	<Font name="幼圆" size="16" default="true" />
 	<Font name="微软雅黑" size="18" />
 	<Default name="Button" value="normalimage=&quot;file='skin/button_nor.bmp' corner='4,2,4,2' fade='200' hsl='true'&quot; hotimage=&quot;file='skin/button_over.bmp' corner='4,2,4,2' fade='200' hsl='true'&quot; pushedimage=&quot;file='skin/button_down.bmp' corner='4,2,4,2' fade='200' hsl='true' &quot; disabledimage=&quot;file='skin/Button_Non.png' corner='4,2,4,2' fade='200' hsl='true'&quot;" />
-	<HorizontalLayout bkcolor="#FFFFFFFF">
-		<VerticalLayout width="350">
-			<CameraImage name="camera_image" width="320" height="240" bkcolor="#FFD7EBEB" padding="10,10,10,10"/>
-		</VerticalLayout>
+	<TabLayout text="设置">
+		<HorizontalLayout bkcolor="#FFFFFFFF">
+			<VerticalLayout width="350">
+				<CameraImage name="camera_image" width="320" height="240" bkcolor="#FFD7EBEB" padding="10,10,10,10"/>
+			</VerticalLayout>
 
+			<VerticalLayout>
+				<Button name="connect_btn" height="40" font="1" minwidth="60" maxwidth="120" padding="5,5,5,10" text="Connect"/>
+				<Button name="disconnect_btn" height="40" font="1" minwidth="60" maxwidth="120" padding="5,5,5,10" text="Disconnect" enabled="false"/>
+			</VerticalLayout>
+		</HorizontalLayout>
 		<VerticalLayout>
-			<Button name="connect_btn" height="40" font="1" minwidth="60" maxwidth="120" padding="5,5,5,10" text="Connect"/>
-			<Button name="disconnect_btn" height="40" font="1" minwidth="60" maxwidth="120" padding="5,5,5,10" text="Disconnect" enabled="false"/>
+			<HorizontalLayout>
+				<Label text="摄像头数目: "/>
+				<Edit name="camera_count" text="1" width="40"/>
+			</HorizontalLayout>
+			<HorizontalLayout>
+				<Label text="IP: "/>
+				<Edit name="camera_ip_addr" text="192.168.1.2" width="100"/>
+			</HorizontalLayout>
+			<HorizontalLayout>
+				<Label text="阈值温度: "/>
+				<Edit name="threshold_temp" width="40" text="60"/>
+				<Label text="C"/>
+			</HorizontalLayout>
 		</VerticalLayout>
-	</HorizontalLayout>
+	</TabLayout>
 </Window>

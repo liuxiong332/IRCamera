@@ -36,10 +36,6 @@ BEGIN_EVENTSINK_MAP(FakeDialog, CDialogEx)
   ON_EVENT(FakeDialog, IDC_LVCAMCTRL, 103, FakeDialog::OnCameraEvent, VTS_I4)
 END_EVENTSINK_MAP()
 
-void DoSomething() {
-  int a = 0;
-  assert(a = 0);
-}
 void  FakeDialog::OnCameraEvent(long Id) {
   if (event_observer) {
     event_observer->OnEvent(Id);
