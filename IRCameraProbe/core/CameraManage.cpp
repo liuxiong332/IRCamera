@@ -1,7 +1,7 @@
 #include "CameraManage.h"
 #include "IRCameraDevice.h"
 #include <algorithm>
-#include "ThreadMessageDispatcher.h"
+#include "thread/ThreadMessageDispatcher.h"
 #include <assert.h>
 #include <tchar.h>
 

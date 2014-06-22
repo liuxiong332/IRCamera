@@ -2,7 +2,7 @@
 
 #include "IRCameraDevice.h"
 #include <vector>
-#include "ThreadMessageDispatcher.h"
+#include "thread/ThreadMessageDispatcher.h"
 #include <memory>
 
 class  CameraManageEventHandler;

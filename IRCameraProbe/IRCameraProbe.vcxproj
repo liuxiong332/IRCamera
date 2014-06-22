@@ -27,40 +27,36 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CameraImageControlUI.cpp" />
-    <ClCompile Include="CameraManage.cpp" />
-    <ClCompile Include="CameraSettings.cpp" />
-    <ClCompile Include="CameraThread.cpp" />
-    <ClCompile Include="ControlBuilder.cpp" />
-    <ClCompile Include="DIBitmap.cpp" />
-    <ClCompile Include="MainWindow.cpp" />
-    <ClCompile Include="MessageQueueThread.cpp" />
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="TemperatureColorTableUI.cpp" />
-    <ClCompile Include="TemperatureColorTableUI.h" />
-    <ClCompile Include="ThreadMessageDispatcher.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="CameraImageControlUI.h" />
-    <ClInclude Include="CameraManage.h" />
-    <ClInclude Include="CameraSettings.h" />
-    <ClInclude Include="CameraThread.h" />
-    <ClInclude Include="DIBitmap.h" />
-    <ClInclude Include="MainWindow.h" />
-    <ClInclude Include="MessageQueueThread.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="ThreadLocalStorage.h" />
-    <ClInclude Include="ThreadMessageDispatcher.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\duilib\DuiLib\DuiLib.vcxproj">
       <Project>{e106acd7-4e53-4aee-942b-d0dd426db34e}</Project>
     </ProjectReference>
     <ProjectReference Include="..\FLIRDriver\FLIRDriver.vcxproj">
       <Project>{ff616d3b-c3b2-4847-b383-cb192e408e1d}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="core\CameraManage.cpp" />
+    <ClCompile Include="core\CameraSettings.cpp" />
+    <ClCompile Include="thread\CameraThread.cpp" />
+    <ClCompile Include="thread\MessageQueueThread.cpp" />
+    <ClCompile Include="thread\ThreadMessageDispatcher.cpp" />
+    <ClCompile Include="ui\CameraImageControlUI.cpp" />
+    <ClCompile Include="ui\ControlBuilder.cpp" />
+    <ClCompile Include="ui\DIBitmap.cpp" />
+    <ClCompile Include="ui\MainWindow.cpp" />
+    <ClCompile Include="ui\TemperatureColorTableUI.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="core\CameraManage.h" />
+    <ClInclude Include="core\CameraSettings.h" />
+    <ClInclude Include="thread\CameraThread.h" />
+    <ClInclude Include="thread\MessageQueueThread.h" />
+    <ClInclude Include="thread\ThreadMessageDispatcher.h" />
+    <ClInclude Include="ui\CameraImageControlUI.h" />
+    <ClInclude Include="ui\ControlBuilder.h" />
+    <ClInclude Include="ui\DIBitmap.h" />
+    <ClInclude Include="ui\MainWindow.h" />
+    <ClInclude Include="ui\TemperatureColorTableUI.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AD864481-F212-4814-9B25-7FA13554B5A9}</ProjectGuid>
@@ -122,7 +118,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\duilib\DuiLib\;..\FLIRDriver\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\duilib\DuiLib\;..\FLIRDriver\;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/MP /we4189 %(AdditionalOptions)</AdditionalOptions>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <DisableSpecificWarnings>4345;4530;%(DisableSpecificWarnings)</DisableSpecificWarnings>

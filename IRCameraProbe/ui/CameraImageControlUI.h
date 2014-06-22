@@ -1,7 +1,7 @@
 #pragma once
 #include "UIlib.h"
 #include <windows.h>
-#include "CameraManage.h"
+#include "core/CameraManage.h"
 #include <fstream>
 #include "DIBitmap.h"
 

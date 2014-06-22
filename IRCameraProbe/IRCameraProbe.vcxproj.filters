@@ -1,93 +1,82 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="源文件">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="资源文件">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ui">
+      <UniqueIdentifier>{8ae7fa65-80e5-4d23-9102-70065b1924b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core">
+      <UniqueIdentifier>{e6f27a40-a171-4ec2-9848-564fddde9e23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="thread">
+      <UniqueIdentifier>{5b3bc94a-2309-4ae3-9e4d-f8cac30aa600}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="ui\CameraImageControlUI.cpp">
+      <Filter>ui</Filter>
     </ClCompile>
-    <ClCompile Include="CameraManage.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="ui\ControlBuilder.cpp">
+      <Filter>ui</Filter>
     </ClCompile>
-    <ClCompile Include="MessageQueueThread.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="ui\DIBitmap.cpp">
+      <Filter>ui</Filter>
     </ClCompile>
-    <ClCompile Include="ThreadMessageDispatcher.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="ui\MainWindow.cpp">
+      <Filter>ui</Filter>
     </ClCompile>
-    <ClCompile Include="CameraThread.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="ui\TemperatureColorTableUI.cpp">
+      <Filter>ui</Filter>
     </ClCompile>
-    <ClCompile Include="CameraSettings.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="core\CameraManage.cpp">
+      <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="DIBitmap.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="core\CameraSettings.cpp">
+      <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="TemperatureColorTableUI.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="thread\CameraThread.cpp">
+      <Filter>thread</Filter>
     </ClCompile>
-    <ClCompile Include="TemperatureColorTableUI.h">
-      <Filter>头文件</Filter>
+    <ClCompile Include="thread\MessageQueueThread.cpp">
+      <Filter>thread</Filter>
     </ClCompile>
-    <ClCompile Include="ControlBuilder.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraImageControlUI.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="MainWindow.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="thread\ThreadMessageDispatcher.cpp">
+      <Filter>thread</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Resource.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="ui\CameraImageControlUI.h">
+      <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="ui\ControlBuilder.h">
+      <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="ui\DIBitmap.h">
+      <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="CameraManage.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="ui\MainWindow.h">
+      <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="MessageQueueThread.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="ui\TemperatureColorTableUI.h">
+      <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="ThreadMessageDispatcher.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="core\CameraManage.h">
+      <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="ThreadLocalStorage.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="core\CameraSettings.h">
+      <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="CameraThread.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="thread\CameraThread.h">
+      <Filter>thread</Filter>
     </ClInclude>
-    <ClInclude Include="CameraSettings.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="thread\MessageQueueThread.h">
+      <Filter>thread</Filter>
     </ClInclude>
-    <ClInclude Include="DIBitmap.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraImageControlUI.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="MainWindow.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="thread\ThreadMessageDispatcher.h">
+      <Filter>thread</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

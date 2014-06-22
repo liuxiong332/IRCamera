@@ -1,9 +1,9 @@
 #pragma once
 
 #include "UIlib.h"
-#include "CameraManage.h"
-#include "ThreadMessageDispatcher.h"
-#include "CameraThread.h"
+#include "core/CameraManage.h"
+#include "thread/ThreadMessageDispatcher.h"
+#include "thread/CameraThread.h"
 
 #include "ControlBuilder.h"
 #include "TemperatureColorTableUI.h"
