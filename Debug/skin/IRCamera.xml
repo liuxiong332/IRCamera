@@ -1,50 +1,124 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Window mininfo="480,400" size="830,650">
-	<Font name="幼圆" size="16" default="true" />
-	<Font name="微软雅黑" size="18" />
-	<Default name="Button" value="normalimage=&quot;file='skin/button_nor.bmp' corner='4,2,4,2' fade='200' hsl='true'&quot; hotimage=&quot;file='skin/button_over.bmp' corner='4,2,4,2' fade='200' hsl='true'&quot; pushedimage=&quot;file='skin/button_down.bmp' corner='4,2,4,2' fade='200' hsl='true' &quot; disabledimage=&quot;file='skin/Button_Non.png' corner='4,2,4,2' fade='200' hsl='true'&quot;" />
+<Window mininfo="750,400" maxinfo="1080,720" size="830,650">
+	<Font name="微软雅黑" size="14" default="true"/>
+	<Font name="微软雅黑" size="16"  />
+	<Include source="scrollbar.xml" />
 	<HorizontalLayout bkcolor="#FFFFFFFF">
-		<VerticalLayout width="660">
-			<TabLayout selectedid="0">
-				<VerticalLayout>
-					<CameraImage name="camera_image" width="640" height="480" bkcolor="#FFD7EBEB" padding="10,10,10,10"/>
-					<HorizontalLayout height="30" padding="10,10,0,10">
-						<Label name="min_temp_label" width="60" font="1"/>
-						<TemperatureTable name="color_table" width="530"/>
-						<Label name="max_temp_label" width="60" padding="2,0,0,0" font="1"/>
-					</HorizontalLayout>
-					<HorizontalLayout height="30" padding="10,10,0,10">
-						<Label font="1" text="设置阈值温度: " width="120"/>
-						<Edit name="threshold_edit" bordercolor="#FF00FFFF" padding="0,5,0,5" focusbordercolor="#FFFF0000" bordersize="2" text="100" width="60"/>
-						<Label text=" C"/>
+		<TabLayout selectedid="0" name="content_layout">
+			<!-- Normal Layout -->
+			<VerticalLayout bkimage="bg13.png">
+				<TileLayout itemsize="350,300" bordersize="2" bkcolor="#FFEEFFEE" vscrollbar="true">
+					<VerticalLayout width="350" height="300">
+						<CameraImage name="camera_image" width="320" height="240" bkcolor="#FFD7EBEB" padding="10,10,10,10"/>
+						<HorizontalLayout height="45" padding="10,0,0,0">
+							<Button name="connect_btn" height="30" width="60" padding="5,5,5,10" text="Connect" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" disabledimage="Button_Non.png"/>
+							<Button name="disconnect_btn" height="30" width="70" padding="5,5,5,10" text="Disconnect" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" disabledimage="Button_Non.png" enabled="false"/>
+						</HorizontalLayout>
+					</VerticalLayout>
+				</TileLayout>
+
+				<VerticalLayout height="60" bkimage="bg12.png">
+					<HorizontalLayout  height="60" >
+						<Label text="颜色对照表" width="100" padding="10,0,0,0"/>
+						<VerticalLayout  width="550" height="50" name="color_table_layout">
+							<HorizontalLayout height="30">
+								<Label width="125" text="0C" align="left"/>
+								<Label width="125" text="25C" align="left"/>
+								<Label width="125" text="50C" align="left"/>
+								<Label width="125" text="75C" align="left"/>
+								<Label width="50" text="100C"/>
+							</HorizontalLayout>
+							<TemperatureTable height="20" name="color_table" />
+						</VerticalLayout>
 					</HorizontalLayout>
 				</VerticalLayout>
+				<HorizontalLayout height="40" padding="0,0,10,0">
+					<Control />
+					<Button text="设置" name="setting_btn" width="50" padding="0,5,10,5" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" disabledimage="Button_Non.png"/>
+					<Button text="分析" width="50" padding="10,5,10,5" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" disabledimage="Button_Non.png"/>
+				</HorizontalLayout>
+			</VerticalLayout>
 
-				<VerticalLayout padding="10,10,10,10">
-					<HorizontalLayout height="40">
-						<Label text="摄像头数目: " width="100"/>
-						<Edit name="camera_count" text="1" width="40"/>
-					</HorizontalLayout>
-					<HorizontalLayout height="40">
-						<Label text="IP: " width="100"/>
-						<Edit name="camera_ip_addr" text="192.168.1.2" width="100"/>
-					</HorizontalLayout>
-					<HorizontalLayout height="40">
-						<Label text="阈值温度: "width="100"/>
-						<Edit name="threshold_temp" width="40" text="60"/>
-						<Label text="C"/>
-					</HorizontalLayout>
+			<!-- Setting Layout -->
+			<VerticalLayout bkimage="bg10.png" inset="0,0,0,0">
+				<VerticalLayout padding="10,10,10,0" vscrollbar="true">
+					<Label text="红外探头" font="1" width="80"/>
+					<VerticalLayout height="60" padding="20,0,0,10">
+						<HorizontalLayout height="20" padding="0,5,0,5">
+							<Button text="Add" width="60" padding="0,0,10,0" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" disabledimage="Button_Non.png"/>
+							<Button text="Remove" width="60" padding="10,0,0,0" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" disabledimage="Button_Non.png"/>
+						</HorizontalLayout>
+
+						<VerticalLayout height="30" bkimage="bg12.png">
+							<HorizontalLayout height="30" >
+								<Label text="探头名字: " width="70"/>
+								<Button padding="0,5,0,5" text="编辑个性签名" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="200"/>
+			          <RichEdit padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" text="编辑个性签名" multiline="false" rich="false"/>
+			          <Control width="100"/>
+								<Label text="IP: " width="30"/>
+								<Button padding="0,5,0,5" text="192.168.2.1" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
+			          <RichEdit padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" text="192.168.2.1" multiline="false" rich="false"/>
+							</HorizontalLayout>
+						</VerticalLayout>
+
+					</VerticalLayout>
+
+
+					<Label text="温度阈值" font="1" width="80"/>
+					<VerticalLayout height="90" padding="20,0,0,10" bkimage="bg13.png">
+						<HorizontalLayout height="30">
+							<Label text="稳定温度-最小值: " width="120"/>
+							<Button padding="0,5,0,5" text="0C" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
+		          <RichEdit padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" text="编辑个性签名" multiline="false" rich="false"/>
+		          <Control width="100"/>
+							<Label text="最大值: " width="60"/>
+							<Button padding="0,5,0,5" text="100C" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
+		          <RichEdit padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" text="192.168.2.1" multiline="false" rich="false"/>
+						</HorizontalLayout>
+
+						<HorizontalLayout height="30">
+							<Label text="跳变平均温度Delta-最小值: " width="180"/>
+							<Button padding="0,5,0,5" text="0C" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
+		          <RichEdit padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" text="编辑个性签名" multiline="false" rich="false"/>
+		          <Control width="100"/>
+							<Label text="最大值: " width="60"/>
+							<Button padding="0,5,0,5" text="100C" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
+		          <RichEdit padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" text="192.168.2.1" multiline="false" rich="false"/>
+						</HorizontalLayout>
+
+						<HorizontalLayout height="30">
+							<Label text="跳变最大温度Delta-最小值: " width="180"/>
+							<Button padding="0,5,0,5" text="0C" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
+		          <RichEdit padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" text="编辑个性签名" multiline="false" rich="false"/>
+		          <Control width="100"/>
+							<Label text="最大值: " width="60"/>
+							<Button padding="0,5,0,5" text="100C" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
+		          <RichEdit padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" text="192.168.2.1" multiline="false" rich="false"/>
+						</HorizontalLayout>
+					</VerticalLayout>
+
+					<Label text="采样模式" font="1" width="80"/>
+					<VerticalLayout height="60" padding="20,0,0,10" bkimage="bg13.png">
+						<HorizontalLayout height="20" padding="0,5,0,5">
+							<Option width="12" padding="0,4,4,4" normalimage="RadioBtnNon.png" selectedimage="RadioBtnSel.png" group="sample_mode"/>
+							<Label text="手动" padding="5,0,0,0"/>
+						</HorizontalLayout>
+						<HorizontalLayout height="20" padding="0,5,0,5">
+							<Option width="12" padding="0,4,4,4" normalimage="RadioBtnNon.png" selectedimage="RadioBtnSel.png" group="sample_mode"/>
+							<Label text="自动" width="100" padding="5,0,0,0"/>
+							<Label text="自动刷新时间" width="100"/>
+							<Button text="60m" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
+		          <RichEdit padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" text="192.168.2.1" multiline="false" rich="false"/>
+						</HorizontalLayout>
+					</VerticalLayout>
 				</VerticalLayout>
 
-			</TabLayout>
+				<HorizontalLayout height="40" padding="0,0,10,0">
+					<Control />
+					<Button text="返回" name="from_setting_back_btn" width="50" padding="0,5,10,5" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" disabledimage="Button_Non.png" />
+				</HorizontalLayout>
+			</VerticalLayout>
 
-		</VerticalLayout>
-
-		<VerticalLayout>
-			<Button name="connect_btn" height="30" font="1" minwidth="60" maxwidth="120" padding="5,5,5,10" text="Connect"/>
-			<Button name="disconnect_btn" height="30" font="1" minwidth="60" maxwidth="120" padding="5,5,5,10" text="Disconnect" enabled="false"/>
-			<Control height="100"/>
-			<Button name="set_btn" height="30" font="1" minwidth="60" maxwidth="120" padding="5,5,5,10" text="设置"/>
-		</VerticalLayout>
+		</TabLayout>
 	</HorizontalLayout>
 </Window>

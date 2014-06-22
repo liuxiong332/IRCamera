@@ -15,13 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="IRCameraProbe.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraImageControl.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CameraManage.cpp">
@@ -39,11 +33,26 @@
     <ClCompile Include="CameraSettings.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="DIBitmap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TemperatureColorTableUI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TemperatureColorTableUI.h">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlBuilder.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraImageControlUI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MainWindow.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IRCameraProbe.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -51,9 +60,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraImageControl.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CameraManage.h">
@@ -72,6 +78,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CameraSettings.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DIBitmap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraImageControlUI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MainWindow.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

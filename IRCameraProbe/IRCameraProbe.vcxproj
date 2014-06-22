@@ -27,21 +27,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CameraImageControl.cpp" />
+    <ClCompile Include="CameraImageControlUI.cpp" />
     <ClCompile Include="CameraManage.cpp" />
     <ClCompile Include="CameraSettings.cpp" />
     <ClCompile Include="CameraThread.cpp" />
-    <ClCompile Include="IRCameraProbe.cpp" />
+    <ClCompile Include="ControlBuilder.cpp" />
+    <ClCompile Include="DIBitmap.cpp" />
+    <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="MessageQueueThread.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="TemperatureColorTableUI.cpp" />
+    <ClCompile Include="TemperatureColorTableUI.h" />
     <ClCompile Include="ThreadMessageDispatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CameraImageControl.h" />
+    <ClInclude Include="CameraImageControlUI.h" />
     <ClInclude Include="CameraManage.h" />
     <ClInclude Include="CameraSettings.h" />
     <ClInclude Include="CameraThread.h" />
-    <ClInclude Include="IRCameraProbe.h" />
+    <ClInclude Include="DIBitmap.h" />
+    <ClInclude Include="MainWindow.h" />
     <ClInclude Include="MessageQueueThread.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
