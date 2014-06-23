@@ -1,22 +1,22 @@
 #pragma once
 #include <windows.h>
+#include <memory>
 
+namespace camera {
+
+class MessageLoop;
 class MessageQueueThread
 {
 public:
-  class  ThreadProcessor {
-  public:
-    virtual bool OnMessage(const MSG& msg) = 0;
-    virtual ~ThreadProcessor()  {}
-  };
-
   MessageQueueThread();
   ~MessageQueueThread();
 
   //must invoke in the other thread
   void  Quit();
-  bool  BeginThread(ThreadProcessor* processor);
+  bool  BeginThread();
   int   GetThreadID() const;
+
+  MessageLoop*  GetMessageLoop();
 private:
   unsigned ThreadFunc();
 
@@ -24,9 +24,11 @@ private:
   //the event used for the host to wait the child thread initialize completely
   HANDLE    init_event;   
   HANDLE    exit_event;
+
   unsigned  thread_id;
   uintptr_t  thread_handle;
 
-  ThreadProcessor*  thread_process;
+  std::unique_ptr<MessageLoop>  message_loop_;
 };
 
+}

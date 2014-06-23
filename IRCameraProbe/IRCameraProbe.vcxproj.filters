@@ -37,13 +37,16 @@
     <ClCompile Include="core\CameraSettings.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="thread\CameraThread.cpp">
-      <Filter>thread</Filter>
-    </ClCompile>
     <ClCompile Include="thread\MessageQueueThread.cpp">
       <Filter>thread</Filter>
     </ClCompile>
-    <ClCompile Include="thread\ThreadMessageDispatcher.cpp">
+    <ClCompile Include="thread\MessageLoop.cpp">
+      <Filter>thread</Filter>
+    </ClCompile>
+    <ClCompile Include="thread\Mutex.cpp">
+      <Filter>thread</Filter>
+    </ClCompile>
+    <ClCompile Include="thread\MessageLoopManager.cpp">
       <Filter>thread</Filter>
     </ClCompile>
   </ItemGroup>
@@ -69,13 +72,16 @@
     <ClInclude Include="core\CameraSettings.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="thread\CameraThread.h">
-      <Filter>thread</Filter>
-    </ClInclude>
     <ClInclude Include="thread\MessageQueueThread.h">
       <Filter>thread</Filter>
     </ClInclude>
-    <ClInclude Include="thread\ThreadMessageDispatcher.h">
+    <ClInclude Include="thread\MessageLoop.h">
+      <Filter>thread</Filter>
+    </ClInclude>
+    <ClInclude Include="thread\Mutex.h">
+      <Filter>thread</Filter>
+    </ClInclude>
+    <ClInclude Include="thread\MessageLoopManager.h">
       <Filter>thread</Filter>
     </ClInclude>
   </ItemGroup>

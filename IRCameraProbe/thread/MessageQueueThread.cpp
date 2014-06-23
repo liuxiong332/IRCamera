@@ -1,7 +1,9 @@
 #include "MessageQueueThread.h"
 #include <process.h>
 #include <assert.h>
+#include "MessageLoop.h"
 
+namespace camera {
 MessageQueueThread::MessageQueueThread()
 {
   thread_handle = NULL;
@@ -9,14 +11,10 @@ MessageQueueThread::MessageQueueThread()
 }
 
 
-MessageQueueThread::~MessageQueueThread()
-{
+MessageQueueThread::~MessageQueueThread(){
 }
 
-bool MessageQueueThread::BeginThread(ThreadProcessor* process) {
-  thread_process = process;
-  assert(thread_process != NULL);
-
+bool MessageQueueThread::BeginThread() {
   init_event = CreateEvent(NULL, FALSE, FALSE, NULL);
   assert(init_event != NULL);
   thread_handle = _beginthreadex(NULL, 0, &MessageQueueThread::ThreadMain, this, 0, &thread_id);
@@ -39,12 +37,17 @@ unsigned MessageQueueThread::ThreadFunc() {
   //inform the main thread to 
   SetEvent(init_event);
 
+  message_loop_.reset(new MessageLoop);
   //begin the message loop
-  while (GetMessage(&msg, NULL, 0, 0)) {
-    if(thread_process->OnMessage(msg))  continue;
-    //the dispatch must exist, because the ActiveX need the HWND message
-    TranslateMessage(&msg);
-    DispatchMessage(&msg);
+  while (true) {
+    if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+      if (msg.message == WM_QUIT)
+        break;
+      //the dispatch must exist, because the ActiveX need the HWND message
+      TranslateMessage(&msg);
+      DispatchMessage(&msg);
+    }
+    message_loop_->DispatchTasks();
   }
   
   CloseHandle((HANDLE)thread_handle);
@@ -62,4 +65,6 @@ void MessageQueueThread::Quit() {
 
 int MessageQueueThread::GetThreadID() const {
   return static_cast<int>(thread_id);
+}
+
 }

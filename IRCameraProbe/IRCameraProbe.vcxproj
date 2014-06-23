@@ -37,9 +37,10 @@
   <ItemGroup>
     <ClCompile Include="core\CameraManage.cpp" />
     <ClCompile Include="core\CameraSettings.cpp" />
-    <ClCompile Include="thread\CameraThread.cpp" />
+    <ClCompile Include="thread\MessageLoop.cpp" />
     <ClCompile Include="thread\MessageQueueThread.cpp" />
-    <ClCompile Include="thread\ThreadMessageDispatcher.cpp" />
+    <ClCompile Include="thread\Mutex.cpp" />
+    <ClCompile Include="thread\MessageLoopManager.cpp" />
     <ClCompile Include="ui\CameraImageControlUI.cpp" />
     <ClCompile Include="ui\ControlBuilder.cpp" />
     <ClCompile Include="ui\DIBitmap.cpp" />
@@ -49,9 +50,10 @@
   <ItemGroup>
     <ClInclude Include="core\CameraManage.h" />
     <ClInclude Include="core\CameraSettings.h" />
-    <ClInclude Include="thread\CameraThread.h" />
+    <ClInclude Include="thread\MessageLoop.h" />
     <ClInclude Include="thread\MessageQueueThread.h" />
-    <ClInclude Include="thread\ThreadMessageDispatcher.h" />
+    <ClInclude Include="thread\Mutex.h" />
+    <ClInclude Include="thread\MessageLoopManager.h" />
     <ClInclude Include="ui\CameraImageControlUI.h" />
     <ClInclude Include="ui\ControlBuilder.h" />
     <ClInclude Include="ui\DIBitmap.h" />
