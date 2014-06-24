@@ -4,19 +4,19 @@
 namespace camera {
 
 Mutex::Mutex() {
-  mutex_ = CreateMutex(NULL, FALSE, NULL);
+  InitializeCriticalSection(&cs_);
 }
 
 void  Mutex::Lock() {
-  ::WaitForSingleObject(mutex_, INFINITE);
+  EnterCriticalSection(&cs_);
 }
 
 void Mutex::Unlock() {
-  ReleaseMutex(mutex_);
+  LeaveCriticalSection(&cs_);
 }
 
 Mutex::~Mutex() {
-  CloseHandle(mutex_);
+  DeleteCriticalSection(&cs_);
 }
 
 ScopedMutex::ScopedMutex(Mutex* mutex) {

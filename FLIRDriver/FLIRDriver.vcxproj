@@ -104,6 +104,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CameraImageBufferImp.cpp" />
     <ClCompile Include="FakeDialog.cpp" />
     <ClCompile Include="FLIRDriver.cpp" />
     <ClCompile Include="IRCameraDevice.cpp" />
@@ -116,6 +117,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CameraImageBuffer.h" />
+    <ClInclude Include="CameraImageBufferImp.h" />
     <ClInclude Include="FakeDialog.h" />
     <ClInclude Include="FLIRDriver.h" />
     <ClInclude Include="IRCameraBasic.h" />

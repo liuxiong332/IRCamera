@@ -8,7 +8,7 @@
 
 #include "ControlBuilder.h"
 #include "TemperatureColorTableUI.h"
-#include "CameraImageControlUI.h"
+#include "CameraImageUI.h"
 
 class MainWindow : public DuiLib::CWindowWnd, //public DuiLib::INotifyUI
   public camera::CameraDeviceObserver
@@ -46,7 +46,7 @@ public:
   ControlBuilder      image_builder;
   DuiLib::CPaintManagerUI m_pm;
 
-  CameraImageControlUI * image_control;
+  CameraImageUI * image_control;
   DuiLib::CButtonUI*  disconnect_btn;
   DuiLib::CButtonUI*  connect_btn;
   DuiLib::CLabelUI*   min_temp_label_;

@@ -16,9 +16,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ui\CameraImageControlUI.cpp">
-      <Filter>ui</Filter>
-    </ClCompile>
     <ClCompile Include="ui\ControlBuilder.cpp">
       <Filter>ui</Filter>
     </ClCompile>
@@ -49,11 +46,14 @@
     <ClCompile Include="core\CameraDevice.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="ui\CameraImageUI.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="core\CameraImageModel.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ui\CameraImageControlUI.h">
-      <Filter>ui</Filter>
-    </ClInclude>
     <ClInclude Include="ui\ControlBuilder.h">
       <Filter>ui</Filter>
     </ClInclude>
@@ -85,6 +85,15 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="core\CameraDeviceObserver.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\CameraImageModel.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\CameraImageUI.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="core\ImageBuffer.h">
       <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>

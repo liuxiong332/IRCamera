@@ -50,7 +50,7 @@ void MainWindow::Init() {
 
   connect_btn = static_cast<DuiLib::CButtonUI*>(m_pm.FindControl(_T("connect_btn")));
   disconnect_btn = static_cast<DuiLib::CButtonUI*>(m_pm.FindControl(_T("disconnect_btn")));
-  image_control = static_cast<CameraImageControlUI*>
+  image_control = static_cast<CameraImageUI*>
     (m_pm.FindControl(_T("camera_image")));
   min_temp_label_ = static_cast<DuiLib::CLabelUI*>(m_pm.FindControl(_T("min_temp_label")));
   max_temp_label_ = static_cast<DuiLib::CLabelUI*>(m_pm.FindControl(_T("max_temp_label")));

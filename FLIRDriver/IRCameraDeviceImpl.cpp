@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "IRCameraDeviceImpl.h"
+#include "CameraImageBufferImp.h"
 #include "lvcamctrl.h"
 #include "FakeDialog.h"
 #include <assert.h>
@@ -99,7 +100,7 @@ int  IRCameraDeviceImpl::GetImageHeight() {
   return  image_height_;
 }
 
-IRCameraStatusCode IRCameraDeviceImpl::GetKelvinImage(IRCameraImageFilling* img_filling) {
+IRCameraStatusCode IRCameraDeviceImpl::GetKelvinImage(CameraImageBuffer** buffer) {
   if (GetStatus() != IRCAMERA_CONNECTED)
     return IRCAMERA_NOTPRESENT_ERROR;
   const static short KelvinImageType = 3;
@@ -110,13 +111,7 @@ IRCameraStatusCode IRCameraDeviceImpl::GetKelvinImage(IRCameraImageFilling* img_
   }
   else if (va.vt == VT_I4) {
     HGLOBAL h = (HGLOBAL)va.lVal;
-    size_t  image_bytes = GetImageWidth()*GetImageHeight() * sizeof(float);
-    float* src = (float*)GlobalLock(h);
-    //  memcpy_s(temp_image, image_bytes, src, image_bytes);
-    img_filling->SetBuffer((float*)src, image_width_*image_height_);
-
-    GlobalUnlock(h);
-    GlobalFree(h);
+    *buffer = new CameraImageBufferImp(h, GetImageWidth(), GetImageHeight());
     ret = IRCAMERA_OK;
   }
   VariantClear(&va);

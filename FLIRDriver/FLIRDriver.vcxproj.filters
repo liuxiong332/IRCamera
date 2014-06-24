@@ -39,6 +39,9 @@
     <ClCompile Include="IRCameraDevice.cpp">
       <Filter>头文件</Filter>
     </ClCompile>
+    <ClCompile Include="CameraImageBufferImp.cpp">
+      <Filter>头文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FLIRDriver.h">
@@ -69,6 +72,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="IRCameraBasic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraImageBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraImageBufferImp.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

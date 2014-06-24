@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "IRCameraDeviceMock.h"
+#include "CameraImageBuffer.h"
 
 namespace {
   const int kImageWidth = 320;
@@ -13,6 +14,25 @@ namespace {
   float kImageArray[kImageWidth*kImageHeight];
 }
 
+class CameraImageBufferMock : public CameraImageBuffer {
+public:
+  CameraImageBufferMock(float* buffer, int width, int height)
+      : buffer_(buffer), width_(width), height_(height) {
+  }
+  virtual int GetWidth() {
+    return width_;
+  }
+  virtual int GetHeight() {
+    return height_;
+  }
+  virtual float* GetBuffer() {
+    return buffer_;
+  }
+private:
+  int width_;
+  int height_;
+  float* buffer_;
+};
 
 IRCameraDeviceMock::IRCameraDeviceMock() {
   device_status_ = IRCAMERA_DISCONNECTED;
@@ -55,8 +75,9 @@ int IRCameraDeviceMock::GetImageHeight() {
   return kImageHeight;
 }
 
-IRCameraStatusCode IRCameraDeviceMock::GetKelvinImage(IRCameraImageFilling* img_filling) {
-  img_filling->SetBuffer(kImageArray , kImageWidth*kImageHeight);
+IRCameraStatusCode IRCameraDeviceMock::GetKelvinImage(CameraImageBuffer** buffer) {
+//  img_filling->SetBuffer(kImageArray , kImageWidth*kImageHeight);
+  *buffer = new CameraImageBufferMock(kImageArray, kImageWidth, kImageHeight);
   image_index_ = (++image_index_) % kImageArraySize;
   return IRCAMERA_OK;
 }

@@ -6,6 +6,7 @@
 namespace camera {
 MessageQueueThread::MessageQueueThread()
 {
+  message_loop_.reset(new MessageLoop);
   thread_handle = NULL;
   exit_event = CreateEvent(NULL, FALSE, FALSE, NULL);
 }
@@ -37,7 +38,6 @@ unsigned MessageQueueThread::ThreadFunc() {
   //inform the main thread to 
   SetEvent(init_event);
 
-  message_loop_.reset(new MessageLoop);
   //begin the message loop
   while (true) {
     if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {

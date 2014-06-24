@@ -28,6 +28,14 @@ public:
 
   CameraDevice();
   ~CameraDevice();
+
+  //set and get the name of the camera
+  void SetName(const TString& name) { camera_name_ = name;   }
+  const TString& GetName() const    { return camera_name_;   }
+  //set and get the ip address of camera
+  void SetIPAddr(const TString& ip_addr)  { camera_ip_addr_ = ip_addr;   }
+  const TString& GetIPAddr() const  { return camera_ip_addr_;  }
+
   void Init();
 
   void Connect(ConnectResultObserver* observer);
@@ -55,6 +63,9 @@ private:
   void  ConnectedTrigger();
   void  DisconnectTrigger();
   void  UpdateImageTrigger();
+
+  TString camera_name_;
+  TString camera_ip_addr_;
 
   int  image_width_, image_height_;
   ConnectStatus   camera_status_;

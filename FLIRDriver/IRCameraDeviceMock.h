@@ -37,7 +37,7 @@ public:
   * get the image that contain the kelvin temperature
   * @img_filling: the array of width*height elements, to fill the temperature value for every pixel
   */
-  virtual IRCameraStatusCode GetKelvinImage(IRCameraImageFilling* img_filling);
+  virtual IRCameraStatusCode GetKelvinImage(CameraImageBuffer** buffer);
 
   virtual void  RegisterEventHandler(IRCameraEventHandler*);
 

@@ -14,24 +14,14 @@ class CameraDevice;
 }
 
 class TemperatureColorTableUI;
-class CameraImageControlUI : public DuiLib::CControlUI,
-  public camera::CameraDeviceObserver,
-  public IRCameraImageFilling
-{
+class CameraImageUI : public DuiLib::CControlUI {
 public:
-  CameraImageControlUI(camera::CameraDevice* manager);
-  ~CameraImageControlUI();
+  CameraImageUI(camera::CameraDevice* manager);
+  ~CameraImageUI();
 
   LPCTSTR GetClass() const;
-
-  void SetThresholdTemp(float threshold_temp);
-
+   
   virtual void PaintStatusImage(HDC hDC);
-
-  virtual void  OnInitCamera() {}
-  virtual void  OnConnect();
-  virtual void  OnDisconnect();
-  virtual void  OnImageUpdate();
 private:
   bool ImageCtrlTimerProc(void* param);
 
@@ -49,8 +39,6 @@ private:
   camera::CameraDevice* camera_manage;
 
   DIBitmap  bitmap_;
-
-  inline int GetMidColor(int begin, int end, int i);
 };
 
 

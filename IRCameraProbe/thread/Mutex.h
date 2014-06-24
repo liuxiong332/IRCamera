@@ -10,7 +10,7 @@ public:
   void Unlock();
   ~Mutex();
 private:
-  HANDLE mutex_;
+  CRITICAL_SECTION  cs_;
 };
 
 class ScopedMutex {

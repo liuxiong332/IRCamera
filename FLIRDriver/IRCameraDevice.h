@@ -28,11 +28,7 @@ enum IRCameraDeviceStatus {
 };
 
 class IRCameraDeviceListManager;
-class IRCameraImageFilling {
-public:
-  virtual void SetBuffer(float* val, int val_count) = 0;
-  virtual ~IRCameraImageFilling() {}
-};
+class CameraImageBuffer;
 
 class IRCAMERA_API IRCameraDevice {
 public:
@@ -68,7 +64,7 @@ public:
   * get the image that contain the kelvin temperature
   * @img_filling: the array of width*height elements, to fill the temperature value for every pixel
   */
-  virtual IRCameraStatusCode GetKelvinImage(IRCameraImageFilling* img_filling) = 0;
+  virtual IRCameraStatusCode GetKelvinImage(CameraImageBuffer** buffer) = 0;
 
   /**
   * register the camera event handler
