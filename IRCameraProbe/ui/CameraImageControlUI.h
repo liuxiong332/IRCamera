@@ -1,22 +1,25 @@
 #pragma once
 #include "UIlib.h"
 #include <windows.h>
-#include "core/CameraManage.h"
+#include "core/CameraDevice.h"
+#include "core/CameraDeviceObserver.h"
 #include <fstream>
 #include "DIBitmap.h"
 
 namespace DuiLib {
   class CControlUI;
 }
-class CameraManage;
+namespace camera {
+class CameraDevice;
+}
 
 class TemperatureColorTableUI;
 class CameraImageControlUI : public DuiLib::CControlUI,
-  public CameraManage::ConnectStatusObserver,
+  public camera::CameraDeviceObserver,
   public IRCameraImageFilling
 {
 public:
-  CameraImageControlUI(CameraManage* manager);
+  CameraImageControlUI(camera::CameraDevice* manager);
   ~CameraImageControlUI();
 
   LPCTSTR GetClass() const;
@@ -43,7 +46,7 @@ private:
   float min_temp, max_temp;
   bool  is_need_update_;
 
-  CameraManage* camera_manage;
+  camera::CameraDevice* camera_manage;
 
   DIBitmap  bitmap_;
 

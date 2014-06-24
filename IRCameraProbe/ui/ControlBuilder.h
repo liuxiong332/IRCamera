@@ -1,15 +1,17 @@
 #pragma once
 #include "UIlib.h"
 
-class CameraManage;
+namespace camera {
+class CameraDevice;
+}
 class ControlBuilder : public DuiLib::IDialogBuilderCallback
 {
 public:
   ControlBuilder();
-  void Init(CameraManage* manage);
+  void Init(camera::CameraDevice* manage);
   ~ControlBuilder();
 
   virtual DuiLib::CControlUI* CreateControl(LPCTSTR class_name) override;
 private:
-  CameraManage*   camera_info;
+  camera::CameraDevice*   camera_info;
 };

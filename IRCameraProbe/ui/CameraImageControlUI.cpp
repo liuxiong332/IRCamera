@@ -13,8 +13,8 @@ namespace {
 class TemperatureColorTableUI;
 
 //////////////////////CameraImageControlUI/////////////////////////
-CameraImageControlUI::CameraImageControlUI(CameraManage* manager) :
-  camera_manage(manager)   {
+CameraImageControlUI::CameraImageControlUI(camera::CameraDevice* manager)
+    : camera_manage(manager)   {
   min_temp = kKelvinTransform + 20;
   threshold_temp_ = max_temp = kKelvinTransform + 100;
   is_need_update_ = false;
@@ -133,7 +133,7 @@ void CameraImageControlUI::SetBuffer(float* val, int val_count) {
 }
 
 void CameraImageControlUI::PaintStatusImage(HDC hDC) {
-  if (camera_manage->GetStatus() != CameraManage::CONNECTED || !is_need_update_)
+  if (camera_manage->GetStatus() != camera::CameraDevice::CONNECTED || !is_need_update_)
     return;
   bitmap_.Paint(hDC, m_rcItem);
 }

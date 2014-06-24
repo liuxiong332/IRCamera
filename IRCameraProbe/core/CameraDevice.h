@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IRCameraDevice.h"
+#include "CameraDeviceObserver.h"
 #include <vector>
 #include <memory>
 
@@ -9,21 +10,12 @@ namespace camera {
 class MessageLoop;
 class CameraManageEventHandler;
 
-class CameraManage
+class CameraDevice
 {
 public:
   enum ConnectStatus {
     CONNECTED,
     DISCONNECTED
-  };
-
-  class ConnectStatusObserver {
-  public:
-    virtual void  OnInitCamera() = 0;
-    virtual void  OnConnect() = 0;
-    virtual void  OnDisconnect() = 0;
-    virtual void  OnImageUpdate() = 0;
-    virtual ~ConnectStatusObserver()  {}
   };
 
   //when connect to the camera, the observer return the connect result
@@ -34,8 +26,8 @@ public:
     virtual ~ConnectResultObserver()  {}
   };
 
-  CameraManage();
-  ~CameraManage();
+  CameraDevice();
+  ~CameraDevice();
   void Init();
 
   void Connect(ConnectResultObserver* observer);
@@ -44,8 +36,8 @@ public:
   int  GetImageWidth() const;
   int  GetImageHeight() const;
 
-  void  AddConnectStatusObserver(ConnectStatusObserver* observer);
-  void  RemoveConnectStatusObserver(ConnectStatusObserver* observer);
+  void  AddConnectStatusObserver(CameraDeviceObserver* observer);
+  void  RemoveConnectStatusObserver(CameraDeviceObserver* observer);
 
   TString GetErrorString(IRCameraStatusCode code);
 
@@ -71,8 +63,8 @@ private:
   MessageLoop*  main_message_loop_;
   MessageLoop*  camera_message_loop_;
 
-  typedef std::vector<ConnectStatusObserver*>::iterator  ObserverIterator;
-  std::vector<ConnectStatusObserver*>   observers_;
+  typedef std::vector<CameraDeviceObserver*>::iterator  ObserverIterator;
+  std::vector<CameraDeviceObserver*>   observers_;
 
   std::unique_ptr<IRCameraDevice::IRCameraEventHandler> camera_event_handler_in_camera_thread_;
 };

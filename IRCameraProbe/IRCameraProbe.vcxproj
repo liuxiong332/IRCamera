@@ -35,7 +35,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="core\CameraManage.cpp" />
+    <ClCompile Include="core\CameraDevice.cpp" />
     <ClCompile Include="core\CameraSettings.cpp" />
     <ClCompile Include="thread\MessageLoop.cpp" />
     <ClCompile Include="thread\MessageQueueThread.cpp" />
@@ -48,7 +48,8 @@
     <ClCompile Include="ui\TemperatureColorTableUI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="core\CameraManage.h" />
+    <ClInclude Include="core\CameraDevice.h" />
+    <ClInclude Include="core\CameraDeviceObserver.h" />
     <ClInclude Include="core\CameraSettings.h" />
     <ClInclude Include="thread\MessageLoop.h" />
     <ClInclude Include="thread\MessageQueueThread.h" />

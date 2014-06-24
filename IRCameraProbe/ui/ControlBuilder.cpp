@@ -7,7 +7,7 @@ ControlBuilder::ControlBuilder() {
   camera_info = NULL;
 }
 
-void ControlBuilder::Init(CameraManage* manage) {
+void ControlBuilder::Init(camera::CameraDevice* manage) {
   camera_info = manage;
 }
 

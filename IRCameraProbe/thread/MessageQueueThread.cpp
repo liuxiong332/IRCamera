@@ -57,6 +57,10 @@ unsigned MessageQueueThread::ThreadFunc() {
   return 0;
 }
 
+MessageLoop*  MessageQueueThread::GetMessageLoop() {
+  return message_loop_.get() ;
+}
+
 void MessageQueueThread::Quit() {
   ::PostThreadMessage(thread_id, WM_QUIT, 0, 0);
   WaitForSingleObject(exit_event, INFINITE);

@@ -4,7 +4,7 @@
 #include "stdafx.h"
 
 #include "MainWindow.h"
-
+#include "thread/MessageLoopManager.h"
 
 
 bool MainWindow::ConnectBtnClick(void* param) {
@@ -44,9 +44,8 @@ bool MainWindow::DisconnectBtnClick(void* param) {
 }
  
 void MainWindow::Init() { 
-  main_dispatcher.Init(GetHWND());
-  ThreadMessageDispatcherManage::GetInstance()->SetMainDispatcher(&main_dispatcher);
   camera_thread_.BeginThread();
+  camera::MessageLoopManager::GetInstance()->SetCameraMessageLoop(camera_thread_.GetMessageLoop());
   camera_manage.Init();
 
   connect_btn = static_cast<DuiLib::CButtonUI*>(m_pm.FindControl(_T("connect_btn")));
@@ -117,7 +116,6 @@ LRESULT MainWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
   else if (uMsg == WM_ERASEBKGND) {
     return 1;
   }
-  if (main_dispatcher.HandleMessage(uMsg, wParam, lParam)) return 0;
   LRESULT lRes = 0;
   if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes)) return lRes;
   return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
@@ -125,6 +123,9 @@ LRESULT MainWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
  
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpCmdLine*/, int nCmdShow)
 {
+  camera::MessageLoop  message_loop;
+  camera::MessageLoopManager::GetInstance()->SetMainMessageLoop(&message_loop);
+
   DuiLib::CPaintManagerUI::SetInstance(hInstance);
   DuiLib::CStdString  res_path = DuiLib::CPaintManagerUI::GetInstancePath();
   if (res_path.Right(1) != _T("\\"))
@@ -140,7 +141,19 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
   pFrame->Create(NULL, _T("IRCameraProbe"), UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
   pFrame->CenterWindow();
   pFrame->ShowWindow(true);
-  DuiLib::CPaintManagerUI::MessageLoop();
+
+  MSG msg = { 0 };
+  while (true) {
+    if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+      if (msg.message == WM_QUIT) 
+        break;
+      if (!DuiLib::CPaintManagerUI::TranslateMessage(&msg)) {
+        ::TranslateMessage(&msg);
+        ::DispatchMessage(&msg);
+      }
+    }
+    message_loop.DispatchTasks();
+  }
 
   ::CoUninitialize();
   return 0;

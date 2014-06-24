@@ -1,16 +1,17 @@
 #pragma once
 
 #include "UIlib.h"
-#include "core/CameraManage.h"
-#include "thread/ThreadMessageDispatcher.h"
-#include "thread/CameraThread.h"
+#include "core/CameraDevice.h"
+#include "core/CameraDeviceObserver.h"
+#include "thread/MessageQueueThread.h"
+#include "thread/MessageLoop.h"
 
 #include "ControlBuilder.h"
 #include "TemperatureColorTableUI.h"
 #include "CameraImageControlUI.h"
 
 class MainWindow : public DuiLib::CWindowWnd, //public DuiLib::INotifyUI
-  public CameraManage::ConnectStatusObserver
+  public camera::CameraDeviceObserver
 {
 public:
   MainWindow() {  };
@@ -39,12 +40,11 @@ public:
   LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 public:
-  CameraThread        camera_thread_;
-  CameraManage        camera_manage;
+  camera::MessageQueueThread        camera_thread_;
+  camera::CameraDevice        camera_manage;
 
   ControlBuilder      image_builder;
   DuiLib::CPaintManagerUI m_pm;
-  ThreadMessageDispatcher main_dispatcher;
 
   CameraImageControlUI * image_control;
   DuiLib::CButtonUI*  disconnect_btn;

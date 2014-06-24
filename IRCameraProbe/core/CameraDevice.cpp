@@ -1,4 +1,4 @@
-#include "CameraManage.h"
+#include "CameraDevice.h"
 #include "IRCameraDevice.h"
 #include "thread/MessageLoopManager.h"
 #include "thread/MessageLoopManager.h"
@@ -11,23 +11,23 @@ namespace camera {
 
 class  CameraManageEventHandler : public IRCameraDevice::IRCameraEventHandler {
 public:
-  CameraManageEventHandler(CameraManage* manager) : manager_(manager) {}
+  CameraManageEventHandler(CameraDevice* manager) : manager_(manager) {}
   virtual void OnEvent(IRCameraEvent event_type) {
     manager_->CameraEventHandlerInCameraThread(event_type);
   }
 private:
-  CameraManage* manager_;
+  CameraDevice* manager_;
 };
 
 
-CameraManage::CameraManage()
+CameraDevice::CameraDevice()
     : camera_message_loop_(NULL),
       main_message_loop_(NULL),
       camera_status_(DISCONNECTED) {
   camera_event_handler_in_camera_thread_.reset(new CameraManageEventHandler(this));
 }
 
-void CameraManage::Init() {
+void CameraDevice::Init() {
   MessageLoopManager* manager = MessageLoopManager::GetInstance();
   camera_message_loop_ = manager->GetCameraMessageLoop();
   main_message_loop_ = manager->GetMainMessageLoop();
@@ -43,18 +43,19 @@ void CameraManage::Init() {
 }
 
 
-CameraManage::~CameraManage()
+CameraDevice::~CameraDevice()
 {
   if (camera_status_ == CONNECTED)
     Disconnect();
 //  IRCameraDestroy(camera_info);
 }
 
-void CameraManage::Connect(ConnectResultObserver* observer) {
+void CameraDevice::Connect(ConnectResultObserver* observer) {
   IRCameraStatusCode code;
   camera_message_loop_->PushTaskAndReply(main_message_loop_, [this, &code] {
     code = camera_info_->Connect(_T("127.0.0.1"));
   }, [this, observer, &code] {
+    if (!observer)  return;
     if (code == IRCAMERA_OK)
       observer->OnConnectSuccess();
     else
@@ -64,58 +65,58 @@ void CameraManage::Connect(ConnectResultObserver* observer) {
 //  connect_task->DoEvent();
 }
 
-void CameraManage::Disconnect(){
+void CameraDevice::Disconnect(){
 //  return IRCameraDisconnect(camera_info);  camera_dispatcher_->PushTask(disconnect_task);
   camera_message_loop_->PushTask([this] {
     camera_info_->Disconnect();
   });
 }
 
-void  CameraManage::AddConnectStatusObserver(ConnectStatusObserver* observer) {
+void  CameraDevice::AddConnectStatusObserver(CameraDeviceObserver* observer) {
   observers_.push_back(observer);
 }
 
-void CameraManage::RemoveConnectStatusObserver(ConnectStatusObserver* observer) {
+void CameraDevice::RemoveConnectStatusObserver(CameraDeviceObserver* observer) {
   ObserverIterator iter;
   iter = std::find(observers_.begin(), observers_.end(), observer);
   observers_.erase(iter);
 }
 
-TString CameraManage::GetErrorString(IRCameraStatusCode code) {
+TString CameraDevice::GetErrorString(IRCameraStatusCode code) {
   return camera_info_->GetErrorString(code);
 }
 
-int CameraManage::GetImageWidth() const {
+int CameraDevice::GetImageWidth() const {
   return image_width_;
 }
-int CameraManage::GetImageHeight() const {
+int CameraDevice::GetImageHeight() const {
   return image_height_;
 }
  
-int CameraManage::GetStatus() {
+int CameraDevice::GetStatus() {
   return camera_status_;
 }
  
-void CameraManage::InitCompleteTrigger(){
+void CameraDevice::InitCompleteTrigger(){
   for (ObserverIterator iter = observers_.begin(); iter != observers_.end(); ++iter) {
     (*iter)->OnInitCamera();
   }
 }
-void CameraManage::ConnectedTrigger(){
+void CameraDevice::ConnectedTrigger(){
   camera_status_ = CONNECTED;
   for (ObserverIterator iter = observers_.begin(); iter != observers_.end(); ++iter) {
     (*iter)->OnConnect();
   }
 }
 
-void CameraManage::DisconnectTrigger() {
+void CameraDevice::DisconnectTrigger() {
   camera_status_ = DISCONNECTED;
   for (ObserverIterator iter = observers_.begin(); iter != observers_.end(); ++iter) {
     (*iter)->OnDisconnect();
   }
 }
 
-void CameraManage::CameraEventHandlerInCameraThread(IRCameraEvent event_type) {
+void CameraDevice::CameraEventHandlerInCameraThread(IRCameraEvent event_type) {
   if (event_type == IRCAMERA_CONNECTED_EVENT) {
     image_width_ = camera_info_->GetImageWidth();
     image_height_ = camera_info_->GetImageHeight();
@@ -132,7 +133,7 @@ void CameraManage::CameraEventHandlerInCameraThread(IRCameraEvent event_type) {
   });
 }
 
-void CameraManage::UpdateKelvinImage(IRCameraImageFilling* img_filling) {
+void CameraDevice::UpdateKelvinImage(IRCameraImageFilling* img_filling) {
   camera_message_loop_->PushTask([this, img_filling] {
     IRCameraStatusCode code = camera_info_->GetKelvinImage(img_filling);
     if (code == IRCAMERA_OK) {
@@ -143,7 +144,7 @@ void CameraManage::UpdateKelvinImage(IRCameraImageFilling* img_filling) {
   });
 }
 
-void CameraManage::UpdateImageTrigger() {
+void CameraDevice::UpdateImageTrigger() {
   for (ObserverIterator iter = observers_.begin(); iter != observers_.end(); ++iter) {
     (*iter)->OnImageUpdate();;
   }

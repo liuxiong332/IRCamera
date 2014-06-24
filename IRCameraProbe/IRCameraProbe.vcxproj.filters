@@ -31,9 +31,6 @@
     <ClCompile Include="ui\TemperatureColorTableUI.cpp">
       <Filter>ui</Filter>
     </ClCompile>
-    <ClCompile Include="core\CameraManage.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="core\CameraSettings.cpp">
       <Filter>core</Filter>
     </ClCompile>
@@ -48,6 +45,9 @@
     </ClCompile>
     <ClCompile Include="thread\MessageLoopManager.cpp">
       <Filter>thread</Filter>
+    </ClCompile>
+    <ClCompile Include="core\CameraDevice.cpp">
+      <Filter>core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -66,9 +66,6 @@
     <ClInclude Include="ui\TemperatureColorTableUI.h">
       <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="core\CameraManage.h">
-      <Filter>core</Filter>
-    </ClInclude>
     <ClInclude Include="core\CameraSettings.h">
       <Filter>core</Filter>
     </ClInclude>
@@ -83,6 +80,12 @@
     </ClInclude>
     <ClInclude Include="thread\MessageLoopManager.h">
       <Filter>thread</Filter>
+    </ClInclude>
+    <ClInclude Include="core\CameraDevice.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\CameraDeviceObserver.h">
+      <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
