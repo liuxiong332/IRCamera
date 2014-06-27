@@ -10,8 +10,11 @@
 #include "TemperatureColorTableUI.h"
 #include "CameraImageUI.h"
 
+#include "CameraImageBuilder.h"
+
 class MainWindow : public DuiLib::CWindowWnd, //public DuiLib::INotifyUI
-  public camera::CameraDeviceObserver
+  public camera::CameraDeviceObserver,
+  public CameraImageBuilder
 {
 public:
   MainWindow() {  };
@@ -39,7 +42,9 @@ public:
   virtual void OnImageUpdate()  {}
   LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-public:
+private:
+  virtual CameraImageContainerUI* CreateCameraImageContainerUI() override;
+
   camera::MessageQueueThread        camera_thread_;
   camera::CameraDevice        camera_manage;
 

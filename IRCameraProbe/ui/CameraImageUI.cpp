@@ -1,6 +1,5 @@
 #include "CameraImageUI.h"
-#include "IRCameraDevice.h"
-
+#include "CameraImageBuffer.h"
 #include <algorithm>
 #include <memory>
 #include <windows.h>
@@ -12,66 +11,80 @@ namespace {
 
 class TemperatureColorTableUI;
 
-//////////////////////CameraImageControlUI/////////////////////////
-CameraImageUI::CameraImageUI(camera::CameraDevice* manager)
-    : camera_manage(manager)   {
-  min_temp = kKelvinTransform + 20;
-  threshold_temp_ = max_temp = kKelvinTransform + 100;
-  is_need_update_ = false;
-   
-  OnNotify += MakeDelegate(this, &CameraImageUI::ImageCtrlTimerProc);
-  camera_manage->AddConnectStatusObserver(this );
-//  InitBitmapHeader();
-}
-
-bool CameraImageUI::ImageCtrlTimerProc(void* param) {
-  DuiLib::TNotifyUI*  notify = reinterpret_cast<DuiLib::TNotifyUI*>(param);
-  if (notify->sType == _T("timer")) {
-    camera_manage->UpdateKelvinImage(this);
-    return true;
+class  BorderGlitterAnimation {
+public:
+  BorderGlitterAnimation(DuiLib::CControlUI* ui)
+      : animation_index_(0),
+        ui_(ui) {
   }
-  return false;
+
+  void OnStep() {
+    const static DWORD kAnimationColors[] = { 0xFFFFFFFF, 0xFFFF0000, 0xFF00FFFF };
+    const static int  kAnimationColorsLen = sizeof(kAnimationColors) / sizeof(kAnimationColors[0]);
+    ui_->SetBorderColor(kAnimationColors[animation_index_]);
+    animation_index_ = (animation_index_ + 1) % kAnimationColorsLen;
+  }
+private:
+  DuiLib::CControlUI* ui_;
+  int animation_index_;
+};
+
+//////////////////////CameraImageControlUI/////////////////////////
+CameraImageUI::CameraImageUI() {
+  //  camera_manage->AddConnectStatusObserver(this );
+//  InitBitmapHeader();
+  this->OnNotify += MakeDelegate(this, &CameraImageUI::OnTimerProc);
+  
 }
  
-
 CameraImageUI::~CameraImageUI() {
-  OnDisconnect();
-  camera_manage->RemoveConnectStatusObserver(this);
+//   OnDisconnect();
+//   camera_manage->RemoveConnectStatusObserver(this);
 }
  
 LPCTSTR CameraImageUI::GetClass() const {
   return _T("CameraImageUI");
 }
 
-void CameraImageUI::SetBuffer(float* val, int val_count) {
+void CameraImageUI::UpdateImage(CameraImageBuffer* buffer) {
+  float*  temp_buffer = buffer->GetBuffer();
+  BYTE* bitmap_buffer = bitmap_.GetBitBuffer();
+  int palette_len = bitmap_.GetPaletteLen();
+  int width = buffer->GetWidth();
+  int height = buffer->GetHeight();
 
-  float min_temp = (float)INT_MAX, max_temp = (float)INT_MIN;
-  for (int i = 0; i < val_count; ++i) {
-    min_temp = std::min(min_temp, val[i]);
-    max_temp = std::max(max_temp, val[i]);
-  }
-//  UpdateTempLabel(min_temp, max_temp);
-
-  max_temp = std::min(max_temp, threshold_temp_);
-  float span = max_temp - min_temp;
-  int len = 0;
-  //protect the image buffer from the synchronous access
-//  WaitForSingleObject(buffer_mutex_, INFINITE);
-  BYTE* buffer = bitmap_.GetBitBuffer();
-  for (int i = 0; i < img_height; ++i) {
-    for (int j = 0; j < img_width; ++j) {
-      float temp = std::min(val[len], max_temp);
-      buffer[j] = static_cast<BYTE>((temp - min_temp) * 255 / span);
-      ++len;
+  float min_temp = 0.0f;
+  int span = 100;
+  //transform the temperature value to the bitmap byte map
+  for (int i = 0; i < height; ++i) {
+    for (int j = 0; j < width; ++j) {
+      bitmap_buffer[j] = static_cast<BYTE>((temp_buffer[j] - min_temp) * palette_len / span);
     }
-    buffer += align_width;
+    buffer += width;
+    temp_buffer += width;
   }
-//  ReleaseMutex(buffer_mutex_);
+  Invalidate();
 }
 
+bool CameraImageUI::OnTimerProc(void* param) {
+  DuiLib::TNotifyUI* notify = static_cast<DuiLib::TNotifyUI*>(param);
+  if (notify->sType != _T("timer")) {
+    return false;
+  }
+  animation_->OnStep();
+  Invalidate();
+  return true;
+}
+void CameraImageUI::BeginWarningAnimation() {
+  const static unsigned int kAnimationElapse = 500;
+  GetManager()->SetTimer(this, kWarningAnimationID, kAnimationElapse);
+  animation_.reset(new BorderGlitterAnimation(this));
+}
+
+void CameraImageUI::EndWarningAnimation() {
+  GetManager()->KillTimer(this);
+}
 void CameraImageUI::PaintStatusImage(HDC hDC) {
-  if (camera_manage->GetStatus() != camera::CameraDevice::CONNECTED || !is_need_update_)
-    return;
   bitmap_.Paint(hDC, m_rcItem);
 }
 

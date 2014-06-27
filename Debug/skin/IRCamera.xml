@@ -7,18 +7,17 @@
 		<TabLayout selectedid="0" name="content_layout">
 			<!-- Normal Layout -->
 			<VerticalLayout bkimage="bg13.png">
-				<TileLayout itemsize="350,350" bordersize="2" bkcolor="#FFEEFFEE" vscrollbar="true">
-					<VerticalLayout width="350" height="360">
+				<TileLayout name="camera_image_list" itemsize="350,350" bordersize="2" bkcolor="#FFEEFFEE" vscrollbar="true">
+					<VerticalLayout width="350" height="360" name="camera_image_container_layout">
 						<CameraImage name="camera_image" width="320" height="240" bkcolor="#FFD7EBEB" padding="10,10,10,10"/>
 						<HorizontalLayout height="30" padding="10,5,20,5">
-							<Label text="未连接" bkcolor="#FFD7EBEB"/>
+							<Label text="未连接" bkcolor="#FFD7EBEB" name="camera_status_label"/>
 						</HorizontalLayout>
 						<HorizontalLayout height="30" padding="10,5,20,5" visible="false">
-							<Label text="温度超过阈值" bkcolor="#FFD7AAAA"/>
+							<Label text="温度超过阈值" bkcolor="#FFD7AAAA" name="camera_error_label"/>
 						</HorizontalLayout>
 						<HorizontalLayout height="45" padding="10,0,0,0">
-							<Button name="connect_btn" height="30" width="60" padding="5,5,5,10" text="Connect" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" disabledimage="Button_Non.png"/>
-							<Button name="disconnect_btn" height="30" width="70" padding="5,5,5,10" text="Disconnect" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" disabledimage="Button_Non.png" enabled="false"/>
+							<Button name="sample_btn" height="30" width="60" padding="5,5,5,10" text="采样" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" disabledimage="Button_Non.png"/>
 						</HorizontalLayout>
 					</VerticalLayout>
 				</TileLayout>

@@ -3,6 +3,7 @@
 #include "thread/MessageLoopManager.h"
 #include "thread/MessageLoopManager.h"
 #include "thread/MessageLoop.h"
+#include "CameraImageBuffer.h"
 #include <algorithm>
 #include <assert.h>
 #include <tchar.h>
@@ -133,11 +134,13 @@ void CameraDevice::CameraEventHandlerInCameraThread(IRCameraEvent event_type) {
   });
 }
 
-void CameraDevice::UpdateKelvinImage(IRCameraImageFilling* img_filling) {
-  camera_message_loop_->PushTask([this, img_filling] {
-    IRCameraStatusCode code = camera_info_->GetKelvinImage(img_filling);
+void CameraDevice::UpdateKelvinImage(const ImageUpdateHandler& handler) {
+  camera_message_loop_->PushTask([this, &handler] {
+    CameraImageBuffer*  buffer;
+    IRCameraStatusCode code = camera_info_->GetKelvinImage(&buffer);
     if (code == IRCAMERA_OK) {
-      main_message_loop_->PushTask([this] {
+      main_message_loop_->PushTask([this, &handler, buffer] {
+        handler(buffer);
         UpdateImageTrigger();
       });
     }

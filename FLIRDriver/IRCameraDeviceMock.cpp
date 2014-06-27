@@ -19,10 +19,10 @@ public:
   CameraImageBufferMock(float* buffer, int width, int height)
       : buffer_(buffer), width_(width), height_(height) {
   }
-  virtual int GetWidth() {
+  virtual int GetWidth() const {
     return width_;
   }
-  virtual int GetHeight() {
+  virtual int GetHeight() const {
     return height_;
   }
   virtual float* GetBuffer() {

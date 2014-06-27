@@ -42,6 +42,8 @@
     <ClCompile Include="thread\MessageQueueThread.cpp" />
     <ClCompile Include="thread\Mutex.cpp" />
     <ClCompile Include="thread\MessageLoopManager.cpp" />
+    <ClCompile Include="ui\CameraImageContainerUI.cpp" />
+    <ClCompile Include="ui\CameraImageListUI.cpp" />
     <ClCompile Include="ui\CameraImageUI.cpp" />
     <ClCompile Include="ui\ControlBuilder.cpp" />
     <ClCompile Include="ui\DIBitmap.cpp" />
@@ -58,6 +60,9 @@
     <ClInclude Include="thread\MessageQueueThread.h" />
     <ClInclude Include="thread\Mutex.h" />
     <ClInclude Include="thread\MessageLoopManager.h" />
+    <ClInclude Include="ui\CameraImageBuilder.h" />
+    <ClInclude Include="ui\CameraImageContainerUI.h" />
+    <ClInclude Include="ui\CameraImageListUI.h" />
     <ClInclude Include="ui\CameraImageUI.h" />
     <ClInclude Include="ui\ControlBuilder.h" />
     <ClInclude Include="ui\DIBitmap.h" />

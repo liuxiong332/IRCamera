@@ -4,11 +4,6 @@
 
 /////////////////////////CameraImageControl////////////////////
 ControlBuilder::ControlBuilder() {
-  camera_info = NULL;
-}
-
-void ControlBuilder::Init(camera::CameraDevice* manage) {
-  camera_info = manage;
 }
 
 ControlBuilder::~ControlBuilder() {
@@ -16,7 +11,7 @@ ControlBuilder::~ControlBuilder() {
 
 DuiLib::CControlUI*  ControlBuilder::CreateControl(LPCTSTR class_name) {
   if (_tcscmp(class_name, _T("CameraImage")) == 0) {
-    return new CameraImageUI(camera_info);
+    return new CameraImageUI;
   }
   else if (_tcscmp(class_name, _T("TemperatureTable")) == 0) {
     return new TemperatureColorTableUI;

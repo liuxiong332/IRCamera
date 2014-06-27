@@ -9,7 +9,7 @@ DIBitmap::~DIBitmap() {
 }
 
 void DIBitmap::Init(int width, int height) {
-  if (bitmap_header_)
+  if (bitmap_header_ && img_width_ == width && img_height_ == height)
     return;
   img_width_ = width;
   img_height_ = height;
@@ -20,6 +20,8 @@ void DIBitmap::Init(int width, int height) {
   img_size += palette_size;
   img_size += align_width * height;
 
+  if (bitmap_header_) 
+    free(bitmap_header_); 
   bitmap_header_ = (BITMAPINFOHEADER*)malloc(img_size);
   bitmap_buffer_ = (BYTE*)bitmap_header_ + sizeof(BITMAPINFOHEADER)+palette_size;
 
@@ -47,16 +49,7 @@ BITMAPINFO* DIBitmap::GetInfo() {
   return reinterpret_cast<BITMAPINFO*>(bitmap_header_);
 }
 
-int  DIBitmap::GetMidColor(int begin, int end, int i) {
-  const int count = GetPaletteLen() - 1;
-  return (end*i + begin*(count - i)) / count;
-}
-
 void DIBitmap::InitPalette() {
-  //Init the palette
-//   int red_begin = 0x33, red_end = 0xf6;
-//   int green_begin = 0x9c, green_end = 0xaa;
-//   int blue_begin = 0x29, blue_end = 0x9f;
 
   int palette_count = GetPaletteLen();
   RGBQUAD * palette_buffer = GetPalettePtr(); 
@@ -68,7 +61,6 @@ void DIBitmap::InitPalette() {
       0, 256 * i / delta, 0, 0
     };
   }
-
   //blue color from the min to the max
   for (int i = 0; i < delta; ++i) {
     palette_buffer[delta + i] = {
@@ -82,18 +74,8 @@ void DIBitmap::InitPalette() {
       256 * i / remain_len, 255, 255, 0
     };
   }
-//   for (int i = 0; i < palette_count; ++i) {
-//     RGBQUAD color = {
-//       GetMidColor(red_begin, red_end, i),
-//       GetMidColor(green_begin, green_end, i),
-//       GetMidColor(blue_begin, blue_end, i), 0 };
-//     palette_buffer[i] = color;
-//   }
 }
-
-void DIBitmap::SetPalette(int index, const RGBQUAD& color) {
-  bitmap_palette_[index] = color;
-}
+ 
 int DIBitmap::GetPaletteLen() const {
   return PALETTE_COUNT;
 }

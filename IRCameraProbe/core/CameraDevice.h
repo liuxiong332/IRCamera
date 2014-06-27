@@ -4,7 +4,9 @@
 #include "CameraDeviceObserver.h"
 #include <vector>
 #include <memory>
+#include <functional>
 
+class CameraImageBuffer;
 namespace camera {
 
 class MessageLoop;
@@ -53,7 +55,8 @@ public:
 
   //notify the camera to get the new image 
   //note: img_filling must be multithread security
-  void  UpdateKelvinImage(IRCameraImageFilling* img_filling);
+  typedef std::function<void(CameraImageBuffer*)> ImageUpdateHandler;
+  void  UpdateKelvinImage(const ImageUpdateHandler&);
 private:
   friend class CameraManageEventHandler;
   //the observer to observe the camera event in the camera thread

@@ -5,10 +5,10 @@
 class CameraImageBufferImp : public CameraImageBuffer {
 public:
   CameraImageBufferImp(HGLOBAL h, int width, int height);
-  virtual int GetWidth() {
+  virtual int GetWidth() const {
     return width_;
   }
-  virtual int GetHeight() {
+  virtual int GetHeight() const {
     return height_;
   }
   virtual float* GetBuffer() {

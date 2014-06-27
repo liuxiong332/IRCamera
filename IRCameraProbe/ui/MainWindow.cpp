@@ -5,7 +5,7 @@
 
 #include "MainWindow.h"
 #include "thread/MessageLoopManager.h"
-
+#include "CameraImageContainerUI.h"
 
 bool MainWindow::ConnectBtnClick(void* param) {
   DuiLib::TNotifyUI*  notify = reinterpret_cast<DuiLib::TNotifyUI*>(param);
@@ -79,6 +79,14 @@ void MainWindow::Init() {
   camera_manage.AddConnectStatusObserver(this);
 }
 
+CameraImageContainerUI* MainWindow::CreateCameraImageContainerUI() {
+  DuiLib::CDialogBuilder builder;
+  DuiLib::CControlUI* control = builder.Create(_T("CameraImage.xml"), (UINT)0, &image_builder, &m_pm);
+  CameraImageContainerUI* container_ui = new CameraImageContainerUI;
+  container_ui->Init(static_cast<DuiLib::CContainerUI*>(control));
+  return container_ui;
+}
+
 void MainWindow::OnInitCamera() {
   connect_btn->SetEnabled(true);
 }
@@ -100,7 +108,7 @@ LRESULT MainWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
   if (uMsg == WM_CREATE) {
     m_pm.Init(m_hWnd);
-    image_builder.Init(&camera_manage);
+ //   image_builder.Init(&camera_manage);
     DuiLib::CDialogBuilder builder;
     DuiLib::CControlUI* pRoot = builder.Create(_T("IRCamera.xml"), (UINT)0, &image_builder, &m_pm);
     ASSERT(pRoot && "Failed to parse XML");
