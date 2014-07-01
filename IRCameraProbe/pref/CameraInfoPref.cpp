@@ -1,8 +1,17 @@
 #include "CameraInfoPref.h"
 #include "CameraInfoPrefObserver.h"
+#include <tchar.h>
 #include <algorithm>
 
+
 namespace camera {
+
+CameraInfoPref::CameraInfoPref() {
+  PushBack(_T("127.0.0.1"), _T("nimei"));
+  PushBack(_T("127.0.0.2"), _T("HELLO"));
+  PushBack(_T("127.0.0.3"), _T("nimei"));
+  PushBack(_T("127.0.0.4"), _T("HELLO"));
+}
 
 int CameraInfoPref::GetCameraCount() const {
   return static_cast<int>(camera_infos_.size());
@@ -44,4 +53,8 @@ void CameraInfoPref::CameraInfoPrefChanged() {
   });
 }
 
+CameraInfoPref* CameraInfoPref::GetInstance() {
+  static CameraInfoPref kInfPref;
+  return &kInfPref;
+}
 }

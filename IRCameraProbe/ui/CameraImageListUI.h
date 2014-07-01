@@ -16,13 +16,14 @@ public:
 
   CameraImageContainerUI* GetItemAt(int i);
 
-  int GetLength() const;
+  int GetCount() const;
 
   void PushBack(CameraImageContainerUI* container_ui);
   void InsertAt(int i, CameraImageContainerUI* container_ui);
   void Remove(CameraImageContainerUI* container_ui);
   void RemoveAt(int i);
 
+  void RemoveAll();
 private:
   DuiLib::CContainerUI* image_list_ui_;
   typedef std::unique_ptr<CameraImageContainerUI> ScopedCameraImageContainerUIPtr;

@@ -39,6 +39,7 @@
     <ClCompile Include="core\CameraImageModel.cpp" />
     <ClCompile Include="core\CameraSettings.cpp" />
     <ClCompile Include="linker\CameraImageContainerDeviceLinker.cpp" />
+    <ClCompile Include="linker\CameraImageLinkerList.cpp" />
     <ClCompile Include="pref\CameraInfoPref.cpp" />
     <ClCompile Include="thread\MessageLoop.cpp" />
     <ClCompile Include="thread\MessageQueueThread.cpp" />

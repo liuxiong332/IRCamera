@@ -10,6 +10,7 @@ public:
     TString ip_addr;
     TString name;
   };
+  CameraInfoPref();
   int GetCameraCount() const;
 
   const CameraInfo&   GetCameraAt(int index) const;
@@ -23,6 +24,8 @@ public:
   void  RemoveObserver(CameraInfoPrefObserver* observer);
   //when the camera info preference has changed completely
   void  CameraInfoPrefChanged();
+
+  static CameraInfoPref* GetInstance();
 private:
   std::vector<CameraInfo> camera_infos_;
   std::vector<CameraInfoPrefObserver*>  observers_;

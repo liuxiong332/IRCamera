@@ -10,6 +10,9 @@ CameraImageContainerDeviceLinker::CameraImageContainerDeviceLinker()
     : device_status_(UNINITIALIZED) {
 }
 
+LPCTSTR CameraImageContainerDeviceLinker::GetIPAddr() const {
+  return camera_device_->GetIPAddr().c_str();
+}
 void CameraImageContainerDeviceLinker::Init(LPCTSTR name, LPCTSTR ip_addr, CameraImageContainerUI* container_ui) {
   container_ui_.reset(container_ui);
   container_ui_->SetObserver(this);

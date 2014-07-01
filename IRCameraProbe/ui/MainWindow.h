@@ -12,7 +12,10 @@
 
 #include "CameraImageBuilder.h"
 
-#include "linker/CameraImageContainerDeviceLinker.h"
+#include "linker/CameraImageLinkerList.h"
+#include <memory>
+
+class  CameraImageListUI;
 
 class MainWindow : public DuiLib::CWindowWnd, //public DuiLib::INotifyUI
   public CameraImageBuilder
@@ -48,8 +51,9 @@ private:
   DuiLib::CLabelUI*   max_temp_label_;
   DuiLib::CTabLayoutUI* content_layout_;
   TemperatureColorTableUI*  color_table_ui_;
-
-  camera::CameraImageContainerDeviceLinker  camera_image_linker_;
+   
+  camera::CameraImageLinkerList linker_list_;
+  std::unique_ptr<CameraImageListUI>  camera_image_list_ui_;
 
   const static int kFlushImageTimerID = 1;
   const static int kFlushPeriodInMs = 200;

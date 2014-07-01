@@ -25,7 +25,11 @@ public:
 
   void Init(LPCTSTR name, LPCTSTR ip_addr, CameraImageContainerUI* container_ui);
 
-  CameraImageContainerUI* GetContainerUI();
+  CameraImageContainerUI* GetContainerUI() {
+    return container_ui_.get();
+  }
+
+  LPCTSTR  GetIPAddr() const;
 
   void Connect();
   void Disconnect();

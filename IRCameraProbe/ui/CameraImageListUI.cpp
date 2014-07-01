@@ -8,10 +8,12 @@ CameraImageListUI::CameraImageListUI() : image_list_ui_(NULL) {
 
 void CameraImageListUI::Init(DuiLib::CContainerUI* container_ui) {
   image_list_ui_ = container_ui;
+  //disable auto destroy
+  image_list_ui_->SetAutoDestroy(false);  
 }
 
 CameraImageContainerUI* CameraImageListUI::GetItemAt(int i) {
-  assert(i < GetLength());
+  assert(i < GetCount());
   DuiLib::CContainerUI* ui = static_cast<DuiLib::CContainerUI*>(image_list_ui_->GetItemAt(i));
   auto iter = camera_image_ui_map_.find(ui);
   if (iter == camera_image_ui_map_.end()) {
@@ -22,7 +24,7 @@ CameraImageContainerUI* CameraImageListUI::GetItemAt(int i) {
 }
  
 
-int CameraImageListUI::GetLength() const {
+int CameraImageListUI::GetCount() const {
   return image_list_ui_->GetCount();
 }
 
@@ -56,4 +58,8 @@ void CameraImageListUI::RemoveAt(int i) {
     camera_image_ui_map_.erase(iter);
   }
   image_list_ui_->RemoveAt(i);
+}
+
+void CameraImageListUI::RemoveAll() {
+  image_list_ui_->RemoveAll();
 }

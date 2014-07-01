@@ -6,7 +6,8 @@
 #include "MainWindow.h"
 #include "thread/MessageLoopManager.h"
 #include "CameraImageContainerUI.h"
-
+#include "CameraImageListUI.h"
+#include "linker/CameraImageContainerDeviceLinker.h"
 
 bool MainWindow::OnSettingBtnClick(void* param) {
   DuiLib::TNotifyUI* notify = reinterpret_cast<DuiLib::TNotifyUI*>(param);
@@ -39,10 +40,12 @@ void MainWindow::Init() {
   DuiLib::CButtonUI*  setting_back_btn = static_cast<DuiLib::CButtonUI*>(m_pm.FindControl(_T("from_setting_back_btn")));
   setting_back_btn->OnNotify += MakeDelegate(this, &MainWindow::OnSettingBackBtnClick);
 
-  DuiLib::CContainerUI* image_container = static_cast<DuiLib::CContainerUI*>(m_pm.FindControl(_T("camera_image_container_layout")));
-  CameraImageContainerUI* container_ui = new CameraImageContainerUI;
-  container_ui->Init(static_cast<DuiLib::CContainerUI*>(image_container));
-  camera_image_linker_.Init(_T("name"), _T("127.0.0.1"), container_ui);
+  DuiLib::CContainerUI* image_list = static_cast<DuiLib::CContainerUI*>(m_pm.FindControl(_T("camera_image_list")));
+  camera_image_list_ui_.reset(new CameraImageListUI);
+  camera_image_list_ui_->Init(image_list);
+
+  linker_list_.Init(this, camera_image_list_ui_.get() );
+
 //     image_control->BindUI(color_table_ui_);
 //     image_control->BindTempLabel(min_temp_label_, max_temp_label_);
 

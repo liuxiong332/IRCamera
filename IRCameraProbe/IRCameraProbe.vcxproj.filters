@@ -82,6 +82,9 @@
     <ClCompile Include="ui\CameraInfoListUI.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="linker\CameraImageLinkerList.cpp">
+      <Filter>linker</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ui\ControlBuilder.h">
