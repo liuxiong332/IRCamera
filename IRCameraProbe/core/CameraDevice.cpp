@@ -51,16 +51,14 @@ CameraDevice::~CameraDevice()
 //  IRCameraDestroy(camera_info);
 }
 
-void CameraDevice::Connect(ConnectResultObserver* observer) {
-  IRCameraStatusCode code;
-  camera_message_loop_->PushTaskAndReply(main_message_loop_, [this, &code] {
-    code = camera_info_->Connect(_T("127.0.0.1"));
-  }, [this, observer, &code] {
+void CameraDevice::Connect(const ConnectResultObserver& observer) {
+  IRCameraStatusCode* code = new IRCameraStatusCode;
+  camera_message_loop_->PushTaskAndReply(main_message_loop_, [this, code] {
+    *code = camera_info_->Connect(_T("127.0.0.1"));
+  }, [observer, code] {
     if (!observer)  return;
-    if (code == IRCAMERA_OK)
-      observer->OnConnectSuccess();
-    else
-      observer->OnConnectFalied(code);
+    observer(*code);
+    delete code;
   });
 //  camera_dispatcher_->PushTask(connect_task);
 //  connect_task->DoEvent();
@@ -135,13 +133,14 @@ void CameraDevice::CameraEventHandlerInCameraThread(IRCameraEvent event_type) {
 }
 
 void CameraDevice::UpdateKelvinImage(const ImageUpdateHandler& handler) {
-  camera_message_loop_->PushTask([this, &handler] {
+  camera_message_loop_->PushTask([this, handler] {
     CameraImageBuffer*  buffer;
     IRCameraStatusCode code = camera_info_->GetKelvinImage(&buffer);
     if (code == IRCAMERA_OK) {
-      main_message_loop_->PushTask([this, &handler, buffer] {
-        handler(buffer);
+      main_message_loop_->PushTask([this, handler, buffer] {
+        if (handler)  handler(buffer);
         UpdateImageTrigger();
+        delete buffer;
       });
     }
   });

@@ -12,8 +12,9 @@
 
 #include "CameraImageBuilder.h"
 
+#include "linker/CameraImageContainerDeviceLinker.h"
+
 class MainWindow : public DuiLib::CWindowWnd, //public DuiLib::INotifyUI
-  public camera::CameraDeviceObserver,
   public CameraImageBuilder
 {
 public:
@@ -23,23 +24,12 @@ public:
   UINT GetClassStyle() const { return UI_CLASSSTYLE_FRAME | CS_DBLCLKS; };
   void OnFinalMessage(HWND /*hWnd*/) { delete this; };
 
-  bool ConnectBtnClick(void* param);
-
   bool OnSettingBtnClick(void* param);
 
   bool OnSettingBackBtnClick(void* param);
-
-  bool DisconnectBtnClick(void* param);
    
   void Init();
 
-  virtual void OnInitCamera();
-
-  virtual void  OnConnect();
-
-  virtual void  OnDisconnect();
-
-  virtual void OnImageUpdate()  {}
   LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 private:
@@ -58,6 +48,8 @@ private:
   DuiLib::CLabelUI*   max_temp_label_;
   DuiLib::CTabLayoutUI* content_layout_;
   TemperatureColorTableUI*  color_table_ui_;
+
+  camera::CameraImageContainerDeviceLinker  camera_image_linker_;
 
   const static int kFlushImageTimerID = 1;
   const static int kFlushPeriodInMs = 200;

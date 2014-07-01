@@ -21,13 +21,7 @@ public:
   };
 
   //when connect to the camera, the observer return the connect result
-  class ConnectResultObserver {
-  public: 
-    virtual void  OnConnectSuccess() = 0;
-    virtual void  OnConnectFalied(IRCameraStatusCode code) = 0;
-    virtual ~ConnectResultObserver()  {}
-  };
-
+  typedef std::function<void(IRCameraStatusCode)> ConnectResultObserver;
   CameraDevice();
   ~CameraDevice();
 
@@ -40,7 +34,7 @@ public:
 
   void Init();
 
-  void Connect(ConnectResultObserver* observer);
+  void Connect(const ConnectResultObserver& observer);
   void Disconnect();
 
   int  GetImageWidth() const;

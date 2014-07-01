@@ -8,6 +8,7 @@ class CButtonUI;
 }
 
 class CameraImageUI;
+class CameraImageContainerUIObserver;
 
 class CameraImageContainerUI {
 public:
@@ -15,6 +16,9 @@ public:
   explicit CameraImageContainerUI(DuiLib::CContainerUI* container_ui);
 
   void Init(DuiLib::CContainerUI* container_ui);
+  void SetObserver(CameraImageContainerUIObserver* observer) {
+    observer_ = observer;
+  }
 
   //set status label text
   void SetStatusText(LPCTSTR  status_text);
@@ -28,13 +32,26 @@ public:
   //show or hide the sample button
   void ShowSampleButton(bool is_show);
 
+  void EnableConnectButton(bool is_enable);
+  void EnableDisconnectButton(bool is_enable);
+  void EnableSampleButton(bool is_enable);
+
   DuiLib::CContainerUI* GetUnderlyingControl() {
     return container_ui_;
   }
   CameraImageUI*  GetCameraImageUI();
 private:
+  bool OnConnectButtonClick(void* param);
+  bool OnDisconnectButtonClick(void* param);
+  bool OnSampleButtonClick(void* param);
+
+  CameraImageContainerUIObserver* observer_;
+
   DuiLib::CContainerUI* container_ui_;
   DuiLib::CLabelUI*   camera_status_label_;
   DuiLib::CLabelUI*   camera_error_label_;
+
+  DuiLib::CButtonUI*  connect_btn_;
   DuiLib::CButtonUI*  sample_btn_;
+  DuiLib::CButtonUI*  disconnect_btn_;
 };

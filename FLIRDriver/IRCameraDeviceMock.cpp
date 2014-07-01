@@ -7,8 +7,8 @@ namespace {
   const int kImageHeight = 240;
 
   const float kKelvinTempTransform = 273.15f;
-  const float kTempMinValue = kKelvinTempTransform + 20;
-  const float kTempMaxValue = kKelvinTempTransform + 40;
+  const float kTempMinValue = kKelvinTempTransform + 0;
+  const float kTempMaxValue = kKelvinTempTransform + 100;
 
   const int kImageArraySize = 1;
   float kImageArray[kImageWidth*kImageHeight];

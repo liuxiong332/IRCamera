@@ -1,18 +1,53 @@
 #pragma once
+#include "core/CameraDeviceObserver.h"
+#include "ui/CameraImageContainerUIObserver.h"
+#include <wtypes.h>
+#include <memory>
 
 class CameraImageContainerUI;
+class CameraImageBuffer;
+
 namespace camera {
 class CameraDevice;
-class CameraImageContainerDeviceLinker {
+class CameraImageContainerDeviceLinker: 
+  public CameraDeviceObserver,
+  public CameraImageContainerUIObserver {
 public:
+  enum DeviceStatus {
+    UNINITIALIZED,
+    INITIALIZING,
+    INITIALIZED,
+    CONNECTING,
+    CONNECTED,
+    DISCONNECTING
+  };
   CameraImageContainerDeviceLinker();
 
-  void Init(CameraDevice* device, CameraImageContainerUI* ui);
+  void Init(LPCTSTR name, LPCTSTR ip_addr, CameraImageContainerUI* container_ui);
 
   CameraImageContainerUI* GetContainerUI();
+
+  void Connect();
+  void Disconnect();
 private:
-  CameraImageContainerUI* container_ui_;
-  CameraDevice* camera_device_;
+  virtual void OnConnectButtonClicked() override;
+  virtual void OnDisconnectButtonClicked() override;
+  virtual void OnSampleButtonClicked() override;
+
+  //when the camera has init completely
+  virtual void  OnInitCamera() override;
+  //when connect to the camera successfully
+  virtual void  OnConnect() override;
+  //when the host has disconnect from the camera
+  virtual void  OnDisconnect()  override;
+  //when the image has update
+  virtual void  OnImageUpdate() override;
+
+  void ImageBufferUpdate(CameraImageBuffer*);
+
+  std::unique_ptr<CameraImageContainerUI> container_ui_;
+  std::unique_ptr<CameraDevice> camera_device_;
+  DeviceStatus  device_status_;
 };
 
 }

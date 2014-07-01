@@ -14,6 +14,12 @@
     <Filter Include="thread">
       <UniqueIdentifier>{5b3bc94a-2309-4ae3-9e4d-f8cac30aa600}</UniqueIdentifier>
     </Filter>
+    <Filter Include="linker">
+      <UniqueIdentifier>{10dd444c-26ec-4e28-a168-c24e503770a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pref">
+      <UniqueIdentifier>{b8a5ea1a-a44c-4d77-a636-6048a386e2f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ui\ControlBuilder.cpp">
@@ -56,6 +62,24 @@
       <Filter>ui</Filter>
     </ClCompile>
     <ClCompile Include="ui\CameraImageListUI.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="linker\CameraImageContainerDeviceLinker.cpp">
+      <Filter>linker</Filter>
+    </ClCompile>
+    <ClCompile Include="pref\CameraInfoPref.cpp">
+      <Filter>pref</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\CameraInfoUI.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\ButtonEditUITransform.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\CameraPrefLayoutUI.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\CameraInfoListUI.cpp">
       <Filter>ui</Filter>
     </ClCompile>
   </ItemGroup>
@@ -109,6 +133,48 @@
       <Filter>ui</Filter>
     </ClInclude>
     <ClInclude Include="ui\CameraImageBuilder.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="linker\CameraImageContainerDeviceLinker.h">
+      <Filter>linker</Filter>
+    </ClInclude>
+    <ClInclude Include="linker\CameraSampleAction.h">
+      <Filter>linker</Filter>
+    </ClInclude>
+    <ClInclude Include="linker\CameraSampleDriver.h">
+      <Filter>linker</Filter>
+    </ClInclude>
+    <ClInclude Include="linker\CameraSamplePosChanger.h">
+      <Filter>linker</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\CameraImageContainerUIObserver.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="linker\CameraImageLinkerList.h">
+      <Filter>linker</Filter>
+    </ClInclude>
+    <ClInclude Include="pref\CameraInfoPref.h">
+      <Filter>pref</Filter>
+    </ClInclude>
+    <ClInclude Include="pref\CameraInfoPrefObserver.h">
+      <Filter>pref</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\CameraInfoUI.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\CommonUIOperator.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ButtonEditUITransform.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\CameraPrefLayoutUI.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\CameraInfoPrefBuilder.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\CameraInfoListUI.h">
       <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>

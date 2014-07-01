@@ -7,14 +7,6 @@
 #include "thread/MessageLoopManager.h"
 #include "CameraImageContainerUI.h"
 
-bool MainWindow::ConnectBtnClick(void* param) {
-  DuiLib::TNotifyUI*  notify = reinterpret_cast<DuiLib::TNotifyUI*>(param);
-  if (notify->sType == _T("click")) {
-    camera_manage.Connect(NULL);
-    return true;
-  }
-  return false;
-}
 
 bool MainWindow::OnSettingBtnClick(void* param) {
   DuiLib::TNotifyUI* notify = reinterpret_cast<DuiLib::TNotifyUI*>(param);
@@ -34,28 +26,11 @@ bool MainWindow::OnSettingBackBtnClick(void* param) {
   return false;
 }
 
-bool MainWindow::DisconnectBtnClick(void* param) {
-  DuiLib::TNotifyUI*  notify = reinterpret_cast<DuiLib::TNotifyUI*>(param);
-  if (notify->sType == _T("click")) {
-    camera_manage.Disconnect();
-    return true;
-  }
-  return false;
-}
- 
 void MainWindow::Init() { 
   camera_thread_.BeginThread();
   camera::MessageLoopManager::GetInstance()->SetCameraMessageLoop(camera_thread_.GetMessageLoop());
   camera_manage.Init();
 
-  connect_btn = static_cast<DuiLib::CButtonUI*>(m_pm.FindControl(_T("connect_btn")));
-  disconnect_btn = static_cast<DuiLib::CButtonUI*>(m_pm.FindControl(_T("disconnect_btn")));
-  image_control = static_cast<CameraImageUI*>
-    (m_pm.FindControl(_T("camera_image")));
-  min_temp_label_ = static_cast<DuiLib::CLabelUI*>(m_pm.FindControl(_T("min_temp_label")));
-  max_temp_label_ = static_cast<DuiLib::CLabelUI*>(m_pm.FindControl(_T("max_temp_label")));
-  color_table_ui_ = static_cast<TemperatureColorTableUI*>
-    (m_pm.FindControl(_T("color_table")));
 
   content_layout_ = static_cast<DuiLib::CTabLayoutUI*>(m_pm.FindControl(_T("content_layout")));
   DuiLib::CButtonUI*  setting_btn = static_cast<DuiLib::CButtonUI*>(m_pm.FindControl(_T("setting_btn")));
@@ -63,20 +38,20 @@ void MainWindow::Init() {
 
   DuiLib::CButtonUI*  setting_back_btn = static_cast<DuiLib::CButtonUI*>(m_pm.FindControl(_T("from_setting_back_btn")));
   setting_back_btn->OnNotify += MakeDelegate(this, &MainWindow::OnSettingBackBtnClick);
+
+  DuiLib::CContainerUI* image_container = static_cast<DuiLib::CContainerUI*>(m_pm.FindControl(_T("camera_image_container_layout")));
+  CameraImageContainerUI* container_ui = new CameraImageContainerUI;
+  container_ui->Init(static_cast<DuiLib::CContainerUI*>(image_container));
+  camera_image_linker_.Init(_T("name"), _T("127.0.0.1"), container_ui);
 //     image_control->BindUI(color_table_ui_);
 //     image_control->BindTempLabel(min_temp_label_, max_temp_label_);
 
-  ASSERT(connect_btn != NULL && disconnect_btn != NULL && image_control!=NULL);
-  connect_btn->SetEnabled(false);
 
 //     DuiLib::CControlUI* edit_ctrl = m_pm.FindControl(_T("threshold_edit"));
 //     edit_ctrl->OnNotify += MakeDelegate(this, &CFrameWindowWnd::ThresholdEditTextChange);
 
-  connect_btn->OnNotify += MakeDelegate(this, &MainWindow::ConnectBtnClick);
-  disconnect_btn->OnNotify += MakeDelegate(this, &MainWindow::DisconnectBtnClick);
 //  image_control->OnNotify += MakeDelegate(this, &CFrameWindowWnd::ImageCtrlTimerProc);
 
-  camera_manage.AddConnectStatusObserver(this);
 }
 
 CameraImageContainerUI* MainWindow::CreateCameraImageContainerUI() {
@@ -87,23 +62,6 @@ CameraImageContainerUI* MainWindow::CreateCameraImageContainerUI() {
   return container_ui;
 }
 
-void MainWindow::OnInitCamera() {
-  connect_btn->SetEnabled(true);
-}
-
-void  MainWindow::OnConnect()  {
-  connect_btn->SetEnabled(false);
-  disconnect_btn->SetEnabled(true);
-  image_control->Invalidate();
-  m_pm.SetTimer(image_control, kFlushImageTimerID, kFlushPeriodInMs);
-}
-
-void  MainWindow::OnDisconnect() {
-  connect_btn->SetEnabled(true);
-  disconnect_btn->SetEnabled(false);
-  m_pm.KillTimer(image_control, kFlushImageTimerID);
-}
- 
 LRESULT MainWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
   if (uMsg == WM_CREATE) {
