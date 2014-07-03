@@ -46,6 +46,7 @@ void CameraDevice::Init() {
 
 CameraDevice::~CameraDevice()
 {
+  camera_info_->RegisterEventHandler(NULL);
   if (camera_status_ == CONNECTED)
     Disconnect();
 //  IRCameraDestroy(camera_info);
@@ -65,6 +66,7 @@ void CameraDevice::Connect(const ConnectResultObserver& observer) {
 }
 
 void CameraDevice::Disconnect(){
+
 //  return IRCameraDisconnect(camera_info);  camera_dispatcher_->PushTask(disconnect_task);
   camera_message_loop_->PushTask([this] {
     camera_info_->Disconnect();

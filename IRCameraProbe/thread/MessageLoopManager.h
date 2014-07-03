@@ -1,22 +1,25 @@
 #pragma once
+#include "MessageLoop.h"
+#include "MessageQueueThread.h"
 #include <windows.h>
 
 namespace camera {
-class MessageLoop;
+class MessageDispatcher;
 class MessageLoopManager {
 public:
   MessageLoopManager();
 
+  void Init(MessageDispatcher* main_dispatcher);
+
   MessageLoop* GetMainMessageLoop();
   MessageLoop* GetCameraMessageLoop();
 
-  void SetMainMessageLoop(MessageLoop*);
-  void SetCameraMessageLoop(MessageLoop*);
+  void  QuitCameraThread();
 
   static MessageLoopManager* GetInstance();
 private:
-  MessageLoop*  main_message_loop_;
-  MessageLoop* camera_message_loop_;
+  MessageQueueThread  camera_thread_;
+  MessageLoop  main_message_loop_;
   static MessageLoopManager* message_loop_manager_;
 };
 

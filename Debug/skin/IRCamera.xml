@@ -36,21 +36,19 @@
 			<VerticalLayout name="pref_layout" bkimage="bg10.png" inset="0,0,0,0">
 				<VerticalLayout padding="10,10,10,0" vscrollbar="true">
 					<Label text="红外探头" font="1" width="80"/>
-					<VerticalLayout height="60" padding="20,0,0,10">
+					<VerticalLayout name="camera_info_pref_layout" height="210" padding="20,0,0,10">
 						<HorizontalLayout height="20" padding="0,5,0,5">
-							<Button text="Add" width="60" padding="0,0,10,0" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" disabledimage="Button_Non.png"/>
-							<Button text="Remove" width="60" padding="10,0,0,0" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" disabledimage="Button_Non.png"/>
+							<Button name="add_btn" text="Add" width="60" padding="0,0,10,0" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" disabledimage="Button_Non.png"/>
+							<Button name="edit_btn" text="Edit" width="60" padding="10,0,0,0" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" disabledimage="Button_Non.png"/>
+							<Button name="remove_btn" text="Remove" width="60" padding="10,0,0,0" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" disabledimage="Button_Non.png"/>
 						</HorizontalLayout>
 
-						<VerticalLayout name="camera_info_layout" height="30" bkimage="bg12.png">
-							<HorizontalLayout height="30" >
-								<Label text="探头名字: " width="70"/>
-								<Button name="camera_name_btn" padding="0,5,0,5" text="编辑个性签名" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="200"/>
-			          <RichEdit name="camera_name_edit" padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" text="编辑个性签名" multiline="false" rich="false"/>
+						<VerticalLayout height="180" name="camera_info_list" vscrollbar="true">
+							<HorizontalLayout height="30">
+								<Control name="edit_hide_control" width="21" visible="false"/>
+								<Label text="探头名字: " width="200" padding="5,0,0,0"/>
 			          <Control width="100"/>
-								<Label text="IP: " width="30"/>
-								<Button name="camera_ipaddr_btn" padding="0,5,0,5" text="192.168.2.1" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
-			          <RichEdit name="camera_ipaddr_edit" padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" text="192.168.2.1" multiline="false" rich="false"/>
+								<Label text="IP: " width="200"/>
 							</HorizontalLayout>
 						</VerticalLayout>
 

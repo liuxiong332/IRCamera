@@ -2,15 +2,11 @@
 #include "CameraInfoPrefObserver.h"
 #include <tchar.h>
 #include <algorithm>
-
+#include <utility>
 
 namespace camera {
 
 CameraInfoPref::CameraInfoPref() {
-  PushBack(_T("127.0.0.1"), _T("nimei"));
-  PushBack(_T("127.0.0.2"), _T("HELLO"));
-  PushBack(_T("127.0.0.3"), _T("nimei"));
-  PushBack(_T("127.0.0.4"), _T("HELLO"));
 }
 
 int CameraInfoPref::GetCameraCount() const {
@@ -21,16 +17,17 @@ const CameraInfoPref::CameraInfo&   CameraInfoPref::GetCameraAt(int index) const
   return camera_infos_[index];
 }
 
-void CameraInfoPref::PushBack(LPCTSTR ip_addr, LPCTSTR name) {
-  camera_infos_.push_back({ ip_addr, name });
-}
-
-void  CameraInfoPref::InsertAt(int pos, LPCTSTR ip_addr, LPCTSTR name) {
+void CameraInfoPref::PushBack(const TString& ip_addr, const TString& name) {
   CameraInfo info = { ip_addr, name };
-  camera_infos_.insert(camera_infos_.begin() + pos, info);
+  camera_infos_.push_back( std::move(info));
 }
 
-void  CameraInfoPref::ReplaceAt(int pos, LPCTSTR ip_addr, LPCTSTR name) {
+void  CameraInfoPref::InsertAt(int pos, const TString& ip_addr, const TString& name) {
+  CameraInfo info = { ip_addr, name };
+  camera_infos_.insert(camera_infos_.begin() + pos, std::move(info));
+}
+
+void  CameraInfoPref::ReplaceAt(int pos, const TString& ip_addr, const TString& name) {
   camera_infos_[pos] = { ip_addr, name };
 }
 
@@ -57,4 +54,5 @@ CameraInfoPref* CameraInfoPref::GetInstance() {
   static CameraInfoPref kInfPref;
   return &kInfPref;
 }
+
 }

@@ -24,7 +24,12 @@ void CameraImageLinkerList::Init(CameraImageBuilder* builder, CameraImageListUI*
   list_ui_ = list_ui;
   camera_image_builder_ = builder;
   assert(list_ui->GetCount() == 0);
+  CameraInfoPref::GetInstance()->AddObserver(this);
   ReloadCameraList();
+}
+
+CameraImageLinkerList::~CameraImageLinkerList() {
+  CameraInfoPref::GetInstance()->RemoveObserver(this);
 }
 
 void CameraImageLinkerList::ReloadCameraList()

@@ -6,20 +6,21 @@ namespace camera {
 MessageLoopManager::MessageLoopManager() {
 }
 
+void MessageLoopManager::Init(MessageDispatcher* main_dispatcher) {
+  main_message_loop_.InitWithDispatcher(main_dispatcher);
+  camera_thread_.BeginThread();
+}
+
 MessageLoop*  MessageLoopManager::GetMainMessageLoop() {
-  return main_message_loop_;
+  return &main_message_loop_;
 }
 
 MessageLoop* MessageLoopManager::GetCameraMessageLoop() {
-  return camera_message_loop_;
+  return camera_thread_.GetMessageLoop();
 }
-
-void MessageLoopManager::SetCameraMessageLoop(MessageLoop* dispatcher) {
-  camera_message_loop_ = dispatcher;
-}
-
-void MessageLoopManager::SetMainMessageLoop(MessageLoop* dispatcher) {
-  main_message_loop_ = dispatcher;
+ 
+void  MessageLoopManager::QuitCameraThread() {
+  camera_thread_.Quit();
 }
 
 MessageLoopManager*  MessageLoopManager::message_loop_manager_ = NULL;

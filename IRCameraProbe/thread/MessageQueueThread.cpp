@@ -39,16 +39,7 @@ unsigned MessageQueueThread::ThreadFunc() {
   SetEvent(init_event);
 
   //begin the message loop
-  while (true) {
-    if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-      if (msg.message == WM_QUIT)
-        break;
-      //the dispatch must exist, because the ActiveX need the HWND message
-      TranslateMessage(&msg);
-      DispatchMessage(&msg);
-    }
-    message_loop_->DispatchTasks();
-  }
+  message_loop_->RunMessageLoop();
   
   CloseHandle((HANDLE)thread_handle);
   ::CoUninitialize();

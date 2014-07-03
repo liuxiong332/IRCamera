@@ -1,5 +1,6 @@
 #pragma once
 #include "IRCameraBasic.h"
+#include <memory>
 
 namespace DuiLib {
 class CContainerUI;
@@ -37,7 +38,7 @@ public:
   void EnableSampleButton(bool is_enable);
 
   DuiLib::CContainerUI* GetUnderlyingControl() {
-    return container_ui_;
+    return container_ui_.get();
   }
   CameraImageUI*  GetCameraImageUI();
 private:
@@ -47,7 +48,7 @@ private:
 
   CameraImageContainerUIObserver* observer_;
 
-  DuiLib::CContainerUI* container_ui_;
+  std::unique_ptr<DuiLib::CContainerUI> container_ui_;
   DuiLib::CLabelUI*   camera_status_label_;
   DuiLib::CLabelUI*   camera_error_label_;
 

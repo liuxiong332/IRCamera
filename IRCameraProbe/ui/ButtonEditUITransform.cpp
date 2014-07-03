@@ -23,7 +23,7 @@ bool ButtonEditUITransform::OnButtonClicked(void* param) {
 }
 bool ButtonEditUITransform::OnControlKillFocus(void* param) {
   DuiLib::TNotifyUI* notify = static_cast<DuiLib::TNotifyUI*>(param);
-  if (notify->sType == _T("click")) {
+  if (notify->sType == _T("killfocus")) {
     control_ui_->SetVisible(false);
     button_ui_->SetText(control_ui_->GetText());
     button_ui_->SetVisible(true);

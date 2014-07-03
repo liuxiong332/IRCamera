@@ -7,6 +7,9 @@ public:
     return parent_ui->GetManager()->FindSubControlByName(parent_ui, name);
   }
 
+  static DuiLib::CContainerUI* FindSubContainerByName(DuiLib::CContainerUI* parent_ui, LPCTSTR name) {
+    return static_cast<DuiLib::CContainerUI*>(FindSubControlByName(parent_ui, name));
+  }
   static DuiLib::CLabelUI* FindSubLabelByName(DuiLib::CContainerUI* parent_ui, LPCTSTR name) {
     return static_cast<DuiLib::CLabelUI*>(FindSubControlByName(parent_ui, name));
   }
@@ -17,5 +20,9 @@ public:
 
   static DuiLib::CRichEditUI*  FindSubRichEditByName(DuiLib::CContainerUI* parent_ui, LPCTSTR name) {
     return static_cast<DuiLib::CRichEditUI*>(FindSubControlByName(parent_ui, name));
+  }
+
+  static DuiLib::COptionUI* FindSubOptionByName(DuiLib::CContainerUI* parent_ui, LPCTSTR name) {
+    return static_cast<DuiLib::COptionUI*>(FindSubControlByName(parent_ui, name));
   }
 };

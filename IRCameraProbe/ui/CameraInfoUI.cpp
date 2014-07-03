@@ -2,6 +2,8 @@
 #include "CommonUIOperator.h"
 
 void CameraInfoUI::Init(DuiLib::CContainerUI* container_ui) {
+  container_ui_ = container_ui;
+  checkbox_ = CommonUIOperator::FindSubOptionByName(container_ui_, _T("camera_info_checkbox"));
   name_button_ = CommonUIOperator::FindSubButtonByName(container_ui, _T("camera_name_btn"));
   name_edit_ = CommonUIOperator::FindSubRichEditByName(container_ui, _T("camera_name_edit")); 
   name_ui_transform_.Init(name_button_, name_edit_);
@@ -11,9 +13,17 @@ void CameraInfoUI::Init(DuiLib::CContainerUI* container_ui) {
   ipaddr_ui_transform_.Init(ipaddr_button_, ipaddr_edit_);
 }
 
-LPCTSTR CameraInfoUI::GetIPAddr() const {
-  return name_button_->GetText();
+bool CameraInfoUI::IsChecked() const {
+  return checkbox_->IsSelected();
 }
-LPCTSTR CameraInfoUI::GetName() const {
-  return ipaddr_button_->GetText();
+
+void CameraInfoUI::EnableCheckbox(bool is_enable) {
+  checkbox_->SetVisible(is_enable);
+}
+
+TString CameraInfoUI::GetIPAddr() const {
+  return TString(ipaddr_button_->GetText());
+}
+TString CameraInfoUI::GetName() const {
+  return TString(name_button_->GetText());
 }

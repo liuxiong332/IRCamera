@@ -23,7 +23,7 @@ public:
   };
   CameraImageContainerDeviceLinker();
 
-  void Init(LPCTSTR name, LPCTSTR ip_addr, CameraImageContainerUI* container_ui);
+  void Init(LPCTSTR ip_addr, LPCTSTR name, CameraImageContainerUI* container_ui);
 
   CameraImageContainerUI* GetContainerUI() {
     return container_ui_.get();

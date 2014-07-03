@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Layout>
+	<HorizontalLayout height="30" name="camera_info">
+		<Option name="camera_info_checkbox" width="21" padding="0,3,0,5" visible="false" normalimage="file='CheckBox.png' source='21,0,42,21'"  selectedimage="file='CheckBox.png' source='0,0,21,21'"/>
+		<Button name="camera_name_btn" padding="5,5,0,5" text="编辑个性签名" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="200"/>
+    <RichEdit name="camera_name_edit" padding="5,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" multiline="false" width="200" rich="false" bkimage="bg12.png"/>
+    <Control width="100"/>
+		<Button name="camera_ipaddr_btn" padding="0,5,0,5" text="192.168.2.1" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="200"/>
+    <RichEdit name="camera_ipaddr_edit" padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" multiline="false" width="100" rich="false" bkimage="bg12.png"/>
+	</HorizontalLayout>
+</Layout>
+

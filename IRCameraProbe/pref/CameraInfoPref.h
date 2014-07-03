@@ -15,9 +15,9 @@ public:
 
   const CameraInfo&   GetCameraAt(int index) const;
 
-  void  PushBack(LPCTSTR ip_addr, LPCTSTR name);
-  void  InsertAt(int pos, LPCTSTR ip_addr, LPCTSTR name);
-  void  ReplaceAt(int pos, LPCTSTR ip_addr, LPCTSTR name);
+  void  PushBack(const TString& ip_addr, const TString& name);
+  void  InsertAt(int pos, const TString& ip_addr, const TString& name);
+  void  ReplaceAt(int pos, const TString& ip_addr, const TString& name);
   void  Clear();
 
   void  AddObserver(CameraInfoPrefObserver* observer);

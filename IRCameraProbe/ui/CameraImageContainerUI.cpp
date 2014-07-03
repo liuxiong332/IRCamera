@@ -5,7 +5,7 @@
 #include "UIlib.h"
 #include <wtypes.h>
  
-CameraImageContainerUI::CameraImageContainerUI() :container_ui_(NULL), observer_(NULL) {
+CameraImageContainerUI::CameraImageContainerUI() : observer_(NULL) {
 }
 
 CameraImageContainerUI::CameraImageContainerUI(DuiLib::CContainerUI* container_ui) {
@@ -13,17 +13,17 @@ CameraImageContainerUI::CameraImageContainerUI(DuiLib::CContainerUI* container_u
 }
 
 void CameraImageContainerUI::Init(DuiLib::CContainerUI* container_ui) {
-  container_ui_ = container_ui;
-  camera_status_label_ = CommonUIOperator::FindSubLabelByName(container_ui_, _T("camera_status_label"));
-  camera_error_label_ = CommonUIOperator::FindSubLabelByName(container_ui_, _T("camera_error_label"));
+  container_ui_.reset(container_ui);
+  camera_status_label_ = CommonUIOperator::FindSubLabelByName(container_ui_.get(), _T("camera_status_label"));
+  camera_error_label_ = CommonUIOperator::FindSubLabelByName(container_ui_.get(), _T("camera_error_label"));
 
-  sample_btn_ = CommonUIOperator::FindSubButtonByName(container_ui_, _T("sample_btn"));
+  sample_btn_ = CommonUIOperator::FindSubButtonByName(container_ui_.get(), _T("sample_btn"));
   sample_btn_->OnNotify += DuiLib::MakeDelegate(this, &CameraImageContainerUI::OnSampleButtonClick);
 
-  connect_btn_ = CommonUIOperator::FindSubButtonByName(container_ui_, _T("connect_btn"));
+  connect_btn_ = CommonUIOperator::FindSubButtonByName(container_ui_.get(), _T("connect_btn"));
   connect_btn_->OnNotify += DuiLib::MakeDelegate(this, &CameraImageContainerUI::OnConnectButtonClick);
 
-  disconnect_btn_ = CommonUIOperator::FindSubButtonByName(container_ui_, _T("disconnect_btn"));
+  disconnect_btn_ = CommonUIOperator::FindSubButtonByName(container_ui_.get(), _T("disconnect_btn"));
   disconnect_btn_->OnNotify += DuiLib::MakeDelegate(this, &CameraImageContainerUI::OnDisconnectButtonClick);
 }
 //set status label text
@@ -63,7 +63,7 @@ void CameraImageContainerUI::EnableSampleButton(bool is_enable) {
 }
 
 CameraImageUI*  CameraImageContainerUI::GetCameraImageUI() {
-  return static_cast<CameraImageUI*>(CommonUIOperator::FindSubControlByName(container_ui_, _T("camera_image")));
+  return static_cast<CameraImageUI*>(CommonUIOperator::FindSubControlByName(container_ui_.get(), _T("camera_image")));
 }
 
 bool CameraImageContainerUI::OnConnectButtonClick(void* param) {

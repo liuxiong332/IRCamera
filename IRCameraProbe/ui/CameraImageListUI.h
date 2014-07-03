@@ -1,6 +1,6 @@
 #pragma once
 #include "IRCameraBasic.h"
-#include <map>
+#include <vector>
 #include <memory>
 
 namespace DuiLib {
@@ -26,9 +26,5 @@ public:
   void RemoveAll();
 private:
   DuiLib::CContainerUI* image_list_ui_;
-  typedef std::unique_ptr<CameraImageContainerUI> ScopedCameraImageContainerUIPtr;
-  typedef std::map<DuiLib::CContainerUI*, ScopedCameraImageContainerUIPtr>  CameraImageMap;
-  typedef CameraImageMap::iterator  CameraImageMapIterator;
-
-  CameraImageMap  camera_image_ui_map_;
+  std::vector<CameraImageContainerUI*>  camera_image_ui_list_;
 };

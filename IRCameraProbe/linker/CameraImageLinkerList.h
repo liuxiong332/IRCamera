@@ -17,6 +17,7 @@ class CameraImageLinkerList: public CameraInfoPrefObserver {
 public:
   void  Init(CameraImageBuilder*, CameraImageListUI* list_ui);
 
+  ~CameraImageLinkerList();
 private:
   virtual void CameraInfoPrefChanged() override;
 

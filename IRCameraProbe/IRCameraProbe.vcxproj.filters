@@ -85,6 +85,21 @@
     <ClCompile Include="linker\CameraImageLinkerList.cpp">
       <Filter>linker</Filter>
     </ClCompile>
+    <ClCompile Include="ui\CameraInfoPrefLayout.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="linker\CameraInfoListLinker.cpp">
+      <Filter>linker</Filter>
+    </ClCompile>
+    <ClCompile Include="linker\CameraPrefLinker.cpp">
+      <Filter>linker</Filter>
+    </ClCompile>
+    <ClCompile Include="linker\MainLinker.cpp">
+      <Filter>linker</Filter>
+    </ClCompile>
+    <ClCompile Include="core\WinMain.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ui\ControlBuilder.h">
@@ -179,6 +194,27 @@
     </ClInclude>
     <ClInclude Include="ui\CameraInfoListUI.h">
       <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\CameraInfoPrefLayout.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="linker\CameraInfoListLinker.h">
+      <Filter>linker</Filter>
+    </ClInclude>
+    <ClInclude Include="linker\CameraPrefLinker.h">
+      <Filter>linker</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\TabLayoutSwitcher.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\CameraPrefLayoutUIObserver.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="linker\MainLinker.h">
+      <Filter>linker</Filter>
+    </ClInclude>
+    <ClInclude Include="thread\MessageDispatcher.h">
+      <Filter>thread</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

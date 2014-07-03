@@ -38,8 +38,12 @@
     <ClCompile Include="core\CameraDevice.cpp" />
     <ClCompile Include="core\CameraImageModel.cpp" />
     <ClCompile Include="core\CameraSettings.cpp" />
+    <ClCompile Include="core\WinMain.cpp" />
     <ClCompile Include="linker\CameraImageContainerDeviceLinker.cpp" />
     <ClCompile Include="linker\CameraImageLinkerList.cpp" />
+    <ClCompile Include="linker\CameraInfoListLinker.cpp" />
+    <ClCompile Include="linker\CameraPrefLinker.cpp" />
+    <ClCompile Include="linker\MainLinker.cpp" />
     <ClCompile Include="pref\CameraInfoPref.cpp" />
     <ClCompile Include="thread\MessageLoop.cpp" />
     <ClCompile Include="thread\MessageQueueThread.cpp" />
@@ -50,6 +54,7 @@
     <ClCompile Include="ui\CameraImageListUI.cpp" />
     <ClCompile Include="ui\CameraImageUI.cpp" />
     <ClCompile Include="ui\CameraInfoListUI.cpp" />
+    <ClCompile Include="ui\CameraInfoPrefLayout.cpp" />
     <ClCompile Include="ui\CameraInfoUI.cpp" />
     <ClCompile Include="ui\CameraPrefLayoutUI.cpp" />
     <ClCompile Include="ui\ControlBuilder.cpp" />
@@ -65,11 +70,15 @@
     <ClInclude Include="core\ImageBuffer.h" />
     <ClInclude Include="linker\CameraImageContainerDeviceLinker.h" />
     <ClInclude Include="linker\CameraImageLinkerList.h" />
+    <ClInclude Include="linker\CameraInfoListLinker.h" />
+    <ClInclude Include="linker\CameraPrefLinker.h" />
     <ClInclude Include="linker\CameraSampleAction.h" />
     <ClInclude Include="linker\CameraSampleDriver.h" />
     <ClInclude Include="linker\CameraSamplePosChanger.h" />
+    <ClInclude Include="linker\MainLinker.h" />
     <ClInclude Include="pref\CameraInfoPref.h" />
     <ClInclude Include="pref\CameraInfoPrefObserver.h" />
+    <ClInclude Include="thread\MessageDispatcher.h" />
     <ClInclude Include="thread\MessageLoop.h" />
     <ClInclude Include="thread\MessageQueueThread.h" />
     <ClInclude Include="thread\Mutex.h" />
@@ -82,12 +91,15 @@
     <ClInclude Include="ui\CameraImageUI.h" />
     <ClInclude Include="ui\CameraInfoListUI.h" />
     <ClInclude Include="ui\CameraInfoPrefBuilder.h" />
+    <ClInclude Include="ui\CameraInfoPrefLayout.h" />
     <ClInclude Include="ui\CameraInfoUI.h" />
     <ClInclude Include="ui\CameraPrefLayoutUI.h" />
+    <ClInclude Include="ui\CameraPrefLayoutUIObserver.h" />
     <ClInclude Include="ui\CommonUIOperator.h" />
     <ClInclude Include="ui\ControlBuilder.h" />
     <ClInclude Include="ui\DIBitmap.h" />
     <ClInclude Include="ui\MainWindow.h" />
+    <ClInclude Include="ui\TabLayoutSwitcher.h" />
     <ClInclude Include="ui\TemperatureColorTableUI.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

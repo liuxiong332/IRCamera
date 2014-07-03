@@ -1,6 +1,7 @@
 #include "CameraImageListUI.h"
 #include "CameraImageContainerUI.h"
 #include <assert.h>
+#include <algorithm>
 #include <UIlib.h>
 
 CameraImageListUI::CameraImageListUI() : image_list_ui_(NULL) {
@@ -8,58 +9,47 @@ CameraImageListUI::CameraImageListUI() : image_list_ui_(NULL) {
 
 void CameraImageListUI::Init(DuiLib::CContainerUI* container_ui) {
   image_list_ui_ = container_ui;
+  assert(image_list_ui_->GetCount() == 0);
   //disable auto destroy
   image_list_ui_->SetAutoDestroy(false);  
 }
 
 CameraImageContainerUI* CameraImageListUI::GetItemAt(int i) {
   assert(i < GetCount());
-  DuiLib::CContainerUI* ui = static_cast<DuiLib::CContainerUI*>(image_list_ui_->GetItemAt(i));
-  auto iter = camera_image_ui_map_.find(ui);
-  if (iter == camera_image_ui_map_.end()) {
-    iter = camera_image_ui_map_.insert(std::make_pair(ui,
-      ScopedCameraImageContainerUIPtr(new CameraImageContainerUI(image_list_ui_)))).first;
-  }
-  return iter->second.get();
+  return camera_image_ui_list_[i];
 }
  
 
 int CameraImageListUI::GetCount() const {
-  return image_list_ui_->GetCount();
+  return static_cast<int>(camera_image_ui_list_.size());
 }
 
 void CameraImageListUI::PushBack(CameraImageContainerUI* container_ui) {
   DuiLib::CContainerUI* control = container_ui->GetUnderlyingControl();
-  assert(camera_image_ui_map_.find(control) == camera_image_ui_map_.end());
   image_list_ui_->Add(control);
-  camera_image_ui_map_.insert(std::make_pair(control, ScopedCameraImageContainerUIPtr(container_ui)));
+  camera_image_ui_list_.push_back(container_ui);
 }
 
 void CameraImageListUI::InsertAt(int i, CameraImageContainerUI* container_ui) {
   DuiLib::CContainerUI* control = container_ui->GetUnderlyingControl();
-  assert(camera_image_ui_map_.find(control) == camera_image_ui_map_.end());
   image_list_ui_->AddAt(control, i);
-  camera_image_ui_map_.insert(std::make_pair(control, ScopedCameraImageContainerUIPtr(container_ui)));
+  camera_image_ui_list_.insert(camera_image_ui_list_.begin() + i, container_ui);
 }
 
 void CameraImageListUI::Remove(CameraImageContainerUI* container_ui) {
   DuiLib::CContainerUI* control = container_ui->GetUnderlyingControl();
-  auto iter = camera_image_ui_map_.find(control);
-  if (iter != camera_image_ui_map_.end()) {
-    camera_image_ui_map_.erase(iter);
-  }
   image_list_ui_->Remove(control);
+  auto iter = std::find(camera_image_ui_list_.begin(), camera_image_ui_list_.end(), container_ui);
+  if (iter != camera_image_ui_list_.end())
+    camera_image_ui_list_.erase(iter);
 }
 
 void CameraImageListUI::RemoveAt(int i) {
-  DuiLib::CContainerUI* control = static_cast<DuiLib::CContainerUI*>(image_list_ui_->GetItemAt(i));
-  auto iter = camera_image_ui_map_.find(control);
-  if (iter != camera_image_ui_map_.end()) {
-    camera_image_ui_map_.erase(iter);
-  }
   image_list_ui_->RemoveAt(i);
+  camera_image_ui_list_.erase(camera_image_ui_list_.begin() + i);
 }
 
 void CameraImageListUI::RemoveAll() {
   image_list_ui_->RemoveAll();
+  camera_image_ui_list_.clear();
 }
