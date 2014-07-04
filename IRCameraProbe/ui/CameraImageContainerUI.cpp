@@ -14,6 +14,7 @@ CameraImageContainerUI::CameraImageContainerUI(DuiLib::CContainerUI* container_u
 
 void CameraImageContainerUI::Init(DuiLib::CContainerUI* container_ui) {
   container_ui_.reset(container_ui);
+
   camera_status_label_ = CommonUIOperator::FindSubLabelByName(container_ui_.get(), _T("camera_status_label"));
   camera_error_label_ = CommonUIOperator::FindSubLabelByName(container_ui_.get(), _T("camera_error_label"));
 

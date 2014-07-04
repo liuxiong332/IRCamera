@@ -1,5 +1,7 @@
 #pragma once
 #include "pref/CameraInfoPrefObserver.h"
+#include "pref/SampleModePrefObserver.h"
+#include "ui/CameraImageListUIObserver.h"
 #include <vector>
 #include <memory>
 
@@ -13,14 +15,23 @@ class CameraImageContainerDeviceLinker;
 class CameraInfoPref;
 class CameraImageLinkerCreator;
 
-class CameraImageLinkerList: public CameraInfoPrefObserver {
+class CameraImageLinkerList 
+  : public CameraInfoPrefObserver,
+    public SampleModePrefObserver,
+    public CameraImageListUIObserver {
 public:
   void  Init(CameraImageBuilder*, CameraImageListUI* list_ui);
 
   ~CameraImageLinkerList();
 private:
+  virtual void OnSampleModeChanged(SampleMode) override;
+  virtual void OnTimeDeltaChanged(const TimeDelta&) override;
+
   virtual void CameraInfoPrefChanged() override;
 
+  virtual void  OnTimer() override;
+
+  void InitSampleModePref();
   void ReloadCameraList();
   void InsertIntoList(CameraImageContainerDeviceLinker* linker);
 

@@ -5,6 +5,7 @@
 #include "TabLayoutSwitcher.h"
 #include "CameraPrefLayoutUIObserver.h"
 #include "CameraInfoPrefLayout.h"
+#include "SampleModePrefUI.h"
 #include "UIlib.h"
 #include <assert.h>
 
@@ -26,6 +27,11 @@ void CameraPrefLayoutUI::Init(DuiLib::CContainerUI* container_ui, TabLayoutSwitc
 
   camera_info_pref_layout_.reset(new CameraInfoPrefLayout);
   camera_info_pref_layout_->Init(camera_info_layout_ui, builder);
+
+  DuiLib::CContainerUI* sample_mode_ui =
+    CommonUIOperator::FindSubContainerByName(container_ui, _T("sample_mode_ui"));
+  sample_mode_pref_ui_.reset(new SampleModePrefUI);
+  sample_mode_pref_ui_->Init(sample_mode_ui);
 }
 
 CameraInfoPrefLayout* CameraPrefLayoutUI::GetCameraInfoPrefLayout() {

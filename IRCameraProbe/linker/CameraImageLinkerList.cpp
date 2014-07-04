@@ -4,6 +4,7 @@
 #include "ui/CameraImageBuilder.h"
 
 #include "pref/CameraInfoPref.h"
+#include "pref/SampleModePref.h"
 
 #include "IRCameraBasic.h"
 #include <map>
@@ -22,10 +23,14 @@ CameraImageContainerDeviceLinker* CreateNewLinker(LPCTSTR ip_addr, LPCTSTR name,
 ////////////////////////////////////////CameraImageLinkerList/////////////////////////////////////////////
 void CameraImageLinkerList::Init(CameraImageBuilder* builder, CameraImageListUI* list_ui) {
   list_ui_ = list_ui;
+  list_ui->SetObserver(this);
+
   camera_image_builder_ = builder;
   assert(list_ui->GetCount() == 0);
   CameraInfoPref::GetInstance()->AddObserver(this);
   ReloadCameraList();
+
+  InitSampleModePref();
 }
 
 CameraImageLinkerList::~CameraImageLinkerList() {
@@ -56,6 +61,13 @@ void CameraImageLinkerList::ReloadCameraList()
   }
 }
 
+void  CameraImageLinkerList::OnTimer() {
+  std::for_each(device_linker_list_.begin(), device_linker_list_.end(), 
+    [](const ImageDeviceLinkerPtr& linker) {
+    linker->Sample();
+  });
+}
+
 void CameraImageLinkerList::InsertIntoList(CameraImageContainerDeviceLinker* linker) {
   list_ui_->PushBack(linker->GetContainerUI());
   device_linker_list_.push_back(ImageDeviceLinkerPtr(linker));
@@ -66,4 +78,28 @@ void CameraImageLinkerList::CameraInfoPrefChanged() {
   list_ui_->RemoveAll();
   ReloadCameraList();
 }
+
+void CameraImageLinkerList::InitSampleModePref()
+{
+  SampleModePref* pref = SampleModePref::GetInstance();
+  pref->InitWithObserver(this);
+  OnSampleModeChanged(pref->GetSampleMode());
+  OnTimeDeltaChanged(pref->GetSampleInterval());
+}
+
+void CameraImageLinkerList::OnSampleModeChanged(SampleMode mode) {
+  if (mode == AUTO_MODE) {
+    list_ui_->BeginTimer(SampleModePref::GetInstance()->GetSampleInterval());
+  } else {
+    list_ui_->EndTimer();
+  }
+}
+
+void CameraImageLinkerList::OnTimeDeltaChanged(const TimeDelta& delta) {
+  if (SampleModePref::GetInstance()->GetSampleMode() == AUTO_MODE) {
+    list_ui_->EndTimer();        //reinitialize the timer
+    list_ui_->BeginTimer(delta);
+  }
+}
+
 }

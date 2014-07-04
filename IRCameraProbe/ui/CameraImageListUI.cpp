@@ -1,14 +1,17 @@
 #include "CameraImageListUI.h"
 #include "CameraImageContainerUI.h"
+#include "CameraImageListUIObserver.h"
 #include <assert.h>
 #include <algorithm>
 #include <UIlib.h>
+#include <assert.h>
 
-CameraImageListUI::CameraImageListUI() : image_list_ui_(NULL) {
+CameraImageListUI::CameraImageListUI() : image_list_ui_(NULL),observer_(NULL) {
 }
 
 void CameraImageListUI::Init(DuiLib::CContainerUI* container_ui) {
   image_list_ui_ = container_ui;
+  image_list_ui_->OnNotify += DuiLib::MakeDelegate(this, &CameraImageListUI::OnTimer);
   assert(image_list_ui_->GetCount() == 0);
   //disable auto destroy
   image_list_ui_->SetAutoDestroy(false);  
@@ -52,4 +55,28 @@ void CameraImageListUI::RemoveAt(int i) {
 void CameraImageListUI::RemoveAll() {
   image_list_ui_->RemoveAll();
   camera_image_ui_list_.clear();
+}
+
+void CameraImageListUI::BeginTimer(const TimeDelta& delta) {
+  TimeDelta tr_delta = delta;
+  if (delta.ToInternalValue() == 0)
+    tr_delta = TimeDelta::FromMilliseconds(50);
+  image_list_ui_->GetManager()->SetTimer(image_list_ui_, kTimerID, static_cast<UINT>(tr_delta.InMilliseconds()));
+}
+
+void CameraImageListUI::EndTimer() {
+  image_list_ui_->GetManager()->KillTimer(image_list_ui_);
+}
+
+bool CameraImageListUI::OnTimer(void* param) {
+  DuiLib::TNotifyUI* notify = static_cast<DuiLib::TNotifyUI*>(param);
+  if (notify->sType == _T("timer")) {
+    if (observer_)  observer_->OnTimer();
+    return true;
+  }
+  return false;
+}
+void CameraImageListUI::SetObserver(CameraImageListUIObserver* observer) {
+  assert(observer_ == NULL);
+  observer_ = observer;
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "IRCameraBasic.h"
+#include "common/TimeDelta.h"
 #include <vector>
 #include <memory>
 
@@ -7,6 +8,7 @@ namespace DuiLib {
 class CContainerUI;
 }
 class CameraImageContainerUI;
+class CameraImageListUIObserver;
 
 class CameraImageListUI {
 public:
@@ -24,7 +26,17 @@ public:
   void RemoveAt(int i);
 
   void RemoveAll();
+
+  void SetObserver(CameraImageListUIObserver* observer);
+  void BeginTimer(const TimeDelta& delta);
+  void EndTimer();
 private:
+  bool OnTimer(void* param);
+
   DuiLib::CContainerUI* image_list_ui_;
   std::vector<CameraImageContainerUI*>  camera_image_ui_list_;
+
+  CameraImageListUIObserver*  observer_;
+
+  const static int  kTimerID = 1;
 };

@@ -2,6 +2,7 @@
 #include "CameraImageLinkerList.h"
 #include "CameraPrefLinker.h"
 #include "CameraInfoListLinker.h"
+#include "SampleModeLinker.h"
 
 #include "ui/CameraInfoPrefLayout.h"
 #include "ui/CameraInfoListUI.h"

@@ -25,4 +25,8 @@ public:
   static DuiLib::COptionUI* FindSubOptionByName(DuiLib::CContainerUI* parent_ui, LPCTSTR name) {
     return static_cast<DuiLib::COptionUI*>(FindSubControlByName(parent_ui, name));
   }
+
+  static DuiLib::CComboUI* FindSubComboByName(DuiLib::CContainerUI* parent_ui, LPCTSTR name) {
+    return static_cast<DuiLib::CComboUI*>(FindSubControlByName(parent_ui, name));
+  }
 };

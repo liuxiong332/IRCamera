@@ -33,6 +33,7 @@ public:
 
   void Connect();
   void Disconnect();
+  void Sample();
 private:
   virtual void OnConnectButtonClicked() override;
   virtual void OnDisconnectButtonClicked() override;

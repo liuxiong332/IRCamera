@@ -1,5 +1,6 @@
 #pragma once
 #include "IRCameraBasic.h"
+#include "common/TimeDelta.h"
 #include <memory>
 
 namespace DuiLib {
@@ -40,11 +41,15 @@ public:
   DuiLib::CContainerUI* GetUnderlyingControl() {
     return container_ui_.get();
   }
+
+  
+
   CameraImageUI*  GetCameraImageUI();
 private:
   bool OnConnectButtonClick(void* param);
   bool OnDisconnectButtonClick(void* param);
   bool OnSampleButtonClick(void* param);
+
 
   CameraImageContainerUIObserver* observer_;
 

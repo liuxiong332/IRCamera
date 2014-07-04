@@ -7,6 +7,8 @@ class CButtonUI;
 }
 
 class CameraInfoPrefLayout;
+class SampleModePrefUI;
+
 class TabLayoutSwitcher;
 class CameraPrefLayoutUIObserver;
 class CameraInfoPrefBuilder;
@@ -22,6 +24,9 @@ public:
   }
 
   CameraInfoPrefLayout* GetCameraInfoPrefLayout();
+  SampleModePrefUI*   GetSampleModePrefUI() {
+    return sample_mode_pref_ui_.get();
+  }
 private:
   bool  OnBackButtonClick(void* param);
 
@@ -30,4 +35,5 @@ private:
 
   DuiLib::CButtonUI*  back_button_;
   std::unique_ptr<CameraInfoPrefLayout> camera_info_pref_layout_;
+  std::unique_ptr<SampleModePrefUI>     sample_mode_pref_ui_;
 };

@@ -20,6 +20,9 @@
     <Filter Include="pref">
       <UniqueIdentifier>{b8a5ea1a-a44c-4d77-a636-6048a386e2f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{d09d0788-35bd-4927-81c2-3da042422489}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ui\ControlBuilder.cpp">
@@ -99,6 +102,18 @@
     </ClCompile>
     <ClCompile Include="core\WinMain.cpp">
       <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\SampleModePrefUI.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="common\TimeDelta.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="pref\SampleModePref.cpp">
+      <Filter>pref</Filter>
+    </ClCompile>
+    <ClCompile Include="linker\SampleModeLinker.cpp">
+      <Filter>linker</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -215,6 +230,27 @@
     </ClInclude>
     <ClInclude Include="thread\MessageDispatcher.h">
       <Filter>thread</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\SampleModePrefUI.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="common\TimeDelta.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="pref\SampleModePref.h">
+      <Filter>pref</Filter>
+    </ClInclude>
+    <ClInclude Include="pref\SampleModePrefObserver.h">
+      <Filter>pref</Filter>
+    </ClInclude>
+    <ClInclude Include="pref\SampleMode.h">
+      <Filter>pref</Filter>
+    </ClInclude>
+    <ClInclude Include="linker\SampleModeLinker.h">
+      <Filter>linker</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\CameraImageListUIObserver.h">
+      <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

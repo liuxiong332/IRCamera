@@ -54,6 +54,12 @@ void CameraImageContainerDeviceLinker::Disconnect() {
   }
 }
 
+void CameraImageContainerDeviceLinker::Sample() {
+  if (device_status_ != CONNECTED)
+    return;
+  camera_device_->UpdateKelvinImage(
+    std::bind(&CameraImageContainerDeviceLinker::ImageBufferUpdate, this, std::placeholders::_1));
+}
 //when the camera has init completely
 void  CameraImageContainerDeviceLinker::OnInitCamera() {
   device_status_ = INITIALIZED;
@@ -87,12 +93,10 @@ void CameraImageContainerDeviceLinker::OnConnectButtonClicked() {
 void CameraImageContainerDeviceLinker::OnDisconnectButtonClicked() {
   Disconnect();
 }
+ 
 
 void CameraImageContainerDeviceLinker::OnSampleButtonClicked() {
-  if (device_status_ != CONNECTED)
-    return;
-  camera_device_->UpdateKelvinImage(
-    std::bind(&CameraImageContainerDeviceLinker::ImageBufferUpdate, this, std::placeholders::_1));
+  Sample();
 }
 
 void CameraImageContainerDeviceLinker::ImageBufferUpdate(CameraImageBuffer* buffer) {

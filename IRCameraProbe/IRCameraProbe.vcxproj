@@ -35,6 +35,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="common\TimeDelta.cpp" />
     <ClCompile Include="core\CameraDevice.cpp" />
     <ClCompile Include="core\CameraImageModel.cpp" />
     <ClCompile Include="core\CameraSettings.cpp" />
@@ -44,7 +45,9 @@
     <ClCompile Include="linker\CameraInfoListLinker.cpp" />
     <ClCompile Include="linker\CameraPrefLinker.cpp" />
     <ClCompile Include="linker\MainLinker.cpp" />
+    <ClCompile Include="linker\SampleModeLinker.cpp" />
     <ClCompile Include="pref\CameraInfoPref.cpp" />
+    <ClCompile Include="pref\SampleModePref.cpp" />
     <ClCompile Include="thread\MessageLoop.cpp" />
     <ClCompile Include="thread\MessageQueueThread.cpp" />
     <ClCompile Include="thread\Mutex.cpp" />
@@ -60,9 +63,11 @@
     <ClCompile Include="ui\ControlBuilder.cpp" />
     <ClCompile Include="ui\DIBitmap.cpp" />
     <ClCompile Include="ui\MainWindow.cpp" />
+    <ClCompile Include="ui\SampleModePrefUI.cpp" />
     <ClCompile Include="ui\TemperatureColorTableUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common\TimeDelta.h" />
     <ClInclude Include="core\CameraDevice.h" />
     <ClInclude Include="core\CameraDeviceObserver.h" />
     <ClInclude Include="core\CameraImageModel.h" />
@@ -76,8 +81,12 @@
     <ClInclude Include="linker\CameraSampleDriver.h" />
     <ClInclude Include="linker\CameraSamplePosChanger.h" />
     <ClInclude Include="linker\MainLinker.h" />
+    <ClInclude Include="linker\SampleModeLinker.h" />
     <ClInclude Include="pref\CameraInfoPref.h" />
     <ClInclude Include="pref\CameraInfoPrefObserver.h" />
+    <ClInclude Include="pref\SampleMode.h" />
+    <ClInclude Include="pref\SampleModePref.h" />
+    <ClInclude Include="pref\SampleModePrefObserver.h" />
     <ClInclude Include="thread\MessageDispatcher.h" />
     <ClInclude Include="thread\MessageLoop.h" />
     <ClInclude Include="thread\MessageQueueThread.h" />
@@ -88,6 +97,7 @@
     <ClInclude Include="ui\CameraImageContainerUI.h" />
     <ClInclude Include="ui\CameraImageContainerUIObserver.h" />
     <ClInclude Include="ui\CameraImageListUI.h" />
+    <ClInclude Include="ui\CameraImageListUIObserver.h" />
     <ClInclude Include="ui\CameraImageUI.h" />
     <ClInclude Include="ui\CameraInfoListUI.h" />
     <ClInclude Include="ui\CameraInfoPrefBuilder.h" />
@@ -99,6 +109,7 @@
     <ClInclude Include="ui\ControlBuilder.h" />
     <ClInclude Include="ui\DIBitmap.h" />
     <ClInclude Include="ui\MainWindow.h" />
+    <ClInclude Include="ui\SampleModePrefUI.h" />
     <ClInclude Include="ui\TabLayoutSwitcher.h" />
     <ClInclude Include="ui\TemperatureColorTableUI.h" />
   </ItemGroup>

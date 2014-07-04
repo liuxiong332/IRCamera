@@ -7,9 +7,11 @@
 #include "CameraImageListUI.h"
 #include "CameraPrefLayoutUI.h"
 #include "CameraInfoPrefLayout.h"
+#include "SampleModePrefUI.h"
 #include "CameraInfoListUI.h"
 #include "CameraInfoUI.h"
 #include "CameraImageContainerUI.h"
+
 
 bool MainWindow::OnSettingBtnClick(void* param) {
   DuiLib::TNotifyUI* notify = reinterpret_cast<DuiLib::TNotifyUI*>(param);
@@ -58,6 +60,7 @@ void MainWindow::SwitchToPrefLayout() {
 CameraInfoUI* MainWindow::CreateCameraInfoUI() {
   DuiLib::CDialogBuilder builder;
   DuiLib::CControlUI* control = builder.Create(_T("CameraInfo.xml"), (UINT)0, &image_builder, &m_pm);
+  control->SetManager(&m_pm, NULL, false);
   CameraInfoUI* container_ui = new CameraInfoUI;
   container_ui->Init(static_cast<DuiLib::CContainerUI*>(control));
   return container_ui;
@@ -66,6 +69,7 @@ CameraInfoUI* MainWindow::CreateCameraInfoUI() {
 CameraImageContainerUI* MainWindow::CreateCameraImageContainerUI() {
   DuiLib::CDialogBuilder builder;
   DuiLib::CControlUI* control = builder.Create(_T("CameraImage.xml"), (UINT)0, &image_builder, &m_pm);
+  control->SetManager(&m_pm, NULL, false);
   CameraImageContainerUI* container_ui = new CameraImageContainerUI;
   container_ui->Init(static_cast<DuiLib::CContainerUI*>(control));
   return container_ui;

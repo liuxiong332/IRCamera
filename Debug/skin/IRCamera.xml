@@ -89,17 +89,26 @@
 					</VerticalLayout>
 
 					<Label text="采样模式" font="1" width="80"/>
-					<VerticalLayout height="60" padding="20,0,0,10" bkimage="bg13.png">
+					<VerticalLayout name="sample_mode_ui" height="60" padding="20,0,0,10" bkimage="bg13.png">
 						<HorizontalLayout height="20" padding="0,5,0,5">
-							<Option width="12" padding="0,4,4,4" normalimage="RadioBtnNon.png" selectedimage="RadioBtnSel.png" group="sample_mode"/>
+							<Option name="manual_mode_option" width="16" padding="0,4,0,4" normalimage="RadioBtnNon.png" selectedimage="RadioBtnSel.png" group="sample_mode"/>
 							<Label text="手动" padding="5,0,0,0"/>
 						</HorizontalLayout>
 						<HorizontalLayout height="20" padding="0,5,0,5">
-							<Option width="12" padding="0,4,4,4" normalimage="RadioBtnNon.png" selectedimage="RadioBtnSel.png" group="sample_mode"/>
+							<Option  name="auto_mode_option" width="16" padding="0,4,0,4" normalimage="RadioBtnNon.png" selectedimage="RadioBtnSel.png" group="sample_mode"/>
 							<Label text="自动" width="100" padding="5,0,0,0"/>
-							<Label text="自动刷新时间" width="100"/>
-							<Button text="60m" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
-		          <RichEdit padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" text="192.168.2.1" multiline="false" rich="false"/>
+							<Label text="自动刷新时间: " width="100"/>
+							<Button padding="0,2,0,2" name="sample_interval_btn" text="1s" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
+							<HorizontalLayout padding="0,2,0,2" visible="false" name="sample_interval_ui">
+		          	<RichEdit  name="sample_interval_edit" bordercolor="#FFCCCCCC" bordersize="1"  text="60" width="100" bkimage="bg12.png" multiline="false" rich="false"/>
+		          	<Combo name="sample_interval_combo" bordercolor="#FFCCCCCC" bordersize="1" bkimage="bg12.png" width="50" droptype="droplist" textpadding="4,1,1,1"  normalimage="file='combo.png' source='0,0,100,22' corner='2,2,20,2'" hotimage="file='combo.png' source='0,22,100,44' corner='2,2,22,2'" pushedimage="file='combo.png' source='0,44,100,66' corner='2,2,22,2'">
+		          		<ListLabelElement text="s" selected="true" height="20"/>
+		          		<ListLabelElement text="m" height="20"/>
+		          		<ListLabelElement text="h" height="20"/>
+		          		<ListLabelElement text="d" height="20"/>
+		          	</Combo>
+		          	<Button padding="5,0,0,0" name="sample_interval_ok_btn" bkimage="watchdog-ok.png" hotimage="watchdog-ok-hot.png" height="20" width="20" />
+		          </HorizontalLayout>
 						</HorizontalLayout>
 					</VerticalLayout>
 				</VerticalLayout>
