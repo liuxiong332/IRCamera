@@ -3,6 +3,7 @@
 #include "CameraPrefLinker.h"
 #include "CameraInfoListLinker.h"
 #include "SampleModeLinker.h"
+#include "TempThresholdLinker.h"
 
 #include "ui/CameraInfoPrefLayout.h"
 #include "ui/CameraInfoListUI.h"

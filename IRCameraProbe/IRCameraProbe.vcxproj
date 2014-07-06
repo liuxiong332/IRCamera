@@ -37,8 +37,6 @@
   <ItemGroup>
     <ClCompile Include="common\TimeDelta.cpp" />
     <ClCompile Include="core\CameraDevice.cpp" />
-    <ClCompile Include="core\CameraImageModel.cpp" />
-    <ClCompile Include="core\CameraSettings.cpp" />
     <ClCompile Include="core\WinMain.cpp" />
     <ClCompile Include="linker\CameraImageContainerDeviceLinker.cpp" />
     <ClCompile Include="linker\CameraImageLinkerList.cpp" />
@@ -46,6 +44,7 @@
     <ClCompile Include="linker\CameraPrefLinker.cpp" />
     <ClCompile Include="linker\MainLinker.cpp" />
     <ClCompile Include="linker\SampleModeLinker.cpp" />
+    <ClCompile Include="linker\TempThresholdLinker.cpp" />
     <ClCompile Include="pref\CameraInfoPref.cpp" />
     <ClCompile Include="pref\SampleModePref.cpp" />
     <ClCompile Include="thread\MessageLoop.cpp" />
@@ -72,9 +71,6 @@
     <ClInclude Include="common\TimeDelta.h" />
     <ClInclude Include="core\CameraDevice.h" />
     <ClInclude Include="core\CameraDeviceObserver.h" />
-    <ClInclude Include="core\CameraImageModel.h" />
-    <ClInclude Include="core\CameraSettings.h" />
-    <ClInclude Include="core\ImageBuffer.h" />
     <ClInclude Include="linker\CameraImageContainerDeviceLinker.h" />
     <ClInclude Include="linker\CameraImageLinkerList.h" />
     <ClInclude Include="linker\CameraInfoListLinker.h" />
@@ -84,11 +80,13 @@
     <ClInclude Include="linker\CameraSamplePosChanger.h" />
     <ClInclude Include="linker\MainLinker.h" />
     <ClInclude Include="linker\SampleModeLinker.h" />
+    <ClInclude Include="linker\TempThresholdLinker.h" />
     <ClInclude Include="pref\CameraInfoPref.h" />
     <ClInclude Include="pref\CameraInfoPrefObserver.h" />
     <ClInclude Include="pref\SampleMode.h" />
     <ClInclude Include="pref\SampleModePref.h" />
     <ClInclude Include="pref\SampleModePrefObserver.h" />
+    <ClInclude Include="pref\TempThresholdPref.h" />
     <ClInclude Include="thread\MessageDispatcher.h" />
     <ClInclude Include="thread\MessageLoop.h" />
     <ClInclude Include="thread\MessageQueueThread.h" />

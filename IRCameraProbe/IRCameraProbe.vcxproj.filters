@@ -37,9 +37,6 @@
     <ClCompile Include="ui\TemperatureColorTableUI.cpp">
       <Filter>ui</Filter>
     </ClCompile>
-    <ClCompile Include="core\CameraSettings.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="thread\MessageQueueThread.cpp">
       <Filter>thread</Filter>
     </ClCompile>
@@ -57,9 +54,6 @@
     </ClCompile>
     <ClCompile Include="ui\CameraImageUI.cpp">
       <Filter>ui</Filter>
-    </ClCompile>
-    <ClCompile Include="core\CameraImageModel.cpp">
-      <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="ui\CameraImageContainerUI.cpp">
       <Filter>ui</Filter>
@@ -121,6 +115,9 @@
     <ClCompile Include="ui\CanEditButtonUI.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="linker\TempThresholdLinker.cpp">
+      <Filter>linker</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ui\ControlBuilder.h">
@@ -134,9 +131,6 @@
     </ClInclude>
     <ClInclude Include="ui\TemperatureColorTableUI.h">
       <Filter>ui</Filter>
-    </ClInclude>
-    <ClInclude Include="core\CameraSettings.h">
-      <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="thread\MessageQueueThread.h">
       <Filter>thread</Filter>
@@ -156,14 +150,8 @@
     <ClInclude Include="core\CameraDeviceObserver.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="core\CameraImageModel.h">
-      <Filter>core</Filter>
-    </ClInclude>
     <ClInclude Include="ui\CameraImageUI.h">
       <Filter>ui</Filter>
-    </ClInclude>
-    <ClInclude Include="core\ImageBuffer.h">
-      <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="ui\CameraImageContainerUI.h">
       <Filter>ui</Filter>
@@ -266,6 +254,12 @@
     </ClInclude>
     <ClInclude Include="ui\CanEditButtonUI.h">
       <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="pref\TempThresholdPref.h">
+      <Filter>pref</Filter>
+    </ClInclude>
+    <ClInclude Include="linker\TempThresholdLinker.h">
+      <Filter>linker</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

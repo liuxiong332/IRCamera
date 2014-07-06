@@ -8,11 +8,11 @@
 #include "CameraPrefLayoutUI.h"
 #include "CameraInfoPrefLayout.h"
 #include "SampleModePrefUI.h"
+#include "TempThresholdPrefUI.h"
 #include "CameraInfoListUI.h"
 #include "CameraInfoUI.h"
 #include "CameraImageContainerUI.h"
 #include "CanEditButtonUI.h"
-
 
 bool MainWindow::OnSettingBtnClick(void* param) {
   DuiLib::TNotifyUI* notify = reinterpret_cast<DuiLib::TNotifyUI*>(param);
