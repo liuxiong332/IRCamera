@@ -11,6 +11,7 @@
 #include "CameraInfoListUI.h"
 #include "CameraInfoUI.h"
 #include "CameraImageContainerUI.h"
+#include "CanEditButtonUI.h"
 
 
 bool MainWindow::OnSettingBtnClick(void* param) {
@@ -23,6 +24,7 @@ bool MainWindow::OnSettingBtnClick(void* param) {
 }
  
 MainWindow::MainWindow() :content_layout_(NULL) {
+  image_builder.SetCanEditButtonUICreator(this);
 }
 
 void MainWindow::Init() { 
@@ -73,6 +75,14 @@ CameraImageContainerUI* MainWindow::CreateCameraImageContainerUI() {
   CameraImageContainerUI* container_ui = new CameraImageContainerUI;
   container_ui->Init(static_cast<DuiLib::CContainerUI*>(control));
   return container_ui;
+}
+
+CanEditButtonUI* MainWindow::CreateCanEditButtonUI() {
+  DuiLib::CDialogBuilder builder;
+  DuiLib::CControlUI* control = builder.Create(_T("CanEditButton.xml"),NULL, &image_builder, &m_pm);
+  control->SetManager(&m_pm, NULL, false);
+  CanEditButtonUI* can_edit_ui = new CanEditButtonUI(static_cast<DuiLib::CContainerUI*>(control));
+  return can_edit_ui;
 }
 
 LRESULT MainWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)

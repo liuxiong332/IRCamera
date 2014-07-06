@@ -115,6 +115,12 @@
     <ClCompile Include="linker\SampleModeLinker.cpp">
       <Filter>linker</Filter>
     </ClCompile>
+    <ClCompile Include="ui\TempThresholdPrefUI.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\CanEditButtonUI.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ui\ControlBuilder.h">
@@ -250,6 +256,15 @@
       <Filter>linker</Filter>
     </ClInclude>
     <ClInclude Include="ui\CameraImageListUIObserver.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\TempThresholdPrefUI.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\CanEditButtonUICreator.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\CanEditButtonUI.h">
       <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>

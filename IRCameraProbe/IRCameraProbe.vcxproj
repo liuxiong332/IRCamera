@@ -60,11 +60,13 @@
     <ClCompile Include="ui\CameraInfoPrefLayout.cpp" />
     <ClCompile Include="ui\CameraInfoUI.cpp" />
     <ClCompile Include="ui\CameraPrefLayoutUI.cpp" />
+    <ClCompile Include="ui\CanEditButtonUI.cpp" />
     <ClCompile Include="ui\ControlBuilder.cpp" />
     <ClCompile Include="ui\DIBitmap.cpp" />
     <ClCompile Include="ui\MainWindow.cpp" />
     <ClCompile Include="ui\SampleModePrefUI.cpp" />
     <ClCompile Include="ui\TemperatureColorTableUI.cpp" />
+    <ClCompile Include="ui\TempThresholdPrefUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\TimeDelta.h" />
@@ -105,6 +107,8 @@
     <ClInclude Include="ui\CameraInfoUI.h" />
     <ClInclude Include="ui\CameraPrefLayoutUI.h" />
     <ClInclude Include="ui\CameraPrefLayoutUIObserver.h" />
+    <ClInclude Include="ui\CanEditButtonUI.h" />
+    <ClInclude Include="ui\CanEditButtonUICreator.h" />
     <ClInclude Include="ui\CommonUIOperator.h" />
     <ClInclude Include="ui\ControlBuilder.h" />
     <ClInclude Include="ui\DIBitmap.h" />
@@ -112,6 +116,7 @@
     <ClInclude Include="ui\SampleModePrefUI.h" />
     <ClInclude Include="ui\TabLayoutSwitcher.h" />
     <ClInclude Include="ui\TemperatureColorTableUI.h" />
+    <ClInclude Include="ui\TempThresholdPrefUI.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AD864481-F212-4814-9B25-7FA13554B5A9}</ProjectGuid>

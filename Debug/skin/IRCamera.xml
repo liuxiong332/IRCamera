@@ -56,35 +56,29 @@
 
 
 					<Label text="温度阈值" font="1" width="80"/>
-					<VerticalLayout height="90" padding="20,0,0,10" bkimage="bg13.png">
+					<VerticalLayout name="temp_pref_layout" height="90" padding="20,0,0,10" bkimage="bg13.png">
 						<HorizontalLayout height="30">
-							<Label text="稳定温度-最小值: " width="120"/>
-							<Button padding="0,5,0,5" text="0C" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
-		          <RichEdit padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" text="编辑个性签名" multiline="false" rich="false"/>
-		          <Control width="100"/>
-							<Label text="最大值: " width="60"/>
-							<Button padding="0,5,0,5" text="100C" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
-		          <RichEdit padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" text="192.168.2.1" multiline="false" rich="false"/>
+							<Label text="稳定温度 " width="140" font="1"/>
+							<Label text="最大值: " width="100"/>
+		          <CanEditButton name="stable_max_temp_ui" buttontext="100" padding="0,5,0,5" width="100"/>
 						</HorizontalLayout>
 
 						<HorizontalLayout height="30">
-							<Label text="跳变平均温度Delta-最小值: " width="180"/>
-							<Button padding="0,5,0,5" text="0C" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
-		          <RichEdit padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" text="编辑个性签名" multiline="false" rich="false"/>
+							<Label text="跳变平均温度" width="140" font="1"/>
+							<Label text="Delta最大值: " width="100"/>
+							<CanEditButton name="unstable_aver_delta_ui" buttontext="100" padding="0,5,0,5" width="100"/>
 		          <Control width="100"/>
-							<Label text="最大值: " width="60"/>
-							<Button padding="0,5,0,5" text="100C" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
-		          <RichEdit padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" text="192.168.2.1" multiline="false" rich="false"/>
+							<Label text="绝对最大值: " width="100"/>
+							<CanEditButton name="unstable_aver_ui" buttontext="100" padding="0,5,0,5" width="100"/>
 						</HorizontalLayout>
 
 						<HorizontalLayout height="30">
-							<Label text="跳变最大温度Delta-最小值: " width="180"/>
-							<Button padding="0,5,0,5" text="0C" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
-		          <RichEdit padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" text="编辑个性签名" multiline="false" rich="false"/>
+							<Label text="跳变最大温度 " width="140" font="1"/>
+							<Label text="Delta最大值:" width="100"/>
+							<CanEditButton name="unstable_max_delta_ui" buttontext="100" padding="0,5,0,5" width="100"/>
 		          <Control width="100"/>
-							<Label text="最大值: " width="60"/>
-							<Button padding="0,5,0,5" text="100C" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
-		          <RichEdit padding="0,5,0,5" bordercolor="#FFCCCCCC" bordersize="1" visible="false" text="192.168.2.1" multiline="false" rich="false"/>
+							<Label text="绝对最大值: " width="100"/>
+							<CanEditButton name="unstable_max_ui" buttontext="100" padding="0,5,0,5" width="100"/>
 						</HorizontalLayout>
 					</VerticalLayout>
 

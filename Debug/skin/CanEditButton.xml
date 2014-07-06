@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Layout>
+	<HorizontalLayout>
+		<Button name="canedit_btn" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'"/>
+    <RichEdit name="canedit_edit" bordercolor="#FFCCCCCC" bordersize="1" visible="false" multiline="false" rich="false" bkimage="bg12.png"/>
+	</HorizontalLayout>
+</Layout>
+

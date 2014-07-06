@@ -5,6 +5,7 @@
 #include "CameraImageBuilder.h"
 #include "CameraInfoPrefBuilder.h"
 #include "TabLayoutSwitcher.h"
+#include "CanEditButtonUICreator.h"
 #include "UIlib.h"
 #include <memory>
 
@@ -19,6 +20,7 @@ class CTabLayoutUI;
 class MainWindow : public DuiLib::CWindowWnd, //public DuiLib::INotifyUI
   public CameraImageBuilder,
   public CameraInfoPrefBuilder,
+  public CanEditButtonUICreator,
   public TabLayoutSwitcher
 {
 public:
@@ -44,6 +46,7 @@ private:
 
   virtual CameraInfoUI* CreateCameraInfoUI() override;
   virtual CameraImageContainerUI* CreateCameraImageContainerUI() override;
+  virtual CanEditButtonUI* CreateCanEditButtonUI() override;
 
   virtual void SwitchToContentLayout() override;
   virtual void SwitchToPrefLayout() override;

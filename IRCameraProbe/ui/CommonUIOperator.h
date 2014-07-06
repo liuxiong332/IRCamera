@@ -1,5 +1,6 @@
 #pragma once
 #include "UIlib.h"
+#include "CanEditButtonUI.h"
 
 class CommonUIOperator {
 public:
@@ -28,5 +29,9 @@ public:
 
   static DuiLib::CComboUI* FindSubComboByName(DuiLib::CContainerUI* parent_ui, LPCTSTR name) {
     return static_cast<DuiLib::CComboUI*>(FindSubControlByName(parent_ui, name));
+  }
+
+  static CanEditButtonUI* FindSubCanEditButtonByName(DuiLib::CContainerUI* parent_ui, LPCTSTR name) {
+    return static_cast<CanEditButtonUI*>(FindSubControlByName(parent_ui, name));
   }
 };
