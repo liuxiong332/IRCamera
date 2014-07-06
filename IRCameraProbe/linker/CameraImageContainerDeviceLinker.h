@@ -1,5 +1,6 @@
 #pragma once
 #include "core/CameraDeviceObserver.h"
+#include "core/CameraRotator.h"
 #include "ui/CameraImageContainerUIObserver.h"
 #include <wtypes.h>
 #include <memory>
@@ -9,6 +10,8 @@ class CameraImageBuffer;
 
 namespace camera {
 class CameraDevice;
+class CameraRotator;
+
 class CameraImageContainerDeviceLinker: 
   public CameraDeviceObserver,
   public CameraImageContainerUIObserver {
@@ -52,6 +55,9 @@ private:
 
   std::unique_ptr<CameraImageContainerUI> container_ui_;
   std::unique_ptr<CameraDevice> camera_device_;
+  std::unique_ptr<CameraRotator>  camera_rotator_;
+
+  CameraRotationPos   rotation_pos_;
   DeviceStatus  device_status_;
 };
 

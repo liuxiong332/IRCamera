@@ -261,5 +261,11 @@
     <ClInclude Include="linker\TempThresholdLinker.h">
       <Filter>linker</Filter>
     </ClInclude>
+    <ClInclude Include="core\SimpleCameraRotator.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\CameraRotator.h">
+      <Filter>core</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

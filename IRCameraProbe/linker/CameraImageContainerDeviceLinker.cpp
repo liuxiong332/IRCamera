@@ -1,5 +1,7 @@
 #include "CameraImageContainerDeviceLinker.h"
 #include "core/CameraDevice.h"
+#include "core/SimpleCameraRotator.h"
+
 #include "ui/CameraImageContainerUI.h"
 #include "ui/CameraImageUI.h"
 #include <tchar.h>
@@ -22,6 +24,8 @@ void CameraImageContainerDeviceLinker::Init(LPCTSTR ip_addr, LPCTSTR name, Camer
   camera_device_->SetName(name);
   camera_device_->SetIPAddr(ip_addr);
   camera_device_->Init();
+
+  camera_rotator_.reset(new SimpleCameraRotator);
 
   container_ui_->EnableDisconnectButton(false);
   container_ui_->EnableConnectButton(false);
@@ -57,8 +61,13 @@ void CameraImageContainerDeviceLinker::Disconnect() {
 void CameraImageContainerDeviceLinker::Sample() {
   if (device_status_ != CONNECTED)
     return;
-  camera_device_->UpdateKelvinImage(
-    std::bind(&CameraImageContainerDeviceLinker::ImageBufferUpdate, this, std::placeholders::_1));
+  
+  //rotate all of the angle to get the around image
+  while (camera_rotator_->RotateNext(&rotation_pos_)) {
+    camera_device_->UpdateKelvinImage(
+      std::bind(&CameraImageContainerDeviceLinker::ImageBufferUpdate, this, std::placeholders::_1));
+  }
+  
 }
 //when the camera has init completely
 void  CameraImageContainerDeviceLinker::OnInitCamera() {
@@ -101,6 +110,8 @@ void CameraImageContainerDeviceLinker::OnSampleButtonClicked() {
 
 void CameraImageContainerDeviceLinker::ImageBufferUpdate(CameraImageBuffer* buffer) {
   container_ui_->GetCameraImageUI()->UpdateImage(buffer);
-  container_ui_->SetStatusText(_T("Update image"));
+  TCHAR sz_status[250];
+  wsprintf(sz_status, _T("Camera Angle %d: Update image"), rotation_pos_.GetAngle());
+  container_ui_->SetStatusText(sz_status);
 }
 }
