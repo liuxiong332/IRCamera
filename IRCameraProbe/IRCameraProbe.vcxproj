@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\TimeDelta.h" />
+    <ClInclude Include="core\CameraBufferAnalyzer.h" />
     <ClInclude Include="core\CameraDevice.h" />
     <ClInclude Include="core\CameraDeviceObserver.h" />
     <ClInclude Include="core\CameraRotator.h" />

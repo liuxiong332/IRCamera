@@ -267,5 +267,8 @@
     <ClInclude Include="core\CameraRotator.h">
       <Filter>core</Filter>
     </ClInclude>
+    <ClInclude Include="core\CameraBufferAnalyzer.h">
+      <Filter>core</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
