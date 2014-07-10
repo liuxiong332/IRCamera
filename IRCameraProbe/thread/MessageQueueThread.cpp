@@ -6,7 +6,6 @@
 namespace camera {
 MessageQueueThread::MessageQueueThread()
 {
-  message_loop_.reset(new MessageLoop);
   thread_handle = NULL;
   exit_event = CreateEvent(NULL, FALSE, FALSE, NULL);
 }
@@ -39,6 +38,7 @@ unsigned MessageQueueThread::ThreadFunc() {
   SetEvent(init_event);
 
   //begin the message loop
+  message_loop_.reset(new MessageLoop);
   message_loop_->RunMessageLoop();
   
   CloseHandle((HANDLE)thread_handle);

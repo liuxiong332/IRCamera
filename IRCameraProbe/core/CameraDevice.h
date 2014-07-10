@@ -6,20 +6,21 @@
 #include <memory>
 #include <functional>
 
+
 class CameraImageBuffer;
 namespace camera {
 
 class MessageLoop;
 class CameraManageEventHandler;
 
-class CameraDevice
+class CameraDevice : public std::enable_shared_from_this<CameraDevice>
 {
 public:
   enum ConnectStatus {
     CONNECTED,
     DISCONNECTED
   };
-
+  typedef std::shared_ptr<CameraDevice> SharedCameraDevicePtr;
   //when connect to the camera, the observer return the connect result
   typedef std::function<void(IRCameraStatusCode)> ConnectResultObserver;
   CameraDevice();
@@ -49,8 +50,7 @@ public:
 
   //notify the camera to get the new image 
   //note: img_filling must be multithread security
-  typedef std::function<void(CameraImageBuffer*)> ImageUpdateHandler;
-  void  UpdateKelvinImage(const ImageUpdateHandler&);
+  void  UpdateKelvinImage();
 private:
   friend class CameraManageEventHandler;
   //the observer to observe the camera event in the camera thread
@@ -59,7 +59,7 @@ private:
   void  InitCompleteTrigger();
   void  ConnectedTrigger();
   void  DisconnectTrigger();
-  void  UpdateImageTrigger();
+  void  UpdateImageTrigger(CameraImageBuffer* buffer);
 
   TString camera_name_;
   TString camera_ip_addr_;

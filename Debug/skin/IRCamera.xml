@@ -60,25 +60,20 @@
 						<HorizontalLayout height="30">
 							<Label text="稳定温度 " width="140" font="1"/>
 							<Label text="最大值: " width="100"/>
-		          <CanEditButton name="stable_max_temp_ui" buttontext="100" padding="0,5,0,5" width="100"/>
-						</HorizontalLayout>
-
-						<HorizontalLayout height="30">
-							<Label text="跳变平均温度" width="140" font="1"/>
+		          <CanEditButton name="stable_max_temp_ui" buttontext="50" padding="0,5,0,5" width="100"/>
+		          <Control width="100"/>
 							<Label text="Delta最大值: " width="100"/>
-							<CanEditButton name="unstable_aver_delta_ui" buttontext="100" padding="0,5,0,5" width="100"/>
-		          <Control width="100"/>
-							<Label text="绝对最大值: " width="100"/>
-							<CanEditButton name="unstable_aver_ui" buttontext="100" padding="0,5,0,5" width="100"/>
+							<CanEditButton name="stable_delta_temp_ui" buttontext="20" padding="0,5,0,5" width="100"/>
 						</HorizontalLayout>
 
+
 						<HorizontalLayout height="30">
-							<Label text="跳变最大温度 " width="140" font="1"/>
+							<Label text="非稳定温度： " width="140" font="1"/>
 							<Label text="Delta最大值:" width="100"/>
-							<CanEditButton name="unstable_max_delta_ui" buttontext="100" padding="0,5,0,5" width="100"/>
+							<CanEditButton name="unstable_max_delta_ui" buttontext="50" padding="0,5,0,5" width="100"/>
 		          <Control width="100"/>
 							<Label text="绝对最大值: " width="100"/>
-							<CanEditButton name="unstable_max_ui" buttontext="100" padding="0,5,0,5" width="100"/>
+							<CanEditButton name="unstable_max_ui" buttontext="80" padding="0,5,0,5" width="100"/>
 						</HorizontalLayout>
 					</VerticalLayout>
 
@@ -92,7 +87,7 @@
 							<Option  name="auto_mode_option" width="16" padding="0,4,0,4" normalimage="RadioBtnNon.png" selectedimage="RadioBtnSel.png" group="sample_mode"/>
 							<Label text="自动" width="100" padding="5,0,0,0"/>
 							<Label text="自动刷新时间: " width="100"/>
-							<Button padding="0,2,0,2" name="sample_interval_btn" text="1s" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
+							<Button padding="0,2,0,2" name="sample_interval_btn" text="10s" align="left" hotimage="file='btn_hot.png' corner='2,8,2,2'" width="100"/>
 							<HorizontalLayout padding="0,2,0,2" visible="false" name="sample_interval_ui">
 		          	<RichEdit  name="sample_interval_edit" bordercolor="#FFCCCCCC" bordersize="1"  text="60" width="100" bkimage="bg12.png" multiline="false" rich="false"/>
 		          	<Combo name="sample_interval_combo" bordercolor="#FFCCCCCC" bordersize="1" bkimage="bg12.png" width="50" droptype="droplist" textpadding="4,1,1,1"  normalimage="file='combo.png' source='0,0,100,22' corner='2,2,20,2'" hotimage="file='combo.png' source='0,22,100,44' corner='2,2,22,2'" pushedimage="file='combo.png' source='0,44,100,66' corner='2,2,22,2'">
@@ -105,6 +100,13 @@
 		          </HorizontalLayout>
 						</HorizontalLayout>
 					</VerticalLayout>
+
+					<Label text="稳定时刻" font="1" width="80"/>
+					<HorizontalLayout padding="10,10,10,0" height="30" name="stable_sample_time_layout">
+						<Label text="每天的" width="60"/>
+						<CanEditButton buttontext="5" name="stable_sample_time_btn" padding="0,5,0,5" width="20"/>
+						<Label text="时 (24小时表示)" width="100"/>
+					</HorizontalLayout>
 				</VerticalLayout>
 
 				<HorizontalLayout height="40" padding="0,0,10,0">

@@ -5,6 +5,8 @@
 
 #include "pref/CameraInfoPref.h"
 #include "pref/SampleModePref.h"
+#include "pref/StableSampleTimePref.h"
+#include "common/Time.h"
 
 #include "IRCameraBasic.h"
 #include <map>
@@ -61,10 +63,28 @@ void CameraImageLinkerList::ReloadCameraList()
   }
 }
 
+void  CameraImageLinkerList::OnSampleTimeChanged() {
+  StableSampleTimePref* pref = StableSampleTimePref::GetInstance();
+  Time time = Time::GetCurrentTime();
+  Time end_time(24, 0, 0);
+  Time next_day_time(static_cast<short>(pref->GetSampleHour()), 0, 0);
+  long long milliseconds = end_time.HourMinuteSecondToMilli() - time.HourMinuteSecondToMilli() +
+    next_day_time.HourMinuteSecondToMilli();
+  assert(milliseconds < 0x7FFFFFFF);
+  list_ui_->BeginStableSampleTimer(TimeDelta::FromMilliseconds(milliseconds));
+}
+
 void  CameraImageLinkerList::OnTimer() {
   std::for_each(device_linker_list_.begin(), device_linker_list_.end(), 
     [](const ImageDeviceLinkerPtr& linker) {
     linker->Sample();
+  });
+}
+
+void CameraImageLinkerList::OnStableSampleTimer() {
+  std::for_each(device_linker_list_.begin(), device_linker_list_.end(),
+    [](const ImageDeviceLinkerPtr& linker) {
+    linker->StableSample();
   });
 }
 

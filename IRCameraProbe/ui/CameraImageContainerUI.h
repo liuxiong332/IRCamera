@@ -30,6 +30,8 @@ public:
   void SetErrorStatusText(LPCTSTR status_text);
   void ShowErrorStatus(bool is_show);
 
+  void ShowStatusHideError(bool is_show);
+
   bool IsSampleButtonVisible() const;
   //show or hide the sample button
   void ShowSampleButton(bool is_show);

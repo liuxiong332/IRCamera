@@ -19,6 +19,9 @@ class CameraRotator {
 public:
   //rotate to the next position, the return value is pos after rotation
   virtual bool RotateNext(CameraRotationPos*) = 0;
+
+  virtual void Reset() = 0;
+
   virtual ~CameraRotator() {}
 };
 }

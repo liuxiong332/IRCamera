@@ -9,6 +9,7 @@ namespace camera {
 class CameraInfoListLinker;
 class SampleModeLinker;
 class TempThresholdLinker;
+class StableSampleTimeLinker;
 
 class CameraPrefLinker: public CameraPrefLayoutUIObserver {
 public:
@@ -20,5 +21,6 @@ private:
   std::unique_ptr<TempThresholdLinker>  temp_threshold_linker_;
   std::unique_ptr<CameraInfoListLinker> camera_info_linker_;
   std::unique_ptr<SampleModeLinker>   sample_mode_linker_;
+  std::unique_ptr<StableSampleTimeLinker> stable_sample_time_linker_;
 };
 }

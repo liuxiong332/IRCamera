@@ -3,6 +3,10 @@
 // TimeDelta ------------------------------------------------------------------
 
 typedef long long int64;
+namespace camera {
+class Time;
+}
+
 class TimeDelta {
 public:
   
@@ -151,7 +155,7 @@ private:
   static const int64 kNanosecondsPerMicrosecond = 1000;
   static const int64 kNanosecondsPerSecond = kNanosecondsPerMicrosecond *
     kMicrosecondsPerSecond;
-
+  friend class camera::Time;
 };
 
 // static

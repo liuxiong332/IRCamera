@@ -118,6 +118,21 @@
     <ClCompile Include="linker\TempThresholdLinker.cpp">
       <Filter>linker</Filter>
     </ClCompile>
+    <ClCompile Include="core\RotationBufferAnalyzer.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="common\Time.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="core\ImageBufferAnalyzer.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\StableSampleTimePrefUI.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="linker\StableSampleTimeLinker.cpp">
+      <Filter>linker</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ui\ControlBuilder.h">
@@ -267,8 +282,35 @@
     <ClInclude Include="core\CameraRotator.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="core\CameraBufferAnalyzer.h">
+    <ClInclude Include="core\RotationBufferAnalyzer.h">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="common\Time.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="core\ImageBufferAnalyzer.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\TempJudgeResult.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\ImageBufferPusherObserver.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="common\TempTransform.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="pref\StableSampleTimePrefObserver.h">
+      <Filter>pref</Filter>
+    </ClInclude>
+    <ClInclude Include="pref\StableSampleTimePref.h">
+      <Filter>pref</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\StableSampleTimePrefUI.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="linker\StableSampleTimeLinker.h">
+      <Filter>linker</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

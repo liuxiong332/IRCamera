@@ -12,10 +12,8 @@ public:
 
   //get the max stable temperature
   int GetStableMaxTemp() const;
-  //get the max delta between the stable and unstable average temperature
-  int GetUnstableAverDeltaTemp() const;
-  //get the max unstable average temperature
-  int GetUnstableAverTemp() const;
+
+  int GetStableDeltaTemp() const;
   //get the max delta between unstable average temperature and the max temperature
   int GetUnstableMaxDeltaTemp() const;
   //get the max unstable temperature
@@ -24,8 +22,8 @@ private:
   DuiLib::CContainerUI* temp_pref_layout_;
  
   CanEditButtonUI*  stable_max_ui_;
-  CanEditButtonUI* unstable_aver_delta_ui_;
-  CanEditButtonUI* unstable_aver_ui_;
+  CanEditButtonUI*  stable_delta_ui_;
+
   CanEditButtonUI* unstable_max_delta_ui_;
   CanEditButtonUI* unstable_max_ui_;
 };

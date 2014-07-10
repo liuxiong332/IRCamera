@@ -8,7 +8,7 @@ namespace {
 
   const float kKelvinTempTransform = 273.15f;
   const float kTempMinValue = kKelvinTempTransform + 0;
-  const float kTempMaxValue = kKelvinTempTransform + 100;
+  const float kTempMaxValue = kKelvinTempTransform + 80;
 
   const int kImageArraySize = 1;
   float kImageArray[kImageWidth*kImageHeight];
@@ -79,6 +79,7 @@ IRCameraStatusCode IRCameraDeviceMock::GetKelvinImage(CameraImageBuffer** buffer
 //  img_filling->SetBuffer(kImageArray , kImageWidth*kImageHeight);
   *buffer = new CameraImageBufferMock(kImageArray, kImageWidth, kImageHeight);
   image_index_ = (++image_index_) % kImageArraySize;
+  Sleep(1000);
   return IRCAMERA_OK;
 }
 

@@ -35,8 +35,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="common\Time.cpp" />
     <ClCompile Include="common\TimeDelta.cpp" />
+    <ClCompile Include="core\ImageBufferAnalyzer.cpp" />
     <ClCompile Include="core\CameraDevice.cpp" />
+    <ClCompile Include="core\RotationBufferAnalyzer.cpp" />
     <ClCompile Include="core\WinMain.cpp" />
     <ClCompile Include="linker\CameraImageContainerDeviceLinker.cpp" />
     <ClCompile Include="linker\CameraImageLinkerList.cpp" />
@@ -44,6 +47,7 @@
     <ClCompile Include="linker\CameraPrefLinker.cpp" />
     <ClCompile Include="linker\MainLinker.cpp" />
     <ClCompile Include="linker\SampleModeLinker.cpp" />
+    <ClCompile Include="linker\StableSampleTimeLinker.cpp" />
     <ClCompile Include="linker\TempThresholdLinker.cpp" />
     <ClCompile Include="pref\CameraInfoPref.cpp" />
     <ClCompile Include="pref\SampleModePref.cpp" />
@@ -64,16 +68,22 @@
     <ClCompile Include="ui\DIBitmap.cpp" />
     <ClCompile Include="ui\MainWindow.cpp" />
     <ClCompile Include="ui\SampleModePrefUI.cpp" />
+    <ClCompile Include="ui\StableSampleTimePrefUI.cpp" />
     <ClCompile Include="ui\TemperatureColorTableUI.cpp" />
     <ClCompile Include="ui\TempThresholdPrefUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common\TempTransform.h" />
+    <ClInclude Include="common\Time.h" />
     <ClInclude Include="common\TimeDelta.h" />
-    <ClInclude Include="core\CameraBufferAnalyzer.h" />
+    <ClInclude Include="core\ImageBufferAnalyzer.h" />
     <ClInclude Include="core\CameraDevice.h" />
     <ClInclude Include="core\CameraDeviceObserver.h" />
     <ClInclude Include="core\CameraRotator.h" />
+    <ClInclude Include="core\ImageBufferPusherObserver.h" />
+    <ClInclude Include="core\RotationBufferAnalyzer.h" />
     <ClInclude Include="core\SimpleCameraRotator.h" />
+    <ClInclude Include="core\TempJudgeResult.h" />
     <ClInclude Include="linker\CameraImageContainerDeviceLinker.h" />
     <ClInclude Include="linker\CameraImageLinkerList.h" />
     <ClInclude Include="linker\CameraInfoListLinker.h" />
@@ -83,12 +93,15 @@
     <ClInclude Include="linker\CameraSamplePosChanger.h" />
     <ClInclude Include="linker\MainLinker.h" />
     <ClInclude Include="linker\SampleModeLinker.h" />
+    <ClInclude Include="linker\StableSampleTimeLinker.h" />
     <ClInclude Include="linker\TempThresholdLinker.h" />
     <ClInclude Include="pref\CameraInfoPref.h" />
     <ClInclude Include="pref\CameraInfoPrefObserver.h" />
     <ClInclude Include="pref\SampleMode.h" />
     <ClInclude Include="pref\SampleModePref.h" />
     <ClInclude Include="pref\SampleModePrefObserver.h" />
+    <ClInclude Include="pref\StableSampleTimePref.h" />
+    <ClInclude Include="pref\StableSampleTimePrefObserver.h" />
     <ClInclude Include="pref\TempThresholdPref.h" />
     <ClInclude Include="thread\MessageDispatcher.h" />
     <ClInclude Include="thread\MessageLoop.h" />
@@ -115,6 +128,7 @@
     <ClInclude Include="ui\DIBitmap.h" />
     <ClInclude Include="ui\MainWindow.h" />
     <ClInclude Include="ui\SampleModePrefUI.h" />
+    <ClInclude Include="ui\StableSampleTimePrefUI.h" />
     <ClInclude Include="ui\TabLayoutSwitcher.h" />
     <ClInclude Include="ui\TemperatureColorTableUI.h" />
     <ClInclude Include="ui\TempThresholdPrefUI.h" />

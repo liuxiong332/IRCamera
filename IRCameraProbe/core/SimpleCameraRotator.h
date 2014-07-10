@@ -7,12 +7,16 @@ public:
   SimpleCameraRotator() :angle_(0)  {}
   virtual bool RotateNext(CameraRotationPos* pos) override {
     *pos = CameraRotationPos(angle_);
-    angle_ += kAnglePerRotation;
     if (angle_ >= kMaxAngle) {
       angle_ -= kMaxAngle;
       return false;
     }
+    angle_ += kAnglePerRotation;
     return true;
+  }
+
+  void Reset() {
+    angle_ = 0;
   }
 private:
   int angle_;

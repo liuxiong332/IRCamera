@@ -1,13 +1,11 @@
 #include "CameraImageUI.h"
 #include "CameraImageBuffer.h"
+#include "common/TempTransform.h"
 #include <algorithm>
 #include <memory>
 #include <windows.h>
 #include <strsafe.h>
 
-namespace {
-  const static float kKelvinTransform = 273.15f;
-}
 
 class TemperatureColorTableUI;
 
@@ -55,13 +53,12 @@ void CameraImageUI::UpdateImage(CameraImageBuffer* buffer) {
   BYTE* bitmap_buffer = bitmap_.GetBitBuffer();
   int palette_len = bitmap_.GetPaletteLen();
 
-  const static float kKelvinTemp = 273.15f;
-  float min_temp = 0.0f + kKelvinTemp;
+  float min_temp = 0.0f;
   int span = 100;
   //transform the temperature value to the bitmap byte map
   for (int i = 0; i < height; ++i) {
     for (int j = 0; j < width; ++j) {
-      bitmap_buffer[j] = static_cast<BYTE>((temp_buffer[j] - min_temp) * palette_len / span);
+      bitmap_buffer[j] = static_cast<BYTE>((camera::TransformKelvinToCelsius(temp_buffer[j]) - min_temp) * palette_len / span);
     }
     bitmap_buffer += width;
     temp_buffer += width;

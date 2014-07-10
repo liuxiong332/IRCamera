@@ -6,8 +6,8 @@ TempThresholdPrefUI::TempThresholdPrefUI(DuiLib::CContainerUI* ui) {
   temp_pref_layout_ = ui;
   //initialize stable max temperature
   stable_max_ui_ = CommonUIOperator::FindSubCanEditButtonByName(ui, _T("stable_max_temp_ui"));
-  unstable_aver_delta_ui_ = CommonUIOperator::FindSubCanEditButtonByName(ui, _T("unstable_aver_delta_ui"));
-  unstable_aver_ui_ = CommonUIOperator::FindSubCanEditButtonByName(ui, _T("unstable_aver_ui"));
+  stable_delta_ui_ = CommonUIOperator::FindSubCanEditButtonByName(ui, _T("stable_delta_temp_ui"));
+
   unstable_max_delta_ui_ = CommonUIOperator::FindSubCanEditButtonByName(ui, _T("unstable_max_delta_ui"));
   unstable_max_ui_ = CommonUIOperator::FindSubCanEditButtonByName(ui, _T("unstable_max_ui"));
 }
@@ -19,13 +19,9 @@ static int TStringToInt(const TString& str) {
 int TempThresholdPrefUI::GetStableMaxTemp() const {
   return TStringToInt(stable_max_ui_->GetButtonText());
 }
-//get the max delta between the stable and unstable average temperature
-int TempThresholdPrefUI::GetUnstableAverDeltaTemp() const {
-  return TStringToInt(unstable_aver_delta_ui_->GetButtonText());
-}
-//get the max unstable average temperature
-int TempThresholdPrefUI::GetUnstableAverTemp() const {
-  return TStringToInt(unstable_aver_ui_->GetButtonText());
+
+int TempThresholdPrefUI::GetStableDeltaTemp() const {
+  return TStringToInt(stable_delta_ui_->GetButtonText());
 }
 //get the max delta between unstable average temperature and the max temperature
 int TempThresholdPrefUI::GetUnstableMaxDeltaTemp() const {

@@ -1,6 +1,7 @@
 #pragma once
 #include "core/CameraDeviceObserver.h"
 #include "core/CameraRotator.h"
+
 #include "ui/CameraImageContainerUIObserver.h"
 #include <wtypes.h>
 #include <memory>
@@ -11,6 +12,7 @@ class CameraImageBuffer;
 namespace camera {
 class CameraDevice;
 class CameraRotator;
+class RotationBufferAnalyzer;
 
 class CameraImageContainerDeviceLinker: 
   public CameraDeviceObserver,
@@ -37,10 +39,17 @@ public:
   void Connect();
   void Disconnect();
   void Sample();
+
+  void StableSample();
+
+  void SampleNewPos();
+  void StableSampleNewPos();
+  ~CameraImageContainerDeviceLinker();
 private:
   virtual void OnConnectButtonClicked() override;
   virtual void OnDisconnectButtonClicked() override;
   virtual void OnSampleButtonClicked() override;
+   
 
   //when the camera has init completely
   virtual void  OnInitCamera() override;
@@ -49,16 +58,20 @@ private:
   //when the host has disconnect from the camera
   virtual void  OnDisconnect()  override;
   //when the image has update
-  virtual void  OnImageUpdate() override;
+  virtual void  OnImageUpdate(CameraImageBuffer*) override;
 
   void ImageBufferUpdate(CameraImageBuffer*);
+  void StableSampleImageBufferUpdate(CameraImageBuffer*);
 
   std::unique_ptr<CameraImageContainerUI> container_ui_;
-  std::unique_ptr<CameraDevice> camera_device_;
+  std::shared_ptr<CameraDevice> camera_device_;
   std::unique_ptr<CameraRotator>  camera_rotator_;
 
   CameraRotationPos   rotation_pos_;
   DeviceStatus  device_status_;
+
+  std::unique_ptr<RotationBufferAnalyzer> stable_buffer_analyzer_;
+
 };
 
 }

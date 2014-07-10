@@ -85,8 +85,9 @@ void  MessageLoop::RunMessageLoop() {
       DispatchMessage(&msg);
     }
   }
+  if (dispatcher_)  dispatcher_->Dispatch(msg);
 }
-
+ 
 void  MessageLoop::InitMessageWnd() {
   TCHAR class_name[100];
   wsprintf(class_name, _T("FLIRMessageLoop%p"), this);

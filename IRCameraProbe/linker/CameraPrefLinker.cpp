@@ -2,6 +2,7 @@
 #include "CameraInfoListLinker.h"
 #include "SampleModeLinker.h"
 #include "TempThresholdLinker.h"
+#include "StableSampleTimeLinker.h"
 
 #include "ui/CameraPrefLayoutUI.h"
 #include "ui/CameraInfoPrefLayout.h"
@@ -17,6 +18,7 @@ void CameraPrefLinker::Init(CameraPrefLayoutUI* layout) {
 
   sample_mode_linker_.reset(new SampleModeLinker(layout->GetSampleModePrefUI()));
   temp_threshold_linker_.reset(new TempThresholdLinker(layout->GetTempThresholdPrefUI()));
+  stable_sample_time_linker_.reset(new StableSampleTimeLinker(layout->GetStableSampleTimePrefUI()));
   OnBackButtonClicked();    //make the setup valid
 }
 
@@ -25,6 +27,7 @@ void CameraPrefLinker::OnBackButtonClicked() {
   camera_info_linker_->CameraInfoUIChanged(); 
   sample_mode_linker_->SampleModeChanged();
   temp_threshold_linker_->TempThresholdChanged();
+  stable_sample_time_linker_->StableSampleTimeChanged();
 }
  
 }

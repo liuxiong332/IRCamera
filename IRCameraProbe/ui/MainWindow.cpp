@@ -13,6 +13,7 @@
 #include "CameraInfoUI.h"
 #include "CameraImageContainerUI.h"
 #include "CanEditButtonUI.h"
+#include "StableSampleTimePrefUI.h"
 
 bool MainWindow::OnSettingBtnClick(void* param) {
   DuiLib::TNotifyUI* notify = reinterpret_cast<DuiLib::TNotifyUI*>(param);

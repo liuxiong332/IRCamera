@@ -14,7 +14,8 @@
 #include "ui/CameraImageListUI.h"
 #include "ui/CameraPrefLayoutUI.h"
 
-#include "linker/CameraImageContainerDeviceLinker.h"
+#include "CameraImageContainerDeviceLinker.h"
+#include "StableSampleTimeLinker.h"
 
 namespace camera {
 void MainLinker::Init() {

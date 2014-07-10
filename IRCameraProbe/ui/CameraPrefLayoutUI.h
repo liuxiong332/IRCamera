@@ -13,6 +13,7 @@ class TabLayoutSwitcher;
 class CameraPrefLayoutUIObserver;
 class CameraInfoPrefBuilder;
 class TempThresholdPrefUI;
+class StableSampleTimePrefUI;
 
 class CameraPrefLayoutUI {
 public:
@@ -33,6 +34,9 @@ public:
     return temp_threshold_pref_ui_.get();
   }
 
+  StableSampleTimePrefUI* GetStableSampleTimePrefUI() {
+    return stable_sample_time_pref_ui_.get();
+  }
 private:
   bool  OnBackButtonClick(void* param);
 
@@ -43,4 +47,5 @@ private:
   std::unique_ptr<CameraInfoPrefLayout> camera_info_pref_layout_;
   std::unique_ptr<SampleModePrefUI>     sample_mode_pref_ui_;
   std::unique_ptr<TempThresholdPrefUI>  temp_threshold_pref_ui_;
+  std::unique_ptr<StableSampleTimePrefUI> stable_sample_time_pref_ui_;
 };

@@ -33,11 +33,12 @@ void CameraDevice::Init() {
   camera_message_loop_ = manager->GetCameraMessageLoop();
   main_message_loop_ = manager->GetMainMessageLoop();
 
-  camera_message_loop_->PushTaskAndReply(main_message_loop_, [this]() {
-    camera_info_ = IRCameraDevice::CreateForTest();
-    camera_info_->RegisterEventHandler(camera_event_handler_in_camera_thread_.get());
-  }, [this] {
-    InitCompleteTrigger();
+  SharedCameraDevicePtr ptr(shared_from_this());
+  camera_message_loop_->PushTaskAndReply(main_message_loop_, [ptr]() {
+    ptr->camera_info_ = IRCameraDevice::CreateForTest();
+    ptr->camera_info_->RegisterEventHandler(ptr->camera_event_handler_in_camera_thread_.get());
+  }, [ptr] {
+    ptr->InitCompleteTrigger();
   });
 //  camera_dispatcher_->PushTask(create_task);
 //  create_task->DoEvent();
@@ -47,15 +48,16 @@ void CameraDevice::Init() {
 CameraDevice::~CameraDevice()
 {
   camera_info_->RegisterEventHandler(NULL);
-  if (camera_status_ == CONNECTED)
-    Disconnect();
+//   if (camera_status_ == CONNECTED)
+//     Disconnect(); 
 //  IRCameraDestroy(camera_info);
 }
 
 void CameraDevice::Connect(const ConnectResultObserver& observer) {
   IRCameraStatusCode* code = new IRCameraStatusCode;
-  camera_message_loop_->PushTaskAndReply(main_message_loop_, [this, code] {
-    *code = camera_info_->Connect(_T("127.0.0.1"));
+  SharedCameraDevicePtr ptr(shared_from_this());
+  camera_message_loop_->PushTaskAndReply(main_message_loop_, [ptr, code] {
+    *code = ptr->camera_info_->Connect(_T("127.0.0.1"));
   }, [observer, code] {
     if (!observer)  return;
     observer(*code);
@@ -66,10 +68,10 @@ void CameraDevice::Connect(const ConnectResultObserver& observer) {
 }
 
 void CameraDevice::Disconnect(){
-
+  SharedCameraDevicePtr ptr(shared_from_this());
 //  return IRCameraDisconnect(camera_info);  camera_dispatcher_->PushTask(disconnect_task);
-  camera_message_loop_->PushTask([this] {
-    camera_info_->Disconnect();
+  camera_message_loop_->PushTask([ptr] {
+    ptr->camera_info_->Disconnect();
   });
 }
 
@@ -122,35 +124,36 @@ void CameraDevice::CameraEventHandlerInCameraThread(IRCameraEvent event_type) {
     image_width_ = camera_info_->GetImageWidth();
     image_height_ = camera_info_->GetImageHeight();
   }
-  main_message_loop_->PushTask( [event_type, this]() {
+  SharedCameraDevicePtr ptr(shared_from_this());
+  main_message_loop_->PushTask( [event_type, ptr]() {
     switch (event_type) {
     case IRCAMERA_CONNECTED_EVENT:
-      ConnectedTrigger();
+      ptr->ConnectedTrigger();
       break;
     case IRCAMERA_DISCONNECTED_EVENT:
-      DisconnectTrigger();
+      ptr->DisconnectTrigger();
       break;
     }
   });
 }
 
-void CameraDevice::UpdateKelvinImage(const ImageUpdateHandler& handler) {
-  camera_message_loop_->PushTask([this, handler] {
+void CameraDevice::UpdateKelvinImage() {
+  SharedCameraDevicePtr ptr(shared_from_this());
+  camera_message_loop_->PushTask([ptr] {
     CameraImageBuffer*  buffer;
-    IRCameraStatusCode code = camera_info_->GetKelvinImage(&buffer);
+    IRCameraStatusCode code = ptr->camera_info_->GetKelvinImage(&buffer);
     if (code == IRCAMERA_OK) {
-      main_message_loop_->PushTask([this, handler, buffer] {
-        if (handler)  handler(buffer);
-        UpdateImageTrigger();
+      ptr->main_message_loop_->PushTask([ptr, buffer] {
+        ptr->UpdateImageTrigger(buffer);
         delete buffer;
       });
     }
   });
 }
 
-void CameraDevice::UpdateImageTrigger() {
+void CameraDevice::UpdateImageTrigger(CameraImageBuffer* buffer) {
   for (ObserverIterator iter = observers_.begin(); iter != observers_.end(); ++iter) {
-    (*iter)->OnImageUpdate();;
+    (*iter)->OnImageUpdate(buffer); 
   }
 }
  

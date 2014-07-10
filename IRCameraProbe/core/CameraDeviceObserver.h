@@ -1,5 +1,6 @@
 #pragma once
 
+class CameraImageBuffer;
 namespace camera {
 
 class CameraDeviceObserver {
@@ -11,7 +12,7 @@ public:
   //when the host has disconnect from the camera
   virtual void  OnDisconnect() = 0;
   //when the image has update
-  virtual void  OnImageUpdate() = 0;
+  virtual void  OnImageUpdate(CameraImageBuffer*) = 0;
   virtual ~CameraDeviceObserver()  {}
 };
 }

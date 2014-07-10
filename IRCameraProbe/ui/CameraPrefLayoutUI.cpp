@@ -7,6 +7,7 @@
 #include "CameraInfoPrefLayout.h"
 #include "SampleModePrefUI.h"
 #include "TempThresholdPrefUI.h"
+#include "StableSampleTimePrefUI.h"
 #include "UIlib.h"
 #include <assert.h>
 
@@ -38,6 +39,10 @@ void CameraPrefLayoutUI::Init(DuiLib::CContainerUI* container_ui, TabLayoutSwitc
   DuiLib::CContainerUI* temp_ui =
     CommonUIOperator::FindSubContainerByName(container_ui, _T("temp_pref_layout"));
   temp_threshold_pref_ui_.reset(new TempThresholdPrefUI(temp_ui));
+
+  DuiLib::CContainerUI* sample_time_layout =
+    CommonUIOperator::FindSubContainerByName(container_ui, _T("stable_sample_time_layout"));
+  stable_sample_time_pref_ui_.reset(new StableSampleTimePrefUI(sample_time_layout));
 }
 
 CameraInfoPrefLayout* CameraPrefLayoutUI::GetCameraInfoPrefLayout() {

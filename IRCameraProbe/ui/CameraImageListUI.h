@@ -30,6 +30,9 @@ public:
   void SetObserver(CameraImageListUIObserver* observer);
   void BeginTimer(const TimeDelta& delta);
   void EndTimer();
+
+  void BeginStableSampleTimer(const TimeDelta& delta);
+  void EndStableSampleTimer();
 private:
   bool OnTimer(void* param);
 
@@ -39,4 +42,5 @@ private:
   CameraImageListUIObserver*  observer_;
 
   const static int  kTimerID = 1;
+  const static int  kStableSampleTimerID = 2;
 };

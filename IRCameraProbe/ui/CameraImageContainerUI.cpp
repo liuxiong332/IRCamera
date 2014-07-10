@@ -32,7 +32,7 @@ void CameraImageContainerUI::SetStatusText(LPCTSTR status_text) {
   camera_status_label_->SetText(status_text);
 }
 void CameraImageContainerUI::ShowStatus(bool is_show) {
-  camera_status_label_->SetVisible(is_show);
+  camera_status_label_->GetParent()->SetVisible(is_show);
 }
 
 //set error status label text
@@ -40,7 +40,7 @@ void CameraImageContainerUI::SetErrorStatusText(LPCTSTR status_text) {
   camera_error_label_->SetText(status_text);
 }
 void CameraImageContainerUI::ShowErrorStatus(bool is_show) {
-  camera_error_label_->SetVisible(is_show);
+  camera_error_label_->GetParent()->SetVisible(is_show);
 }
 
 bool CameraImageContainerUI::IsSampleButtonVisible() const {
@@ -49,6 +49,11 @@ bool CameraImageContainerUI::IsSampleButtonVisible() const {
 //show or hide the sample button
 void CameraImageContainerUI::ShowSampleButton(bool is_show) {
   sample_btn_->SetVisible(is_show);
+}
+
+void CameraImageContainerUI::ShowStatusHideError(bool is_show) {
+  ShowStatus(is_show);
+  ShowErrorStatus(!is_show);
 }
 
 void CameraImageContainerUI::EnableConnectButton(bool is_enable) {
