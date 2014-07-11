@@ -26,14 +26,15 @@ IRCamera
 * 用户设置和命令行等设置参数在整个程序都有可能用到，将此对象在各个对象中传递？no, no, no, 还是使用单例模式吧，以后再也不用重复传递设置参数信息了。
 
 ### 项目目录分布：
-Debug：二进制文件的输出目录。
-FLIRDriver：底层硬件驱动封装层和模拟层。当前软件运行在模拟层上。
-FLIRDriverTest： 硬件层的测试代码。
-duilib： DuiLib界面库。
-IRCameraProbe：程序的主要代码。
-  IRCameraProbe/common：程序中会用到的公共代码。
-  IRCameraProbe/core：封装了设备层和一些逻辑代码。
-  IRCameraProbe/linker：控制器，控制视图和逻辑代码的交互。
-  IRCameraProbe/pref：用户设置信息。
-  IRCameraProbe/thread；MessageLoop和Thread方面的代码。
-  IRCameraProbe/ui：封装了DuiLib的控件和一些UI方面的代码。
+* Debug：二进制文件的输出目录。
+* FLIRDriver：底层硬件驱动封装层和模拟层。当前软件运行在模拟层上。
+* FLIRDriverTest： 硬件层的测试代码。
+* duilib： DuiLib界面库。
+* IRCameraProbe：程序的主要代码。
+
+  * IRCameraProbe/common：程序中会用到的公共代码。
+  * IRCameraProbe/core：封装了设备层和一些逻辑代码。
+  * IRCameraProbe/linker：控制器，控制视图和逻辑代码的交互。
+  * IRCameraProbe/pref：用户设置信息。
+  * IRCameraProbe/thread；MessageLoop和Thread方面的代码。
+  * IRCameraProbe/ui：封装了DuiLib的控件和一些UI方面的代码。
