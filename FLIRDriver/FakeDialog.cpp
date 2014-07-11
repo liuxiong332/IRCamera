@@ -5,7 +5,7 @@
 #include "FLIRDriver.h"
 #include "FakeDialog.h"
 #include "afxdialogex.h"
-
+#include <assert.h>
 
 // FakeDialog ¶Ô»°¿ò
 
