@@ -32,36 +32,33 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>技术要点.</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
+  <ul>
+    <li>还在为对象生命周期管理而烦恼吗？使用RAII吧，用unique_ptr来托管局部对象，用shared_ptr来托管共享对象吧。</li>
+    <li>文件依赖太多？编译太慢？用最小包含原则和前置声明等C++最佳实现技术吧。</li>
+    <li>阻塞UI操作了，怎么办？使用多线程来避免阻塞操作？Oh，you are right！使用锁来避免临界区冲突？但是如何能在不阻塞主线程情况下返回异步通知？使用MessageLoop吧，通过任务来异步调用通知吧！</li>
+    <li>对锁粒度控制不准？已经惧怕死锁？还是使用MessageLoop吧，将本应该在其他线程上运行的对象通过任务的形式发送到其他线程上去运行吧。想收到异步通知？将任务发回到本线程运行吧。</li>
+    <li>回调任务？使用std::function吧。新C++的lambda将以往需要创建类的代价变成寥寥几句代码即可搞定的小伎俩，想使用类成员来作为任务？bind让你以最灵活的方式生成最简洁的函数对象。</li>
+    <li>线程间任务退出崩溃？用引用计数智能指针啊！shared_ptr帮你维持线程对象的生命周期。想从类成员中获取shared_ptr?继承enable_shared_from_this吧。不想让shared_ptr蔓延至整个程序？使用观察者回调吧。</li>
+    <li>想绘出清新漂亮的UI界面吗？用DuiLib吧。想在不修改一行代码的情况下改变界面风格和界面布局吗？用DuiLib吧。</li>
+    <li>某天觉得DuiLib太难用了，想改用其他UI了？使用MVC模式吧，将逻辑代码彻底解耦，就算有一天不用DuiLib了，我的逻辑代码依然可用。</li>
+    <li>想解耦视图和逻辑，但是视图和逻辑代码如何交互？使用观察者吧。想将视图或者逻辑改变即时通知到其他地方？还是使用观察者吧。</li>
+    <li>用户设置和命令行等设置参数在整个程序都有可能用到，将此对象在各个对象中传递？no, no, no, 还是使用单例模式吧，以后再也不用重复传递设置参数信息了。
 <h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>exe rar下载</h3>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
+<a class="tar_download_link exe_download_link" href="./bin/Release.rar">Download the exe file</a>
 <h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>软件截图</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<img src="images/主界面.jpg"/>
+<p>程序主界面</p>
+<img src="images/设置界面.jpg"/>
+<p>用户设置界面</p>
+<img src="images/就地编辑设置.jpg"/>
+<p>用户编辑设置</p>
 
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
       </section>
     </div>
 
@@ -73,7 +70,7 @@ $ git checkout gh-pages
       </footer>
     </div>
 
-    
+
 
   </body>
 </html>
