@@ -1,6 +1,7 @@
 #include "SampleModePrefUI.h"
 #include "CommonUIOperator.h"
 #include "IRCameraBasic.h"
+#include "common/StringUtility.h"
 #include <algorithm>
 #include <regex>
 
@@ -29,7 +30,7 @@ void SampleModePrefUI::Init(DuiLib::CContainerUI* ui) {
 
   sample_interval_edit_ = CommonUIOperator::FindSubRichEditByName(ui, _T("sample_interval_edit"));
   sample_interval_combo_ = CommonUIOperator::FindSubComboByName(ui, _T("sample_interval_combo"));
-  SynchronizeButtonToEdit();
+  SyncButtonToEdit();
 
   DuiLib::CButtonUI*  ok_button = CommonUIOperator::FindSubButtonByName(ui, _T("sample_interval_ok_btn"));
   ok_button->OnNotify += DuiLib::MakeDelegate(this, &SampleModePrefUI::OnSampleIntervalEditOKClicked);
@@ -40,6 +41,13 @@ camera::SampleMode  SampleModePrefUI::GetSampleMode() const {
   if (auto_sample_option_->IsSelected())
     return camera::AUTO_MODE;
   return camera::MANUAL_MODE;
+}
+
+void SampleModePrefUI::SetSampleMode(camera::SampleMode mode) {
+  if (mode == camera::AUTO_MODE)
+    auto_sample_option_->Selected(true);
+  else
+    auto_sample_option_->Selected(false);
 }
 
 TimeDelta SampleModePrefUI::GetSampleInterval() const {
@@ -58,7 +66,22 @@ TimeDelta SampleModePrefUI::GetSampleInterval() const {
   return TimeDelta::Max();
 }
 
-void SampleModePrefUI::SynchronizeButtonToEdit() {
+void SampleModePrefUI::SetSampleInterval(const TimeDelta& delta) {
+  TString button_text;
+  if (delta.InHours() > 0) {
+    button_text = StringUtility::IntToString(delta.InHours());
+    button_text += kScaleStr[HOUR];
+  } else if (delta.InMinutes() > 0) {
+    button_text = StringUtility::IntToString(delta.InMinutes());
+    button_text += kScaleStr[MINUTE];
+  } else if (delta.InSeconds() > 0) {
+    button_text = StringUtility::IntToString( static_cast<int>(delta.InSeconds()));
+    button_text += kScaleStr[SECOND];
+  }
+  sample_interval_button_->SetText(button_text.c_str());
+}
+
+void SampleModePrefUI::SyncButtonToEdit() {
   DuiLib::CStdString  text = sample_interval_button_->GetText();
   std::wregex regex(_T("(\\d+)(\\w)"));
   std::wcmatch  match_results;
@@ -82,12 +105,17 @@ bool SampleModePrefUI::OnButtonClicked(void* param) {
 bool SampleModePrefUI::OnSampleIntervalEditOKClicked(void* param) {
   DuiLib::TNotifyUI* notify = static_cast<DuiLib::TNotifyUI*>(param);
   if (notify->sType == _T("click")) {
-    TString text = sample_interval_edit_->GetText();
-    text += kScaleStr[sample_interval_combo_->GetCurSel()];
-    sample_interval_ui_->SetVisible(false);
-    sample_interval_button_->SetText(text.c_str());
+    SyncEditToButton();
     sample_interval_button_->SetVisible(true);
+    sample_interval_ui_->SetVisible(false);
     return true;
   }
   return false;
+}
+
+void SampleModePrefUI::SyncEditToButton()
+{
+  TString text = sample_interval_edit_->GetText();
+  text += kScaleStr[sample_interval_combo_->GetCurSel()];
+  sample_interval_button_->SetText(text.c_str());
 }

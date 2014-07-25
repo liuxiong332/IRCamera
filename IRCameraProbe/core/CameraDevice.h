@@ -60,6 +60,7 @@ private:
   void  ConnectedTrigger();
   void  DisconnectTrigger();
   void  UpdateImageTrigger(CameraImageBuffer* buffer);
+  void  UpdateFailedTrigger(IRCameraStatusCode code);
 
   TString camera_name_;
   TString camera_ip_addr_;

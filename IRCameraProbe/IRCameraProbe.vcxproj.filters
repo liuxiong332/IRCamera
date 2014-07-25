@@ -133,6 +133,21 @@
     <ClCompile Include="linker\StableSampleTimeLinker.cpp">
       <Filter>linker</Filter>
     </ClCompile>
+    <ClCompile Include="common\PathService.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\PreferenceSerializer.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\StringConversion.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="pref\CameraPref.cpp">
+      <Filter>pref</Filter>
+    </ClCompile>
+    <ClCompile Include="pref\TempThresholdPref.cpp">
+      <Filter>pref</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ui\ControlBuilder.h">
@@ -311,6 +326,21 @@
     </ClInclude>
     <ClInclude Include="linker\StableSampleTimeLinker.h">
       <Filter>linker</Filter>
+    </ClInclude>
+    <ClInclude Include="common\PathService.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\PreferenceSerializer.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\StringConversion.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="pref\CameraPref.h">
+      <Filter>pref</Filter>
+    </ClInclude>
+    <ClInclude Include="common\StringUtility.h">
+      <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

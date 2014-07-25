@@ -18,8 +18,8 @@ void CameraPrefLinker::Init(CameraPrefLayoutUI* layout) {
 
   sample_mode_linker_.reset(new SampleModeLinker(layout->GetSampleModePrefUI()));
   temp_threshold_linker_.reset(new TempThresholdLinker(layout->GetTempThresholdPrefUI()));
-  stable_sample_time_linker_.reset(new StableSampleTimeLinker(layout->GetStableSampleTimePrefUI()));
-  OnBackButtonClicked();    //make the setup valid
+  stable_sample_time_linker_.reset(new StableSampleTimeLinker(layout->GetStableSampleTimePrefUI()));//
+//  OnBackButtonClicked();    //make the setup valid
 }
 
 void CameraPrefLinker::OnBackButtonClicked() {

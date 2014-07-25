@@ -22,11 +22,14 @@ public:
   void Init(DuiLib::CContainerUI* ui);
 
   camera::SampleMode  GetSampleMode() const;
+  void SetSampleMode(camera::SampleMode mode);
 
   TimeDelta GetSampleInterval() const;
+  void SetSampleInterval(const TimeDelta& delta);
 private:
   //make the content of richedit is synchronous with sample interval button 
-  void SynchronizeButtonToEdit();
+  void SyncButtonToEdit();
+  void SyncEditToButton();
 
   bool OnButtonClicked(void* param);
   bool OnSampleIntervalEditOKClicked(void* param);

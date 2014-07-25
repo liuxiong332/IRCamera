@@ -1,6 +1,6 @@
 #include "ImageBufferAnalyzer.h"
 #include "CameraImageBuffer.h"
-#include "pref/TempThresholdPref.h"
+#include "pref/CameraPref.h"
 #include "common/TempTransform.h"
 #include <algorithm>
 
@@ -26,7 +26,7 @@ ImageBufferAnalyzer::ImageBufferAnalyzer(CameraImageBuffer* buffer) {
  
 TempJudgeResult UnstableTempJudger::JudgeImageBuffer(CameraImageBuffer* buffer, float* exception_temp) {
   ImageBufferAnalyzer analyzer(buffer);
-  TempThresholdPref* pref = TempThresholdPref::GetInstance();
+  TempThresholdPref* pref = CameraPref::GetInstance()->GetTempThreshold();
   if (analyzer.GetMaxTemp() > pref->GetUnstableMaxTemp()) {   //the max temperature cannot over the threshold
     *exception_temp = analyzer.GetMaxTemp();
     return UNSTABLE_TEMP_EXCEPTION;

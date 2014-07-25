@@ -17,6 +17,9 @@ public:
   TString GetIPAddr() const;
   TString GetName() const;
 
+  void SetIPAddr(const TString& str);
+  void SetName(const TString& str);
+
   bool  IsChecked() const;
   void  EnableCheckbox(bool is_enable);
 

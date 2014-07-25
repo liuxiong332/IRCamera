@@ -10,8 +10,71 @@
 
 namespace camera {
   
+
+class UnstableImageUpdate : public CameraImageContainerDeviceLinker::ImageUpdate {
+public:
+
+  virtual bool  OnImageUpdate(CameraImageBuffer* buffer, const CameraRotationPos& pos) {
+    UnstableTempJudger temp_judger(std::numeric_limits<float>::max());
+    float exception_temp;
+    TempJudgeResult res = temp_judger.JudgeImageBuffer(buffer, &exception_temp);
+    if (res == TEMP_NORMAL) {
+      TCHAR sz_status[250];
+      swprintf(sz_status, ARRAYSIZE(sz_status), _T("Update image, Camera Angle %d"), pos.GetAngle());
+      status_show_->ShowStatusText(sz_status);
+      return true;
+    } else {
+      TCHAR sz_status[250];
+      switch (res) {
+      case UNSTABLE_TEMP_EXCEPTION:
+        swprintf(sz_status, ARRAYSIZE(sz_status), _T("the max temperature %.1f overflow"), exception_temp);
+        break;
+      case UNSTABLE_DELTA_EXCEPTION:
+        swprintf(sz_status, ARRAYSIZE(sz_status), _T("delta overflow %.1f"), exception_temp);
+        break;
+      }
+      status_show_->ShowErrorText(sz_status);
+      return false;
+    }
+  }
+
+};
+
+class StableImageUpdate : public CameraImageContainerDeviceLinker::ImageUpdate {
+public:
+  virtual bool  OnImageUpdate(CameraImageBuffer* buffer, const CameraRotationPos& pos) override {
+    rotation_buffer_analyzer_.AddImageBuffer(pos, buffer);
+    return true;
+  }
+
+  virtual void  OnCompleteUpdate() override {
+    CameraRotationPos pos;
+    float exception_temp;
+    TempJudgeResult res = rotation_buffer_analyzer_.JudgeImageBuffer(&pos, &exception_temp);
+    if (res == TEMP_NORMAL) {
+      TCHAR sz_status[250];
+      swprintf(sz_status, ARRAYSIZE(sz_status), _T("Camera get stable temperature!"));
+      status_show_->ShowStatusText(sz_status);
+    } else {
+      TCHAR sz_status[250];
+      switch (res) {
+      case STABLE_TEMP_EXCEPTION:
+        swprintf(sz_status, ARRAYSIZE(sz_status), _T("stable temperature %.1f at %d overflow"), exception_temp, pos.GetAngle());
+        break;
+      case UNSTABLE_DELTA_EXCEPTION:
+        swprintf(sz_status, ARRAYSIZE(sz_status), _T("stable delta overflow %.1f at %d"), exception_temp, pos.GetAngle());
+        break;
+      }
+      status_show_->ShowErrorText(sz_status);
+    }
+  }
+private:
+  RotationBufferAnalyzer  rotation_buffer_analyzer_;
+};
+
 CameraImageContainerDeviceLinker::CameraImageContainerDeviceLinker()
-    : device_status_(UNINITIALIZED) {
+    : device_status_(UNINITIALIZED),
+      stable_sample_is_running_(false) {
 }
 
 CameraImageContainerDeviceLinker::~CameraImageContainerDeviceLinker() {
@@ -41,8 +104,6 @@ void CameraImageContainerDeviceLinker::Init(LPCTSTR ip_addr, LPCTSTR name, Camer
   container_ui_->EnableSampleButton(false);
   
   device_status_ = INITIALIZING;
-
-
 }
 
 void CameraImageContainerDeviceLinker::Connect() {
@@ -72,19 +133,29 @@ void CameraImageContainerDeviceLinker::Disconnect() {
 }
 
 void CameraImageContainerDeviceLinker::Sample() {
-  container_ui_->ShowStatusHideError(true);
   if (device_status_ != CONNECTED)
     return;
-  //rotate all of the angle to get the around image
-  SampleNewPos();
+  if (pending_unstable_update_.get() == NULL) {
+    pending_unstable_update_.reset(new UnstableImageUpdate);
+    pending_unstable_update_->Init(this);
+    if (running_update_.get() == NULL) {
+      running_update_.swap(pending_unstable_update_);
+      BeginRotate();
+    }
+  }
 }
 
 void CameraImageContainerDeviceLinker::StableSample() {
-  container_ui_->ShowStatusHideError(true);
   if (device_status_ != CONNECTED)
     return;
-  stable_buffer_analyzer_.reset(new RotationBufferAnalyzer);
-  StableSampleNewPos();
+  if (pending_stable_update_.get() == NULL) {
+    pending_stable_update_.reset(new StableImageUpdate);
+    pending_stable_update_->Init(this);
+    if (running_update_.get() == NULL) {
+      running_update_.swap(pending_stable_update_);
+      BeginRotate();
+    }
+  }
 }
 //when the camera has init completely
 void  CameraImageContainerDeviceLinker::OnInitCamera() {
@@ -109,10 +180,20 @@ void  CameraImageContainerDeviceLinker::OnDisconnect() {
   container_ui_->EnableDisconnectButton(false);
   container_ui_->EnableSampleButton(false);
   device_status_ = INITIALIZED;
+  camera_rotator_->Reset();
+  stable_sample_is_running_ = false;
 }
 //when the image has update
 void  CameraImageContainerDeviceLinker::OnImageUpdate(CameraImageBuffer* buffer) {
-  ImageBufferUpdate(buffer);
+  container_ui_->GetCameraImageUI()->UpdateImage(buffer);
+  if (running_update_->OnImageUpdate(buffer, rotation_pos_))
+    BeginRotate();
+  else
+    OnUpdateComplete();
+}
+
+void CameraImageContainerDeviceLinker::OnImageUpdateFail(IRCameraStatusCode code) {
+  camera_device_->UpdateKelvinImage();
 }
 
 void CameraImageContainerDeviceLinker::OnConnectButtonClicked() {
@@ -128,74 +209,40 @@ void CameraImageContainerDeviceLinker::OnSampleButtonClicked() {
   Sample();
 }
 
-void CameraImageContainerDeviceLinker::ImageBufferUpdate(CameraImageBuffer* buffer) {
-  container_ui_->GetCameraImageUI()->UpdateImage(buffer);
-  UnstableTempJudger temp_judger(std::numeric_limits<float>::max());
-  float exception_temp;
-  TempJudgeResult res = temp_judger.JudgeImageBuffer(buffer, &exception_temp);
-  if (res == TEMP_NORMAL) {
-    TCHAR sz_status[250];
-    swprintf(sz_status, ARRAYSIZE(sz_status), _T("Camera Angle %d: Update image"), rotation_pos_.GetAngle());
-    container_ui_->SetStatusText(sz_status);
-    SampleNewPos();
-  }
-  else {
-    TCHAR sz_status[250];
-    switch (res) {
-    case UNSTABLE_TEMP_EXCEPTION: 
-      swprintf(sz_status, ARRAYSIZE(sz_status), _T("the max temperature %.1f overflow"), exception_temp);
-      break;
-    case UNSTABLE_DELTA_EXCEPTION:
-      swprintf(sz_status, ARRAYSIZE(sz_status), _T("delta overflow %.1f"), exception_temp);
-      break;
-    }
-    camera_rotator_->Reset();
-    container_ui_->SetErrorStatusText(sz_status);
-    container_ui_->ShowStatusHideError(false);
+void CameraImageContainerDeviceLinker::ShowStatusText(const TString& str) {
+  container_ui_->SetStatusText(str.c_str());
+  container_ui_->ShowStatusHideError(true);
+}
+
+void CameraImageContainerDeviceLinker::ShowErrorText(const TString& str) {
+  container_ui_->SetErrorStatusText(str.c_str());
+  container_ui_->ShowStatusHideError(false);
+}
+
+void  CameraImageContainerDeviceLinker::BeginRotate() {
+  if (camera_rotator_->RotateNext(&rotation_pos_)) {
+    camera_device_->UpdateKelvinImage();
+  } else {
+    running_update_->OnCompleteUpdate();
+    OnUpdateComplete();
   }
 }
 
-void CameraImageContainerDeviceLinker::SampleNewPos()
-{
-  if (camera_rotator_->RotateNext(&rotation_pos_)) {
-    camera_device_->UpdateKelvinImage();
-  }
+void CameraImageContainerDeviceLinker::OnUpdateComplete() {
+  camera_rotator_->Reset();
+  running_update_.reset();
+  if (pending_stable_update_)
+    running_update_.swap(pending_stable_update_);
+  else if (pending_unstable_update_)
+    running_update_.swap(pending_unstable_update_);
+  if (running_update_.get() != NULL)
+    BeginRotate();
 }
+ 
 
-void CameraImageContainerDeviceLinker::StableSampleNewPos() {
-  if (camera_rotator_->RotateNext(&rotation_pos_)) {
-    camera_device_->UpdateKelvinImage();
-  }
-}
 
-void CameraImageContainerDeviceLinker::StableSampleImageBufferUpdate(CameraImageBuffer* buffer) {
-  UnstableTempJudger temp_judger(std::numeric_limits<float>::max());
-  stable_buffer_analyzer_->AddImageBuffer(rotation_pos_, buffer);
-  if (camera_rotator_->RotateNext(&rotation_pos_)) {
-    camera_device_->UpdateKelvinImage();
-  } else {  //rotation end, the around image has got
-    CameraRotationPos pos;
-    float exception_temp;
-    TempJudgeResult res = stable_buffer_analyzer_->JudgeImageBuffer(&pos, &exception_temp);
-    if (res == TEMP_NORMAL) {
-      TCHAR sz_status[250];
-      swprintf(sz_status, ARRAYSIZE(sz_status), _T("Camera get stable temperature!"));
-      container_ui_->SetStatusText(sz_status);
-    } else {
-      TCHAR sz_status[250];
-      switch (res) {
-      case STABLE_TEMP_EXCEPTION:
-        swprintf(sz_status, ARRAYSIZE(sz_status), _T("stable temperature %.1f at %d overflow"), exception_temp, pos.GetAngle());
-        break;
-      case UNSTABLE_DELTA_EXCEPTION:
-        swprintf(sz_status, ARRAYSIZE(sz_status), _T("stable delta overflow %.1f at %d"), exception_temp, pos.GetAngle());
-        break;
-      }
-      camera_rotator_->Reset();
-      container_ui_->SetErrorStatusText(sz_status);
-      container_ui_->ShowStatusHideError(false);
-    }
-  }
+void CameraImageContainerDeviceLinker::ImageUpdate::Init(StateTextShow* text_show) {
+  status_show_ = text_show;
 }
 
 }

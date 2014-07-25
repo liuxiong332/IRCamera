@@ -1,5 +1,6 @@
 #include "CameraInfoPref.h"
 #include "CameraInfoPrefObserver.h"
+#include "common/StringConversion.h"
 #include <tchar.h>
 #include <algorithm>
 #include <utility>
@@ -49,10 +50,40 @@ void CameraInfoPref::CameraInfoPrefChanged() {
     observer->CameraInfoPrefChanged();
   });
 }
+ 
 
-CameraInfoPref* CameraInfoPref::GetInstance() {
-  static CameraInfoPref kInfPref;
-  return &kInfPref;
+const static char kCameraInfoStr[] = "camera_info";
+const static char kCameraAddr[] = "IP";
+const static char  kCameraName[] = "Name";
+
+void  CameraInfoPref::SerializeFromJson(rapidjson::Document& document) {
+  camera_infos_.clear();
+  if (document.HasMember(kCameraInfoStr)) {
+    rapidjson::Value& values = document[kCameraInfoStr];
+    if (!values.IsArray())
+      return;
+    for (rapidjson::SizeType i = 0; i < values.Size(); ++i) {
+      rapidjson::Value& element = values[i];
+      if (element.HasMember(kCameraAddr) && element.HasMember(kCameraName)) {
+        PushBack(StringConversion::UTF8ToUTF16(element[kCameraAddr].GetString()), 
+          StringConversion::UTF8ToUTF16(element[kCameraName].GetString()));
+      }
+    }
+  }
 }
 
+void  CameraInfoPref::SerializeToJson(rapidjson::Document& document) {
+  if (document.HasMember(kCameraInfoStr))
+    document.RemoveMember(kCameraInfoStr);
+  rapidjson::Value elements(rapidjson::kArrayType);
+  std::for_each(camera_infos_.begin(), camera_infos_.end(), [&elements, &document](const CameraInfo& info) {
+    rapidjson::Value element(rapidjson::kObjectType);
+    element.AddMember(rapidjson::StringRef(kCameraAddr), 
+      rapidjson::Value(StringConversion::UTF16ToUTF8(info.ip_addr.c_str()).c_str(), document.GetAllocator()).Move(), document.GetAllocator());
+    element.AddMember(rapidjson::StringRef(kCameraName), 
+      rapidjson::Value(StringConversion::UTF16ToUTF8(info.name.c_str()).c_str(), document.GetAllocator()).Move(), document.GetAllocator());
+    elements.PushBack(element, document.GetAllocator());
+  });
+  document.AddMember(rapidjson::StringRef(kCameraInfoStr), elements, document.GetAllocator());
+}
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "IRCameraDevice.h"
 
 class CameraImageBuffer;
 namespace camera {
@@ -13,6 +14,7 @@ public:
   virtual void  OnDisconnect() = 0;
   //when the image has update
   virtual void  OnImageUpdate(CameraImageBuffer*) = 0;
+  virtual void  OnImageUpdateFail(IRCameraStatusCode code) = 0;
   virtual ~CameraDeviceObserver()  {}
 };
 }

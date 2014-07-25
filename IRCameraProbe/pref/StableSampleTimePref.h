@@ -1,6 +1,7 @@
 #pragma once
 #include "StableSampleTimePrefObserver.h"
 #include <stdlib.h>
+#include "common/PreferenceSerializer.h"
 
 namespace camera {
 class StableSampleTimePrefObserver;
@@ -20,11 +21,7 @@ public:
     if (observer_)
      observer_->OnSampleTimeChanged();
   }
-
-  static StableSampleTimePref* GetInstance() {
-    static StableSampleTimePref pref;
-    return &pref;
-  }
+ 
 private:
   StableSampleTimePrefObserver* observer_;
   int hour_;

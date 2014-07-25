@@ -35,7 +35,7 @@ void CameraDevice::Init() {
 
   SharedCameraDevicePtr ptr(shared_from_this());
   camera_message_loop_->PushTaskAndReply(main_message_loop_, [ptr]() {
-    ptr->camera_info_ = IRCameraDevice::CreateForTest();
+    ptr->camera_info_ = IRCameraDevice::Create(); // IRCameraDevice::CreateForTest();
     ptr->camera_info_->RegisterEventHandler(ptr->camera_event_handler_in_camera_thread_.get());
   }, [ptr] {
     ptr->InitCompleteTrigger();
@@ -57,7 +57,7 @@ void CameraDevice::Connect(const ConnectResultObserver& observer) {
   IRCameraStatusCode* code = new IRCameraStatusCode;
   SharedCameraDevicePtr ptr(shared_from_this());
   camera_message_loop_->PushTaskAndReply(main_message_loop_, [ptr, code] {
-    *code = ptr->camera_info_->Connect(_T("127.0.0.1"));
+    *code = ptr->camera_info_->Connect(ptr->GetIPAddr());
   }, [observer, code] {
     if (!observer)  return;
     observer(*code);
@@ -86,7 +86,22 @@ void CameraDevice::RemoveConnectStatusObserver(CameraDeviceObserver* observer) {
 }
 
 TString CameraDevice::GetErrorString(IRCameraStatusCode code) {
-  return camera_info_->GetErrorString(code);
+  const static TCHAR* kErrorStrings[] = {
+    _T("OK, No Error"), _T("Device not present"),
+    _T("Device busy"), _T("Device driver missing"),
+    _T("Device driver must be updated"), _T("Failed to load device firmware"),
+    _T("Failed to configure device. Resource Conflict"), _T("Unknown error"),
+    _T("Service Control Manager error"), _T("Failed to establish a camera control connection"),
+    _T("Control connection closed"), _T("Cannot allocate image buffer"),
+    _T("invalid image"), _T("Device hardware error"),
+    _T("Timeout waiting for image"), _T("Camera configuration error"),
+    _T("Image acquision aborted"), _T("Image source is not initiated")
+  };
+  int code_index = static_cast<int>(code);
+  if (code_index<0 || code_index>ARRAYSIZE(kErrorStrings)) {
+    return _T("Unknown Error");
+  }
+  return kErrorStrings[code_index];
 }
 
 int CameraDevice::GetImageWidth() const {
@@ -147,6 +162,10 @@ void CameraDevice::UpdateKelvinImage() {
         ptr->UpdateImageTrigger(buffer);
         delete buffer;
       });
+    } else {
+      ptr->main_message_loop_->PushTask([ptr, code] {
+        ptr->UpdateFailedTrigger(code);
+      });
     }
   });
 }
@@ -155,6 +174,12 @@ void CameraDevice::UpdateImageTrigger(CameraImageBuffer* buffer) {
   for (ObserverIterator iter = observers_.begin(); iter != observers_.end(); ++iter) {
     (*iter)->OnImageUpdate(buffer); 
   }
+}
+
+void CameraDevice::UpdateFailedTrigger(IRCameraStatusCode code) {
+  std::for_each(observers_.begin(), observers_.end(), [code](CameraDeviceObserver* observer) {
+    observer->OnImageUpdateFail(code);
+  });
 }
  
 }

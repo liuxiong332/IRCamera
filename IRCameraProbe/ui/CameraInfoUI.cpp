@@ -27,3 +27,10 @@ TString CameraInfoUI::GetIPAddr() const {
 TString CameraInfoUI::GetName() const {
   return TString(name_button_->GetText());
 }
+
+void CameraInfoUI::SetIPAddr(const TString& str) {
+  ipaddr_button_->SetText(str.c_str());
+}
+void CameraInfoUI::SetName(const TString& str) {
+  name_button_->SetText(str.c_str());
+}

@@ -8,6 +8,7 @@ public:
   CanEditButtonUI(DuiLib::CContainerUI* ui);
 
   TString GetButtonText() const;
+  void  SetButtonText(const TString& str);
 private:
   virtual LPCTSTR GetClass() const {
     return _T("CanEditButtonUI");

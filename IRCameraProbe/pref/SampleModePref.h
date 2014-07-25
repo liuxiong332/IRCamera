@@ -1,6 +1,7 @@
 #pragma once
 #include "common/TimeDelta.h"
 #include "SampleMode.h"
+#include "rapidjson/document.h"
 
 namespace camera {
 class SampleModePrefObserver;
@@ -20,7 +21,9 @@ public:
   void SetSampleMode(SampleMode mode);
   void SetSampleInterval(const TimeDelta& delta);
 
-  static SampleModePref*  GetInstance();
+  void  SerializeFromJson(rapidjson::Document& document);
+  void  SerializeToJson(rapidjson::Document& document);
+   
 private:
   SampleModePrefObserver* observer_;
   SampleMode mode_;

@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include "IRCameraBasic.h"
 
 namespace DuiLib {
 class CContainerUI;
@@ -16,6 +17,7 @@ public:
 
   CameraInfoUI* GetCameraInfo(int i);
   
+  void AddCameraInfo(const TString& ip_addr, const TString& name);
   void AddCameraInfo();
   //remove all of the camera info ui that the checkbox is checked
   void RemoveAllCheckedCameraInfo();

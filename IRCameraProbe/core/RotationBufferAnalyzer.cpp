@@ -1,6 +1,6 @@
 #include "RotationBufferAnalyzer.h"
 #include "ImageBufferAnalyzer.h"
-#include "pref/TempThresholdPref.h"
+#include "pref/CameraPref.h"
 #include <algorithm>
 
 namespace camera {
@@ -23,7 +23,7 @@ void RotationBufferAnalyzer::AddImageBuffer(CameraRotationPos pos, CameraImageBu
 }
 
 TempJudgeResult RotationBufferAnalyzer::JudgeImageBuffer(CameraRotationPos* pos, float* exception_temp) {
-  TempThresholdPref* pref = TempThresholdPref::GetInstance();
+  TempThresholdPref* pref = CameraPref::GetInstance()->GetTempThreshold();
   if (GetMaxTemp(pos) > pref->GetStableMaxTemp()) {
     *exception_temp = GetMaxTemp(pos);
     return STABLE_TEMP_EXCEPTION;

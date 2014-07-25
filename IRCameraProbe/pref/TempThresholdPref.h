@@ -1,4 +1,5 @@
 #pragma once
+#include "rapidjson/document.h"
 
 namespace camera {
 class TempThresholdLinker;
@@ -22,10 +23,9 @@ public:
     return unstable_max_temp_;
   }
 
-  static TempThresholdPref*  GetInstance() {
-    static TempThresholdPref pref;
-    return &pref;
-  }
+  void  SerializeFromJson(rapidjson::Document& document);
+  void  SerializeToJson(rapidjson::Document& document);
+ 
 private:
   friend class TempThresholdLinker;
   int stable_max_temp_;

@@ -12,12 +12,17 @@ public:
 
   //get the max stable temperature
   int GetStableMaxTemp() const;
+  void SetStableMaxTemp(int temp);
 
   int GetStableDeltaTemp() const;
+  void SetStableDeltaTemp(int temp);
   //get the max delta between unstable average temperature and the max temperature
   int GetUnstableMaxDeltaTemp() const;
+  void SetUnstableMaxDeltaTemp(int temp);
+
   //get the max unstable temperature
   int GetUnstableMaxTemp() const;
+  void SetUnstableMaxTemp(int temp);
 private:
   DuiLib::CContainerUI* temp_pref_layout_;
  

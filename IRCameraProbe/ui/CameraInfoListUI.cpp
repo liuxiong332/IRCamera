@@ -9,7 +9,6 @@ void CameraInfoListUI::Init(DuiLib::CContainerUI* ui, CameraInfoPrefBuilder* bui
   info_list_ui_ = ui;
   camera_info_builder_ = builder;
   edit_hide_control_ = CommonUIOperator::FindSubControlByName(info_list_ui_, _T("edit_hide_control"));
-  AddCameraInfo();
 }
 
 int CameraInfoListUI::GetCameraInfoCount() const {
@@ -33,6 +32,14 @@ void CameraInfoListUI::AddCameraInfo() {
   CameraInfoUI* camera_info_ui = camera_info_builder_->CreateCameraInfoUI();
   info_list_ui_->Add(camera_info_ui->GetUnderlyingUI());
   camera_info_list_.push_back(CameraInfoUIPtr(camera_info_ui));
+}
+
+void CameraInfoListUI::AddCameraInfo(const TString& ip_addr, const TString& name) {
+  CameraInfoUI* camera_info_ui = camera_info_builder_->CreateCameraInfoUI();
+  info_list_ui_->Add(camera_info_ui->GetUnderlyingUI());
+  camera_info_list_.push_back(CameraInfoUIPtr(camera_info_ui));
+  camera_info_ui->SetIPAddr(ip_addr);
+  camera_info_ui->SetName(name);
 }
 
 void CameraInfoListUI::EnableCheckbox(bool is_enable) {

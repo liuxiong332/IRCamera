@@ -3,9 +3,7 @@
 #include "CameraImageContainerDeviceLinker.h"
 #include "ui/CameraImageBuilder.h"
 
-#include "pref/CameraInfoPref.h"
-#include "pref/SampleModePref.h"
-#include "pref/StableSampleTimePref.h"
+#include "pref/CameraPref.h"
 #include "common/Time.h"
 
 #include "IRCameraBasic.h"
@@ -29,19 +27,19 @@ void CameraImageLinkerList::Init(CameraImageBuilder* builder, CameraImageListUI*
 
   camera_image_builder_ = builder;
   assert(list_ui->GetCount() == 0);
-  CameraInfoPref::GetInstance()->AddObserver(this);
+  CameraPref::GetInstance()->GetCameraInfoPref()->AddObserver(this);
   ReloadCameraList();
 
   InitSampleModePref();
 }
 
 CameraImageLinkerList::~CameraImageLinkerList() {
-  CameraInfoPref::GetInstance()->RemoveObserver(this);
+  CameraPref::GetInstance()->GetCameraInfoPref()->RemoveObserver(this);
 }
 
 void CameraImageLinkerList::ReloadCameraList()
 {
-  CameraInfoPref* pref = CameraInfoPref::GetInstance();
+  CameraInfoPref* pref = CameraPref::GetInstance()->GetCameraInfoPref();
   for (int i = 0; i < pref->GetCameraCount(); ++i) {
     const CameraInfoPref::CameraInfo& camera_info = pref->GetCameraAt(i);
     
@@ -64,7 +62,7 @@ void CameraImageLinkerList::ReloadCameraList()
 }
 
 void  CameraImageLinkerList::OnSampleTimeChanged() {
-  StableSampleTimePref* pref = StableSampleTimePref::GetInstance();
+  StableSampleTimePref* pref = CameraPref::GetInstance()->GetStableSampleTime();
   Time time = Time::GetCurrentTime();
   Time end_time(24, 0, 0);
   Time next_day_time(static_cast<short>(pref->GetSampleHour()), 0, 0);
@@ -101,7 +99,7 @@ void CameraImageLinkerList::CameraInfoPrefChanged() {
 
 void CameraImageLinkerList::InitSampleModePref()
 {
-  SampleModePref* pref = SampleModePref::GetInstance();
+  SampleModePref* pref = CameraPref::GetInstance()->GetSampleMode();
   pref->InitWithObserver(this);
   OnSampleModeChanged(pref->GetSampleMode());
   OnTimeDeltaChanged(pref->GetSampleInterval());
@@ -109,14 +107,14 @@ void CameraImageLinkerList::InitSampleModePref()
 
 void CameraImageLinkerList::OnSampleModeChanged(SampleMode mode) {
   if (mode == AUTO_MODE) {
-    list_ui_->BeginTimer(SampleModePref::GetInstance()->GetSampleInterval());
+    list_ui_->BeginTimer(CameraPref::GetInstance()->GetSampleMode()->GetSampleInterval());
   } else {
     list_ui_->EndTimer();
   }
 }
 
 void CameraImageLinkerList::OnTimeDeltaChanged(const TimeDelta& delta) {
-  if (SampleModePref::GetInstance()->GetSampleMode() == AUTO_MODE) {
+  if (CameraPref::GetInstance()->GetSampleMode()->GetSampleMode() == AUTO_MODE) {
     list_ui_->EndTimer();        //reinitialize the timer
     list_ui_->BeginTimer(delta);
   }

@@ -1,6 +1,7 @@
 #include "TempThresholdPrefUI.h"
 #include "CommonUIOperator.h"
 #include "UIlib.h"
+#include "common/StringUtility.h"
 
 TempThresholdPrefUI::TempThresholdPrefUI(DuiLib::CContainerUI* ui) {
   temp_pref_layout_ = ui;
@@ -20,15 +21,28 @@ int TempThresholdPrefUI::GetStableMaxTemp() const {
   return TStringToInt(stable_max_ui_->GetButtonText());
 }
 
+void TempThresholdPrefUI::SetStableMaxTemp(int temp) {
+  stable_max_ui_->SetButtonText(StringUtility::IntToString(temp));
+}
+
 int TempThresholdPrefUI::GetStableDeltaTemp() const {
   return TStringToInt(stable_delta_ui_->GetButtonText());
+}
+void TempThresholdPrefUI::SetStableDeltaTemp(int temp) {
+  stable_delta_ui_->SetButtonText(StringUtility::IntToString(temp));
 }
 //get the max delta between unstable average temperature and the max temperature
 int TempThresholdPrefUI::GetUnstableMaxDeltaTemp() const {
   return TStringToInt(unstable_max_delta_ui_->GetButtonText());
 }
+void TempThresholdPrefUI::SetUnstableMaxDeltaTemp(int temp) {
+  unstable_max_delta_ui_->SetButtonText(StringUtility::IntToString(temp));
+}
 
 //get the max unstable temperature
 int TempThresholdPrefUI::GetUnstableMaxTemp() const {
   return TStringToInt(unstable_max_ui_->GetButtonText());
+}
+void TempThresholdPrefUI::SetUnstableMaxTemp(int temp) {
+  unstable_max_ui_->SetButtonText(StringUtility::IntToString(temp));
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "IRCameraBasic.h"
+#include "rapidjson/document.h"
 #include <vector>
 
 namespace camera {
@@ -25,7 +26,9 @@ public:
   //when the camera info preference has changed completely
   void  CameraInfoPrefChanged();
 
-  static CameraInfoPref* GetInstance();
+  void  SerializeFromJson(rapidjson::Document& document);
+  void  SerializeToJson(rapidjson::Document& document);
+   
 private:
   std::vector<CameraInfo> camera_infos_;
   std::vector<CameraInfoPrefObserver*>  observers_;

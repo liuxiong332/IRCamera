@@ -35,6 +35,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="common\PathService.cpp" />
+    <ClCompile Include="common\PreferenceSerializer.cpp" />
+    <ClCompile Include="common\StringConversion.cpp" />
     <ClCompile Include="common\Time.cpp" />
     <ClCompile Include="common\TimeDelta.cpp" />
     <ClCompile Include="core\ImageBufferAnalyzer.cpp" />
@@ -50,7 +53,9 @@
     <ClCompile Include="linker\StableSampleTimeLinker.cpp" />
     <ClCompile Include="linker\TempThresholdLinker.cpp" />
     <ClCompile Include="pref\CameraInfoPref.cpp" />
+    <ClCompile Include="pref\CameraPref.cpp" />
     <ClCompile Include="pref\SampleModePref.cpp" />
+    <ClCompile Include="pref\TempThresholdPref.cpp" />
     <ClCompile Include="thread\MessageLoop.cpp" />
     <ClCompile Include="thread\MessageQueueThread.cpp" />
     <ClCompile Include="thread\Mutex.cpp" />
@@ -73,6 +78,10 @@
     <ClCompile Include="ui\TempThresholdPrefUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common\PathService.h" />
+    <ClInclude Include="common\PreferenceSerializer.h" />
+    <ClInclude Include="common\StringConversion.h" />
+    <ClInclude Include="common\StringUtility.h" />
     <ClInclude Include="common\TempTransform.h" />
     <ClInclude Include="common\Time.h" />
     <ClInclude Include="common\TimeDelta.h" />
@@ -97,6 +106,7 @@
     <ClInclude Include="linker\TempThresholdLinker.h" />
     <ClInclude Include="pref\CameraInfoPref.h" />
     <ClInclude Include="pref\CameraInfoPrefObserver.h" />
+    <ClInclude Include="pref\CameraPref.h" />
     <ClInclude Include="pref\SampleMode.h" />
     <ClInclude Include="pref\SampleModePref.h" />
     <ClInclude Include="pref\SampleModePrefObserver.h" />
