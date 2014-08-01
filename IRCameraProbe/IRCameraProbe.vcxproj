@@ -63,6 +63,7 @@
     <ClCompile Include="ui\ButtonEditUITransform.cpp" />
     <ClCompile Include="ui\CameraImageContainerUI.cpp" />
     <ClCompile Include="ui\CameraImageListUI.cpp" />
+    <ClCompile Include="ui\CameraImageRealTimeUI.cpp" />
     <ClCompile Include="ui\CameraImageUI.cpp" />
     <ClCompile Include="ui\CameraInfoListUI.cpp" />
     <ClCompile Include="ui\CameraInfoPrefLayout.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="ui\CameraImageContainerUIObserver.h" />
     <ClInclude Include="ui\CameraImageListUI.h" />
     <ClInclude Include="ui\CameraImageListUIObserver.h" />
+    <ClInclude Include="ui\CameraImageRealTimeUI.h" />
     <ClInclude Include="ui\CameraImageUI.h" />
     <ClInclude Include="ui\CameraInfoListUI.h" />
     <ClInclude Include="ui\CameraInfoPrefBuilder.h" />

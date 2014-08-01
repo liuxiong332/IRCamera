@@ -148,6 +148,9 @@
     <ClCompile Include="pref\TempThresholdPref.cpp">
       <Filter>pref</Filter>
     </ClCompile>
+    <ClCompile Include="ui\CameraImageRealTimeUI.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ui\ControlBuilder.h">
@@ -341,6 +344,9 @@
     </ClInclude>
     <ClInclude Include="common\StringUtility.h">
       <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\CameraImageRealTimeUI.h">
+      <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

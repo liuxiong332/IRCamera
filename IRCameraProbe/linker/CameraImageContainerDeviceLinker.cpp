@@ -6,12 +6,26 @@
 
 #include "ui/CameraImageContainerUI.h"
 #include "ui/CameraImageUI.h"
+#include "ui/CameraImageRealTimeUI.h"
 #include <tchar.h>
 
 namespace camera {
-  
 
-class UnstableImageUpdate : public CameraImageContainerDeviceLinker::ImageUpdate {
+//////////////////////////////ImageUpdate///////////////////////////////////////
+class ImageUpdate {
+public:
+  void Init(ImageUIOperator* text_show) {
+    status_show_ = text_show;
+  }
+  virtual bool  OnImageUpdate(CameraImageBuffer* buffer, const CameraRotationPos&) = 0;
+  virtual void  OnCompleteUpdate() {}
+  virtual ~ImageUpdate() {}
+protected:
+  ImageUIOperator* status_show_;
+}; 
+  
+//////////////////////////////UnstableImageUpdate//////////////////////////
+class UnstableImageUpdate : public ImageUpdate {
 public:
 
   virtual bool  OnImageUpdate(CameraImageBuffer* buffer, const CameraRotationPos& pos) {
@@ -38,9 +52,13 @@ public:
     }
   }
 
+  virtual void  OnCompleteUpdate() override {
+    status_show_->ShowStatusText(_T("Image update completely"));
+  }
 };
 
-class StableImageUpdate : public CameraImageContainerDeviceLinker::ImageUpdate {
+////////////////////////StableImageUpdate////////////////////////////////////
+class StableImageUpdate : public ImageUpdate {
 public:
   virtual bool  OnImageUpdate(CameraImageBuffer* buffer, const CameraRotationPos& pos) override {
     rotation_buffer_analyzer_.AddImageBuffer(pos, buffer);
@@ -72,9 +90,95 @@ private:
   RotationBufferAnalyzer  rotation_buffer_analyzer_;
 };
 
+//////////////////////////////////////////ImageUpdateSchedule//////////////////////////////////////
+class ImageUpdateSchedule {
+public:
+  ImageUpdateSchedule(ImageUIOperator* ui_operator, DeviceOperator* device_operator, UpdateCompleteNotify* notify)
+    : ui_operator_(ui_operator), device_operator_(device_operator), complete_notify_(notify) {
+  }
+
+  virtual void BeginSchedule() = 0;
+  virtual void OnImageUpdate(CameraImageBuffer*) = 0;
+  virtual ~ImageUpdateSchedule() {}
+protected:
+  ImageUIOperator*  ui_operator_;
+  DeviceOperator*   device_operator_;
+  UpdateCompleteNotify* complete_notify_;
+};
+
+//////////////////////////RealTimeImageUpdateSchedule/////////////////////////////////////////
+class RealTimeImageUpdateSchedule : public ImageUpdateSchedule {
+public:
+  RealTimeImageUpdateSchedule(ImageUIOperator* ui_operator, DeviceOperator* device_operator, UpdateCompleteNotify* notify)
+    : ImageUpdateSchedule(ui_operator, device_operator, notify) {
+  }
+
+  virtual void BeginSchedule() {
+    device_operator_->UpdateKelvinImage();
+  }
+  virtual void OnImageUpdate(CameraImageBuffer* buffer) {
+    ui_operator_->UpdateRealTimeImageUI(buffer);
+    complete_notify_->OnUpdateComplete();
+  }
+};
+
+/////////////////////////RotateImageUpdateSchedule/////////////////////////////////////////////
+class RotateImageUpdateSchedule : public ImageUpdateSchedule {
+public:
+  RotateImageUpdateSchedule(ImageUIOperator* ui_operator, DeviceOperator* device_operator,
+    UpdateCompleteNotify* notify, CameraRotator* rotate_runner)
+    : ImageUpdateSchedule(ui_operator, device_operator, notify),rotate_runner_(rotate_runner) {
+  } 
+
+  virtual void BeginSchedule() {
+    if (rotate_runner_->RotateNext(NULL)) {
+      device_operator_->UpdateKelvinImage();
+    } else {
+      pending_image_update_->OnCompleteUpdate();
+      complete_notify_->OnUpdateComplete();
+    }
+  }
+
+  virtual void OnImageUpdate(CameraImageBuffer* buffer) {
+    ui_operator_->UpdateImageUI(buffer);
+    ui_operator_->UpdateRealTimeImageUI(buffer);
+    if (pending_image_update_->OnImageUpdate(buffer, rotate_runner_->GetRotationPos()))
+      BeginSchedule();
+    else {      //the camera interrupt the update, so reset the rotator and notify the linker
+      rotate_runner_->Reset();
+      complete_notify_->OnUpdateComplete();
+    }      
+  }
+protected:
+  CameraRotator* rotate_runner_;
+  std::unique_ptr<ImageUpdate>  pending_image_update_;
+};
+
+////////////////////StableImageUpdateSchedule////////////////////////////////////////////
+class StableImageUpdateSchedule : public RotateImageUpdateSchedule {
+public:
+  StableImageUpdateSchedule(ImageUIOperator* ui_operator, DeviceOperator* device_operator,
+       UpdateCompleteNotify* notify, CameraRotator* rotate_runner)
+       : RotateImageUpdateSchedule(ui_operator, device_operator, notify, rotate_runner) {
+    pending_image_update_.reset(new StableImageUpdate);
+    pending_image_update_->Init(ui_operator_);
+  }
+};
+
+//////////////////UnstableImageUpdateSchedule////////////////////////////
+class UnstableImageUpdateSchedule : public RotateImageUpdateSchedule {
+public:
+  UnstableImageUpdateSchedule(ImageUIOperator* ui_operator, DeviceOperator* device_operator,
+    UpdateCompleteNotify* notify, CameraRotator* rotate_runner)
+    : RotateImageUpdateSchedule(ui_operator, device_operator, notify, rotate_runner) {
+    pending_image_update_.reset(new UnstableImageUpdate);
+    pending_image_update_->Init(ui_operator_);
+  }
+};
+
+///////////////////////////CameraImageContainerDeviceLinker////////////////////////
 CameraImageContainerDeviceLinker::CameraImageContainerDeviceLinker()
-    : device_status_(UNINITIALIZED),
-      stable_sample_is_running_(false) {
+    : device_status_(UNINITIALIZED) {
 }
 
 CameraImageContainerDeviceLinker::~CameraImageContainerDeviceLinker() {
@@ -99,9 +203,12 @@ void CameraImageContainerDeviceLinker::Init(LPCTSTR ip_addr, LPCTSTR name, Camer
 
   camera_rotator_.reset(new SimpleCameraRotator);
 
+  container_ui_->SetCameraName(name);
   container_ui_->EnableDisconnectButton(false);
   container_ui_->EnableConnectButton(false);
   container_ui_->EnableSampleButton(false);
+  container_ui_->GetUnderlyingControl()->OnNotify += 
+    DuiLib::MakeDelegate(this, &CameraImageContainerDeviceLinker::OnTimer);
   
   device_status_ = INITIALIZING;
 }
@@ -132,15 +239,28 @@ void CameraImageContainerDeviceLinker::Disconnect() {
   }
 }
 
+void CameraImageContainerDeviceLinker::RealTimeSample() {
+  if (device_status_ != CONNECTED)
+    return;
+  if (realtime_update_.get() == NULL) {
+    realtime_update_.reset(
+      new RealTimeImageUpdateSchedule(this, this, this));
+    if (running_update_.get() == NULL) {
+      running_update_.swap(realtime_update_);
+      running_update_->BeginSchedule();
+    }
+  }
+}
+
 void CameraImageContainerDeviceLinker::Sample() {
   if (device_status_ != CONNECTED)
     return;
   if (pending_unstable_update_.get() == NULL) {
-    pending_unstable_update_.reset(new UnstableImageUpdate);
-    pending_unstable_update_->Init(this);
+    pending_unstable_update_.reset(
+      new UnstableImageUpdateSchedule(this, this, this, camera_rotator_.get()));
     if (running_update_.get() == NULL) {
       running_update_.swap(pending_unstable_update_);
-      BeginRotate();
+      running_update_->BeginSchedule();
     }
   }
 }
@@ -149,11 +269,11 @@ void CameraImageContainerDeviceLinker::StableSample() {
   if (device_status_ != CONNECTED)
     return;
   if (pending_stable_update_.get() == NULL) {
-    pending_stable_update_.reset(new StableImageUpdate);
-    pending_stable_update_->Init(this);
+    pending_stable_update_.reset(
+      new StableImageUpdateSchedule(this, this, this, camera_rotator_.get()));
     if (running_update_.get() == NULL) {
       running_update_.swap(pending_stable_update_);
-      BeginRotate();
+      running_update_->BeginSchedule();
     }
   }
 }
@@ -171,6 +291,8 @@ void  CameraImageContainerDeviceLinker::OnConnect() {
   container_ui_->EnableDisconnectButton(true);
   container_ui_->EnableSampleButton(true);
   device_status_ = CONNECTED;
+
+  BeginRealTimeSample();
 }
 
 //when the host has disconnect from the camera
@@ -181,15 +303,21 @@ void  CameraImageContainerDeviceLinker::OnDisconnect() {
   container_ui_->EnableSampleButton(false);
   device_status_ = INITIALIZED;
   camera_rotator_->Reset();
-  stable_sample_is_running_ = false;
+
+  EndRealTimeSample();
 }
+
+void CameraImageContainerDeviceLinker::UpdateImageUI(CameraImageBuffer* buffer) {
+  container_ui_->GetCameraImageUI()->UpdateImage(buffer);
+}
+
+void CameraImageContainerDeviceLinker::UpdateRealTimeImageUI(CameraImageBuffer* buffer) {
+  container_ui_->GetCamreaImageRealTimeUI()->UpdateImage(buffer);
+}
+
 //when the image has update
 void  CameraImageContainerDeviceLinker::OnImageUpdate(CameraImageBuffer* buffer) {
-  container_ui_->GetCameraImageUI()->UpdateImage(buffer);
-  if (running_update_->OnImageUpdate(buffer, rotation_pos_))
-    BeginRotate();
-  else
-    OnUpdateComplete();
+  running_update_->OnImageUpdate(buffer);
 }
 
 void CameraImageContainerDeviceLinker::OnImageUpdateFail(IRCameraStatusCode code) {
@@ -219,30 +347,39 @@ void CameraImageContainerDeviceLinker::ShowErrorText(const TString& str) {
   container_ui_->ShowStatusHideError(false);
 }
 
-void  CameraImageContainerDeviceLinker::BeginRotate() {
-  if (camera_rotator_->RotateNext(&rotation_pos_)) {
-    camera_device_->UpdateKelvinImage();
-  } else {
-    running_update_->OnCompleteUpdate();
-    OnUpdateComplete();
-  }
+void CameraImageContainerDeviceLinker::UpdateKelvinImage() {
+  camera_device_->UpdateKelvinImage();
 }
-
+ 
 void CameraImageContainerDeviceLinker::OnUpdateComplete() {
-  camera_rotator_->Reset();
   running_update_.reset();
   if (pending_stable_update_)
     running_update_.swap(pending_stable_update_);
   else if (pending_unstable_update_)
     running_update_.swap(pending_unstable_update_);
+  else if (realtime_update_)
+    running_update_.swap(realtime_update_);
   if (running_update_.get() != NULL)
-    BeginRotate();
+    running_update_->BeginSchedule();
 }
  
-
-
-void CameraImageContainerDeviceLinker::ImageUpdate::Init(StateTextShow* text_show) {
-  status_show_ = text_show;
+const static int kRealTimeSampleTimerID = 1;
+void  CameraImageContainerDeviceLinker::BeginRealTimeSample() {
+  DuiLib::CControlUI* control = container_ui_->GetUnderlyingControl();
+  control->GetManager()->SetTimer(control, kRealTimeSampleTimerID, 200);  //sample per 1 second
 }
 
+void  CameraImageContainerDeviceLinker::EndRealTimeSample() {
+  DuiLib::CControlUI* control = container_ui_->GetUnderlyingControl();
+  control->GetManager()->KillTimer(control, kRealTimeSampleTimerID); 
+}
+
+bool CameraImageContainerDeviceLinker::OnTimer(void* param) {
+  DuiLib::TNotifyUI* notify = static_cast<DuiLib::TNotifyUI*>(param);
+  if (notify->sType == _T("timer")) {
+    RealTimeSample();
+    return true;
+  }
+  return false;
+}
 }

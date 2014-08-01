@@ -69,22 +69,23 @@ void  CameraImageLinkerList::OnSampleTimeChanged() {
   long long milliseconds = end_time.HourMinuteSecondToMilli() - time.HourMinuteSecondToMilli() +
     next_day_time.HourMinuteSecondToMilli();
   assert(milliseconds < 0x7FFFFFFF);
-  list_ui_->BeginStableSampleTimer(TimeDelta::FromMilliseconds(milliseconds));
+  list_ui_->BeginTimer(kStableSampleTimerID, TimeDelta::FromMilliseconds(milliseconds));
 }
 
-void  CameraImageLinkerList::OnTimer() {
+void  CameraImageLinkerList::OnTimer(int id) {
+  void (CameraImageContainerDeviceLinker::* sample_func)();
+  switch (id) {
+//   case kRealTimeSampleTimerID:  sample_func = CameraImageContainerDeviceLinker::RealTimeSample; break;
+  case kStableSampleTimerID:    sample_func = &CameraImageContainerDeviceLinker::StableSample;   break;
+  case kUnstableSampleTimerID:  sample_func = &CameraImageContainerDeviceLinker::Sample;         break;
+  default:  sample_func = NULL;
+  }
   std::for_each(device_linker_list_.begin(), device_linker_list_.end(), 
-    [](const ImageDeviceLinkerPtr& linker) {
-    linker->Sample();
+    [sample_func](const ImageDeviceLinkerPtr& linker) {
+    (linker.get()->*sample_func)();
   });
 }
-
-void CameraImageLinkerList::OnStableSampleTimer() {
-  std::for_each(device_linker_list_.begin(), device_linker_list_.end(),
-    [](const ImageDeviceLinkerPtr& linker) {
-    linker->StableSample();
-  });
-}
+ 
 
 void CameraImageLinkerList::InsertIntoList(CameraImageContainerDeviceLinker* linker) {
   list_ui_->PushBack(linker->GetContainerUI());
@@ -107,16 +108,16 @@ void CameraImageLinkerList::InitSampleModePref()
 
 void CameraImageLinkerList::OnSampleModeChanged(SampleMode mode) {
   if (mode == AUTO_MODE) {
-    list_ui_->BeginTimer(CameraPref::GetInstance()->GetSampleMode()->GetSampleInterval());
+    list_ui_->BeginTimer(kUnstableSampleTimerID, CameraPref::GetInstance()->GetSampleMode()->GetSampleInterval());
   } else {
-    list_ui_->EndTimer();
+    list_ui_->EndTimer(kUnstableSampleTimerID);
   }
 }
 
 void CameraImageLinkerList::OnTimeDeltaChanged(const TimeDelta& delta) {
   if (CameraPref::GetInstance()->GetSampleMode()->GetSampleMode() == AUTO_MODE) {
-    list_ui_->EndTimer();        //reinitialize the timer
-    list_ui_->BeginTimer(delta);
+    list_ui_->EndTimer(kUnstableSampleTimerID);        //reinitialize the timer
+    list_ui_->BeginTimer(kUnstableSampleTimerID, delta);
   }
 }
 

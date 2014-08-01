@@ -23,6 +23,7 @@ public:
   virtual void Reset() = 0;
 
   virtual bool IsRunning() = 0;
+  virtual CameraRotationPos GetRotationPos() = 0;
   virtual ~CameraRotator() {}
 };
 }

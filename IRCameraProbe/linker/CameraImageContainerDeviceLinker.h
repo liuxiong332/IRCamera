@@ -13,12 +13,16 @@ namespace camera {
 class CameraDevice;
 class CameraRotator;
 class RotationBufferAnalyzer;
- 
-class StateTextShow {
+class ImageUpdateSchedule;
+
+class ImageUIOperator {
 public:
   virtual void ShowStatusText(const TString& str) = 0;
   virtual void ShowErrorText(const TString& str) = 0;
-  virtual ~StateTextShow() {}
+
+  virtual void UpdateImageUI(CameraImageBuffer*) = 0;
+  virtual void UpdateRealTimeImageUI(CameraImageBuffer*) = 0;
+  virtual ~ImageUIOperator() {}
 };
 
 class UpdateCompleteNotify {
@@ -27,11 +31,18 @@ public:
   virtual ~UpdateCompleteNotify() {}
 };
 
+class DeviceOperator {
+public:
+  virtual void UpdateKelvinImage() = 0;
+  virtual ~DeviceOperator() {}
+};
+
 class CameraImageContainerDeviceLinker: 
   public CameraDeviceObserver,
   public CameraImageContainerUIObserver,
-  public StateTextShow,
-  public UpdateCompleteNotify {
+  public ImageUIOperator,
+  public UpdateCompleteNotify,
+  public DeviceOperator {
 public:
   enum DeviceStatus {
     UNINITIALIZED,
@@ -41,6 +52,7 @@ public:
     CONNECTED,
     DISCONNECTING
   };
+
   CameraImageContainerDeviceLinker();
 
   void Init(LPCTSTR ip_addr, LPCTSTR name, CameraImageContainerUI* container_ui);
@@ -53,23 +65,13 @@ public:
 
   void Connect();
   void Disconnect();
+
+  void RealTimeSample();
   void Sample();
-
   void StableSample();
-
-  class ImageUpdate {
-  public:
-    void Init(StateTextShow* text_show);
-    virtual bool  OnImageUpdate(CameraImageBuffer* buffer, const CameraRotationPos&) = 0;
-    virtual void  OnCompleteUpdate() {}
-    virtual ~ImageUpdate() {}
-  protected:
-    StateTextShow* status_show_;
-  };
 
   ~CameraImageContainerDeviceLinker();
 private:
- 
   virtual void OnConnectButtonClicked() override;
   virtual void OnDisconnectButtonClicked() override;
   virtual void OnSampleButtonClicked() override;
@@ -77,7 +79,7 @@ private:
   virtual void ShowStatusText(const TString& str) override;
   virtual void ShowErrorText(const TString& str) override;
 
-  void  BeginRotate();
+  virtual void UpdateKelvinImage() override;
   virtual void OnUpdateComplete() override;
 
   //when the camera has init completely
@@ -90,20 +92,26 @@ private:
   virtual void  OnImageUpdate(CameraImageBuffer*) override;
   virtual void  OnImageUpdateFail(IRCameraStatusCode code) override;
    
+  virtual void UpdateImageUI(CameraImageBuffer*) override;
+  virtual void UpdateRealTimeImageUI(CameraImageBuffer*) override;
+
+  void  BeginRealTimeSample();
+  void  EndRealTimeSample();
+  bool  OnTimer(void* param);
 
   std::unique_ptr<CameraImageContainerUI> container_ui_;
   std::shared_ptr<CameraDevice> camera_device_;
+  
   std::unique_ptr<CameraRotator>  camera_rotator_;
 
-  CameraRotationPos   rotation_pos_;
   DeviceStatus  device_status_;
-  bool  stable_sample_is_running_;
-
+ 
   std::unique_ptr<RotationBufferAnalyzer> stable_buffer_analyzer_;
  
-  std::unique_ptr<ImageUpdate>  running_update_;
-  std::unique_ptr<ImageUpdate>  pending_stable_update_;
-  std::unique_ptr<ImageUpdate>  pending_unstable_update_;
+  std::unique_ptr<ImageUpdateSchedule>  running_update_;
+  std::unique_ptr<ImageUpdateSchedule>  realtime_update_;
+  std::unique_ptr<ImageUpdateSchedule>  pending_stable_update_;
+  std::unique_ptr<ImageUpdateSchedule>  pending_unstable_update_;
 };
 
 }

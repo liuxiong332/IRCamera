@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout>
-	<VerticalLayout width="350" height="360">
-		<CameraImage name="camera_image" width="320" height="240" bkcolor="#FFD7EBEB" padding="10,10,10,10"/>
+	<VerticalLayout height="400">
+		<HorizontalLayout height="30">
+			<Label name="camera_name_label" width="160" padding="10,5,10,0" font="1"/>
+			<Label text="监视画面" width="160" padding="0,5,10,0"/>
+			<Label text="实时画面" width="320" align="center" padding="10,5,10,0"/>
+		</HorizontalLayout>
+		<HorizontalLayout height="260">
+			<CameraImage name="camera_image" width="320" height="240" bkcolor="#FFD7EBEB" padding="10,10,10,10"/>
+			<CameraImageRealTime name="realtime_image" width="320" height="240" padding="10,10,10,10"/>
+		</HorizontalLayout>
 		<HorizontalLayout height="30" padding="10,5,20,5">
 			<Label text="未连接" bkcolor="#FFD7EBEB" name="camera_status_label" textpadding="5,0,0,0"/>
 		</HorizontalLayout>

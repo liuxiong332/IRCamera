@@ -33,8 +33,7 @@ private:
 
   virtual void CameraInfoPrefChanged() override;
 
-  virtual void  OnTimer() override;
-  virtual void  OnStableSampleTimer() override;
+  virtual void  OnTimer(int id) override;
 
   void InitSampleModePref();
   void ReloadCameraList();
@@ -48,6 +47,7 @@ private:
   std::vector<ImageDeviceLinkerPtr>   delete_link_list_; 
   std::vector<ImageDeviceLinkerPtr>  device_linker_list_;
 
-  const static int kStableSampleTimerID = 0x1;
+  const static int  kUnstableSampleTimerID = 2;
+  const static int  kStableSampleTimerID = 3;
 };
 }

@@ -28,11 +28,9 @@ public:
   void RemoveAll();
 
   void SetObserver(CameraImageListUIObserver* observer);
-  void BeginTimer(const TimeDelta& delta);
-  void EndTimer();
-
-  void BeginStableSampleTimer(const TimeDelta& delta);
-  void EndStableSampleTimer();
+  void BeginTimer(int id, const TimeDelta& delta);
+  void EndTimer(int id);
+ 
 private:
   bool OnTimer(void* param);
 
@@ -40,7 +38,4 @@ private:
   std::vector<CameraImageContainerUI*>  camera_image_ui_list_;
 
   CameraImageListUIObserver*  observer_;
-
-  const static int  kTimerID = 1;
-  const static int  kStableSampleTimerID = 2;
 };

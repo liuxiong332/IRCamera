@@ -1,5 +1,6 @@
 #include "CameraImageContainerUI.h"
 #include "CameraImageUI.h"
+#include "CameraImageRealTimeUI.h"
 #include "CameraImageContainerUIObserver.h"
 #include "CommonUIOperator.h"
 #include "UIlib.h"
@@ -27,6 +28,12 @@ void CameraImageContainerUI::Init(DuiLib::CContainerUI* container_ui) {
   disconnect_btn_ = CommonUIOperator::FindSubButtonByName(container_ui_.get(), _T("disconnect_btn"));
   disconnect_btn_->OnNotify += DuiLib::MakeDelegate(this, &CameraImageContainerUI::OnDisconnectButtonClick);
 }
+
+void CameraImageContainerUI::SetCameraName(LPCTSTR name) {
+  DuiLib::CLabelUI* label = CommonUIOperator::FindSubLabelByName(container_ui_.get(), _T("camera_name_label"));
+  label->SetText(name);
+}
+
 //set status label text
 void CameraImageContainerUI::SetStatusText(LPCTSTR status_text) {
   camera_status_label_->SetText(status_text);
@@ -68,6 +75,10 @@ void CameraImageContainerUI::EnableSampleButton(bool is_enable) {
   sample_btn_->SetEnabled(is_enable);
 }
 
+CameraImageRealTimeUI* CameraImageContainerUI::GetCamreaImageRealTimeUI() {
+  return static_cast<CameraImageRealTimeUI*>(CommonUIOperator::FindSubControlByName(container_ui_.get(),
+    _T("realtime_image")));
+}
 CameraImageUI*  CameraImageContainerUI::GetCameraImageUI() {
   return static_cast<CameraImageUI*>(CommonUIOperator::FindSubControlByName(container_ui_.get(), _T("camera_image")));
 }

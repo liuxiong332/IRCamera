@@ -57,35 +57,22 @@ void CameraImageListUI::RemoveAll() {
   camera_image_ui_list_.clear();
 }
 
-void CameraImageListUI::BeginTimer(const TimeDelta& delta) {
+void CameraImageListUI::BeginTimer(int id, const TimeDelta& delta) {
   TimeDelta tr_delta = delta;
   if (delta.ToInternalValue() == 0)
     tr_delta = TimeDelta::FromMilliseconds(50);
-  image_list_ui_->GetManager()->SetTimer(image_list_ui_, kTimerID, static_cast<UINT>(tr_delta.InMilliseconds()));
+  image_list_ui_->GetManager()->SetTimer(image_list_ui_, id, static_cast<UINT>(tr_delta.InMilliseconds()));
 }
 
-void CameraImageListUI::EndTimer() {
-  image_list_ui_->GetManager()->KillTimer(image_list_ui_, kTimerID);
+void CameraImageListUI::EndTimer(int id) {
+  image_list_ui_->GetManager()->KillTimer(image_list_ui_, id);
 }
-
-void CameraImageListUI::BeginStableSampleTimer(const TimeDelta& delta) {
-  TimeDelta tr_delta = delta;
-  if (delta.ToInternalValue() == 0)
-    tr_delta = TimeDelta::FromMilliseconds(50);
-  image_list_ui_->GetManager()->SetTimer(image_list_ui_, kStableSampleTimerID, static_cast<UINT>(tr_delta.InMilliseconds()));
-}
-
-void CameraImageListUI::EndStableSampleTimer() {
-  image_list_ui_->GetManager()->KillTimer(image_list_ui_, kStableSampleTimerID);
-}
-
+ 
 bool CameraImageListUI::OnTimer(void* param) {
   DuiLib::TNotifyUI* notify = static_cast<DuiLib::TNotifyUI*>(param);
   if (notify->sType == _T("timer")) {
     int timer_id = static_cast<int>(notify->wParam);
-    if (observer_ && kTimerID == timer_id)  observer_->OnTimer();
-    if (observer_ && kStableSampleTimerID == timer_id)
-      observer_->OnStableSampleTimer();
+    if (observer_ )  observer_->OnTimer(timer_id);
     return true;
   }
   return false;

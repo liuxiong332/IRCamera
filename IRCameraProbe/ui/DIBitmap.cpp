@@ -2,10 +2,17 @@
 #include "DIBitmap.h"
 
 
-DIBitmap::DIBitmap() :bitmap_header_(NULL), bitmap_buffer_(NULL), bitmap_palette_(NULL) {}
+DIBitmap::DIBitmap() :bitmap_header_(NULL), bitmap_buffer_(NULL), bitmap_palette_(NULL) {
+  img_width_ = img_height_ = 0;
+}
+
 DIBitmap::~DIBitmap() {
   if (bitmap_header_)
     free(bitmap_header_);
+}
+
+bool DIBitmap::IsInit() const {
+  return img_height_ != 0 && img_width_ != 0;
 }
 
 void DIBitmap::Init(int width, int height) {

@@ -9,10 +9,9 @@ const static TCHAR* kScaleStr[] = { _T("s"), _T("m"), _T("h"), _T("d") };
 #define arraysize(array_name) sizeof(array_name)/sizeof(array_name[0])
 
 int  ScaleStrToIndex(const TString& str) {
-  const TCHAR** end_iter = kScaleStr + arraysize(kScaleStr);
-  const TCHAR** iter = std::find(kScaleStr, end_iter, str);
-  if (iter != end_iter) {
-    return  iter - kScaleStr;
+  for (int i = 0; i < arraysize(kScaleStr); ++i) {
+    if (str == kScaleStr[i])
+      return i;
   }
   return 0;
 }
@@ -30,7 +29,6 @@ void SampleModePrefUI::Init(DuiLib::CContainerUI* ui) {
 
   sample_interval_edit_ = CommonUIOperator::FindSubRichEditByName(ui, _T("sample_interval_edit"));
   sample_interval_combo_ = CommonUIOperator::FindSubComboByName(ui, _T("sample_interval_combo"));
-  SyncButtonToEdit();
 
   DuiLib::CButtonUI*  ok_button = CommonUIOperator::FindSubButtonByName(ui, _T("sample_interval_ok_btn"));
   ok_button->OnNotify += DuiLib::MakeDelegate(this, &SampleModePrefUI::OnSampleIntervalEditOKClicked);
@@ -47,7 +45,7 @@ void SampleModePrefUI::SetSampleMode(camera::SampleMode mode) {
   if (mode == camera::AUTO_MODE)
     auto_sample_option_->Selected(true);
   else
-    auto_sample_option_->Selected(false);
+    manual_sample_option_->Selected(true);
 }
 
 TimeDelta SampleModePrefUI::GetSampleInterval() const {
@@ -97,6 +95,7 @@ bool SampleModePrefUI::OnButtonClicked(void* param) {
     sample_interval_button_->SetVisible(false);
     sample_interval_ui_->SetVisible(true);
     sample_interval_edit_->SetFocus();
+    SyncButtonToEdit();
     return true;
   }
   return false;

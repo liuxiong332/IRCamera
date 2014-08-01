@@ -10,4 +10,9 @@ public:
     return TString(sz);
   }
 
+  static TString FloatToString(float num) {
+    TCHAR sz[10];
+    swprintf_s(sz, ARRAYSIZE(sz), _T("%.2f"), num);
+    return TString(sz);
+  }
 };

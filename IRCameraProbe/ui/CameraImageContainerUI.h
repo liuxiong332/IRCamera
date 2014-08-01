@@ -10,6 +10,7 @@ class CButtonUI;
 }
 
 class CameraImageUI;
+class CameraImageRealTimeUI;
 class CameraImageContainerUIObserver;
 
 class CameraImageContainerUI {
@@ -22,6 +23,7 @@ public:
     observer_ = observer;
   }
 
+  void SetCameraName(LPCTSTR name);
   //set status label text
   void SetStatusText(LPCTSTR  status_text);
   void ShowStatus(bool is_show);
@@ -44,8 +46,7 @@ public:
     return container_ui_.get();
   }
 
-  
-
+  CameraImageRealTimeUI*  GetCamreaImageRealTimeUI();
   CameraImageUI*  GetCameraImageUI();
 private:
   bool OnConnectButtonClick(void* param);

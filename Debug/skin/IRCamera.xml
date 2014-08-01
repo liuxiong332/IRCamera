@@ -7,8 +7,8 @@
 		<TabLayout selectedid="0" name="content_layout">
 			<!-- Normal Layout -->
 			<VerticalLayout bkimage="bg13.png">
-				<TileLayout name="camera_image_list" itemsize="350,350" bordersize="2" bkcolor="#FFEEFFEE" vscrollbar="true">
-				</TileLayout>
+				<VerticalLayout name="camera_image_list" bordersize="2" bkcolor="#FFEEFFEE" vscrollbar="true">
+				</VerticalLayout>
 
 				<VerticalLayout height="60" bkimage="bg12.png">
 					<HorizontalLayout  height="60" >

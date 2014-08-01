@@ -23,12 +23,13 @@ PreferenceSerializer::PreferenceSerializer() {
 
 PreferenceSerializer::~PreferenceSerializer() {
   std::ofstream  fstream;
-  fstream.open(file_name_.c_str());
+  fstream.open(file_name_.c_str(), std::ios::trunc|std::ios::out);
 
   rapidjson::StringBuffer  buffer;
   rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
   doc_.Accept(writer);
 
+  fstream.seekp(std::ofstream::beg);
   fstream.write(buffer.GetString(), buffer.GetSize());
   fstream.flush();
 }

@@ -8,6 +8,7 @@ public:
   ~DIBitmap();
   //set the width and height of the camera image
   void Init(int width, int height);
+  bool IsInit() const;
   //get the HBITMAP INFO
   BITMAPINFO* GetInfo();
   int GetPaletteLen() const;
