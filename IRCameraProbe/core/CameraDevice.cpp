@@ -35,7 +35,7 @@ void CameraDevice::Init() {
 
   SharedCameraDevicePtr ptr(shared_from_this());
   camera_message_loop_->PushTaskAndReply(main_message_loop_, [ptr]() {
-    ptr->camera_info_ = IRCameraDevice::Create(); // IRCameraDevice::CreateForTest();
+    ptr->camera_info_ =  IRCameraDevice::CreateForTest();
     ptr->camera_info_->RegisterEventHandler(ptr->camera_event_handler_in_camera_thread_.get());
   }, [ptr] {
     ptr->InitCompleteTrigger();
